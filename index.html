@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hero Fitness System</title>
+  <!-- Estilos rápidos via Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Rajdhani', sans-serif; background-color: #0b0f19; }
+    .font-hud { font-family: 'Orbitron', monospace; }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col p-4 pb-12 select-none">
+
+  <!-- Cabeçalho do Jogador / Nível -->
+  <header class="border border-cyan-500/40 bg-slate-900/80 rounded-xl p-4 shadow-lg shadow-cyan-950/40 mb-4 backdrop-blur">
+    <div class="flex justify-between items-center mb-2">
+      <div>
+        <span class="text-xs text-cyan-400 tracking-widest font-semibold uppercase">Caçador / Operador</span>
+        <h1 class="text-xl font-bold font-hud tracking-wider text-white">RECRUTA #1103</h1>
+      </div>
+      <div class="text-right">
+        <span class="text-xs text-slate-400 block font-hud">NÍVEL</span>
+        <span id="player-level" class="text-2xl font-black font-hud text-cyan-400">1</span>
+      </div>
+    </div>
+
+    <!-- Barra de XP -->
+    <div class="w-full bg-slate-800 rounded-full h-3.5 border border-cyan-900 overflow-hidden relative mb-1">
+      <div id="xp-bar" class="bg-gradient-to-r from-cyan-600 to-emerald-400 h-full w-0 transition-all duration-500"></div>
+    </div>
+    <div class="flex justify-between text-xs font-hud text-slate-400">
+      <span id="xp-text">0 / 500 XP</span>
+      <span id="rank-badge" class="text-emerald-400 font-bold tracking-wider">RANK E</span>
+    </div>
+  </header>
+
+  <!-- Atributos do Personagem -->
+  <section class="grid grid-cols-3 gap-2 mb-4 font-hud text-center">
+    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+      <span class="text-[10px] text-slate-400 block">FORÇA (STR)</span>
+      <span id="stat-str" class="text-lg font-bold text-rose-400">10</span>
+    </div>
+    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+      <span class="text-[10px] text-slate-400 block">AGILIDADE (AGI)</span>
+      <span id="stat-agi" class="text-lg font-bold text-cyan-400">10</span>
+    </div>
+    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+      <span class="text-[10px] text-slate-400 block">FÔLEGO (END)</span>
+      <span id="stat-end" class="text-lg font-bold text-amber-400">10</span>
+    </div>
+  </section>
+
+  <!-- Painel de Ingestão de Dados (TCX) -->
+  <main class="flex-1 flex flex-col gap-4">
+    <div class="border-2 border-dashed border-cyan-500/50 bg-slate-900/40 rounded-2xl p-6 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[170px]">
+      <input type="file" id="tcx-input" accept=".tcx" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
+      <div class="text-cyan-400 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+      </div>
+      <p class="font-hud font-bold text-sm tracking-wide text-white">SINCRONIZAR ARQUIVO TCX</p>
+      <p class="text-xs text-slate-400 mt-1">Toque para selecionar o arquivo exportado do Zepp</p>
+    </div>
+
+    <!-- Registro da Última Missão Processada -->
+    <div id="mission-card" class="hidden bg-slate-900/90 border border-emerald-500/40 rounded-xl p-4 shadow-md">
+      <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
+        <h2 id="mission-title" class="font-hud text-sm font-bold text-emerald-400">RELATÓRIO DE MISSÃO</h2>
+        <span id="mission-xp" class="font-hud text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">+0 XP</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs font-hud text-slate-300">
+        <div>Distância: <span id="mission-dist" class="text-white font-bold">-</span></div>
+        <div>Tempo: <span id="mission-time" class="text-white font-bold">-</span></div>
+        <div>FC Média: <span id="mission-hr" class="text-white font-bold">-</span></div>
+        <div>Calorias: <span id="mission-cal" class="text-white font-bold">-</span></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Gerenciamento de Estado Local
+    let player = JSON.parse(localStorage.getItem('hero_player')) || {
+      level: 1,
+      xp: 0,
+      maxXp: 500,
+      str: 10,
+      agi: 10,
+      end: 10
+    };
+
+    function updateUI() {
+      document.getElementById('player-level').textContent = player.level;
+      document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+      document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
+      document.getElementById('stat-str').textContent = player.str;
+      document.getElementById('stat-agi').textContent = player.agi;
+      document.getElementById('stat-end').textContent = player.end;
+
+      const rankBadge = document.getElementById('rank-badge');
+      if (player.level >= 20) rankBadge.textContent = 'RANK S';
+      else if (player.level >= 15) rankBadge.textContent = 'RANK A';
+      else if (player.level >= 10) rankBadge.textContent = 'RANK B';
+      else if (player.level >= 5) rankBadge.textContent = 'RANK C';
+      else rankBadge.textContent = 'RANK E';
+
+      localStorage.setItem('hero_player', JSON.stringify(player));
+    }
+
+    function addXP(amount, type) {
+      player.xp += amount;
+      if (type === 'AGI') player.agi += 1;
+      if (type === 'END') player.end += 1;
+      if (type === 'STR') player.str += 1;
+
+      while (player.xp >= player.maxXp) {
+        player.xp -= player.maxXp;
+        player.level += 1;
+        player.maxXp = Math.round(player.maxXp * 1.3);
+      }
+      updateUI();
+    }
+
+    // Leitor e Processador do Arquivo TCX
+    document.getElementById('tcx-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const text = await file.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, "application/xml");
+
+      const lap = xml.querySelector("Lap");
+      const notes = xml.querySelector("Notes")?.textContent || "Missão Reconhecimento";
+
+      const totalSeconds = Number(lap?.querySelector("TotalTimeSeconds")?.textContent || 0);
+      const distanceMeters = Number(lap?.querySelector("DistanceMeters")?.textContent || 0);
+      const calories = Number(lap?.querySelector("Calories")?.textContent || 0);
+      const avgHR = Number(lap?.querySelector("AverageHeartRateBpm Value")?.textContent || 0);
+
+      // Conversão em Regras de Jogo
+      const km = (distanceMeters / 1000).toFixed(2);
+      const min = Math.round(totalSeconds / 60);
+      const xpBase = Math.round((distanceMeters / 1000) * 120 + min * 8);
+      const multiplicador = avgHR > 130 ? 1.25 : 1.0;
+      const xpFinal = Math.round(xpBase * multiplicador);
+
+      // Exibição do Card
+      document.getElementById('mission-title').textContent = notes.toUpperCase();
+      document.getElementById('mission-dist').textContent = `${km} km`;
+      document.getElementById('mission-time').textContent = `${min} min`;
+      document.getElementById('mission-hr').textContent = avgHR ? `${avgHR} bpm` : 'N/A';
+      document.getElementById('mission-cal').textContent = `${calories} kcal`;
+      document.getElementById('mission-xp').textContent = `+${xpFinal} XP`;
+      document.getElementById('mission-card').classList.remove('hidden');
+
+      addXP(xpFinal, distanceMeters > 0 ? 'AGI' : 'END');
+    });
+
+    updateUI();
+  </script>
+</body>
+</html>
