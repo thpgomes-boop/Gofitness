@@ -4,93 +4,209 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Hero Fitness System</title>
-  <!-- Estilos rápidos via Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <!-- MediaPipe Pose para a Câmera IA -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+
   <style>
-    body { font-family: 'Rajdhani', sans-serif; background-color: #0b0f19; }
+    body { font-family: 'Rajdhani', sans-serif; background-color: #080c14; }
     .font-hud { font-family: 'Orbitron', monospace; }
+    .aura-s { animation: pulseAura 2s infinite alternate; }
+    @keyframes pulseAura {
+      0% { filter: drop-shadow(0 0 5px #06b6d4); }
+      100% { filter: drop-shadow(0 0 25px #fbbf24); }
+    }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col p-4 pb-12 select-none">
+<body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24 select-none">
 
-  <!-- Cabeçalho do Jogador / Nível -->
-  <header class="border border-cyan-500/40 bg-slate-900/80 rounded-xl p-4 shadow-lg shadow-cyan-950/40 mb-4 backdrop-blur">
-    <div class="flex justify-between items-center mb-2">
-      <div>
-        <span class="text-xs text-cyan-400 tracking-widest font-semibold uppercase">Caçador / Operador</span>
-        <h1 class="text-xl font-bold font-hud tracking-wider text-white">RECRUTA #1103</h1>
+  <!-- CABEÇALHO DO CAÇADOR / GUERREIRO -->
+  <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-4 shadow-lg shadow-cyan-950/40 mb-3 backdrop-blur">
+    <div class="flex items-center gap-3">
+      <!-- Container do Avatar Estilo Toriyama -->
+      <div id="avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+        <!-- SVG Gerado Dinamicamente do Avatar -->
+        <svg id="avatar-svg" viewBox="0 0 100 100" class="w-full h-full"></svg>
       </div>
-      <div class="text-right">
-        <span class="text-xs text-slate-400 block font-hud">NÍVEL</span>
-        <span id="player-level" class="text-2xl font-black font-hud text-cyan-400">1</span>
-      </div>
-    </div>
 
-    <!-- Barra de XP -->
-    <div class="w-full bg-slate-800 rounded-full h-3.5 border border-cyan-900 overflow-hidden relative mb-1">
-      <div id="xp-bar" class="bg-gradient-to-r from-cyan-600 to-emerald-400 h-full w-0 transition-all duration-500"></div>
-    </div>
-    <div class="flex justify-between text-xs font-hud text-slate-400">
-      <span id="xp-text">0 / 500 XP</span>
-      <span id="rank-badge" class="text-emerald-400 font-bold tracking-wider">RANK E</span>
+      <div class="flex-1">
+        <div class="flex justify-between items-start">
+          <div>
+            <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest uppercase block">GUERREIRO RANK E</span>
+            <h1 class="text-lg font-bold font-hud text-white leading-tight">THIAGO</h1>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 block font-hud">NÍVEL</span>
+            <span id="player-level" class="text-2xl font-black font-hud text-cyan-400 leading-none">1</span>
+          </div>
+        </div>
+
+        <!-- Barra de Experiência -->
+        <div class="w-full bg-slate-950 rounded-full h-3 border border-cyan-900/80 overflow-hidden mt-2 relative">
+          <div id="xp-bar" class="bg-gradient-to-r from-cyan-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <div class="flex justify-between text-[11px] font-hud text-slate-400 mt-1">
+          <span id="xp-text">0 / 500 XP</span>
+          <span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA</span>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Atributos do Personagem -->
-  <section class="grid grid-cols-3 gap-2 mb-4 font-hud text-center">
-    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+  <!-- PAINEL DE ATRIBUTOS TÁTICOS -->
+  <section class="grid grid-cols-3 gap-2 mb-3 font-hud text-center">
+    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
       <span class="text-[10px] text-slate-400 block">FORÇA (STR)</span>
       <span id="stat-str" class="text-lg font-bold text-rose-400">10</span>
     </div>
-    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
       <span class="text-[10px] text-slate-400 block">AGILIDADE (AGI)</span>
       <span id="stat-agi" class="text-lg font-bold text-cyan-400">10</span>
     </div>
-    <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg">
+    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
       <span class="text-[10px] text-slate-400 block">FÔLEGO (END)</span>
-      <span id="stat-end" class="text-lg font-bold text-amber-400">10</span>
+      <span id="stat-end" class="text-lg font-bold text-emerald-400">10</span>
     </div>
   </section>
 
-  <!-- Painel de Ingestão de Dados (TCX) -->
-  <main class="flex-1 flex flex-col gap-4">
-    <div class="border-2 border-dashed border-cyan-500/50 bg-slate-900/40 rounded-2xl p-6 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[170px]">
-      <input type="file" id="tcx-input" accept=".tcx" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
-      <div class="text-cyan-400 mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+  <!-- CORPO PRINCIPAL COM NAVEGAÇÃO DE ABAS -->
+  <main class="flex-1 flex flex-col">
+
+    <!-- ABA 1: CENTRAL DE MISSÕES (TCX & CALISTENIA) -->
+    <div id="tab-missions" class="tab-content flex flex-col gap-3">
+      <!-- Input de TCX -->
+      <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-5 text-center relative overflow-hidden flex flex-col items-center justify-center">
+        <input type="file" id="tcx-input" accept=".tcx" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
+        <p class="font-hud font-bold text-xs tracking-wider text-white">IMPORTAR DADOS ZEPP (TCX)</p>
+        <p class="text-[11px] text-slate-400 mt-0.5">Corrida, Caminhada, Ciclismo ou Natação</p>
       </div>
-      <p class="font-hud font-bold text-sm tracking-wide text-white">SINCRONIZAR ARQUIVO TCX</p>
-      <p class="text-xs text-slate-400 mt-1">Toque para selecionar o arquivo exportado do Zepp</p>
+
+      <!-- Registro Rápido de Calistenia (Grease the Groove) -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
+        <span class="text-xs font-hud text-slate-400 block mb-2">MICRO-TREINO TÁTICO RÁPIDO</span>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="logQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/40 text-xs font-hud p-2.5 rounded-xl text-rose-300 transition">
+            +20 FLEXÕES
+          </button>
+          <button onclick="logQuickRep('Barras', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/40 text-xs font-hud p-2.5 rounded-xl text-rose-300 transition">
+            +5 BARRAS FIXAS
+          </button>
+        </div>
+      </div>
+
+      <!-- Histórico de Missões -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex-1">
+        <span class="text-xs font-hud text-slate-400 block mb-2">RELATÓRIO RECENTE DE COMBATE</span>
+        <div id="mission-history" class="flex flex-col gap-2 max-h-48 overflow-y-auto">
+          <!-- Inserido dinamicamente -->
+          <p class="text-xs text-slate-500 text-center py-4">Nenhuma missão sincronizada hoje.</p>
+        </div>
+      </div>
     </div>
 
-    <!-- Registro da Última Missão Processada -->
-    <div id="mission-card" class="hidden bg-slate-900/90 border border-emerald-500/40 rounded-xl p-4 shadow-md">
-      <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
-        <h2 id="mission-title" class="font-hud text-sm font-bold text-emerald-400">RELATÓRIO DE MISSÃO</h2>
-        <span id="mission-xp" class="font-hud text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">+0 XP</span>
+    <!-- ABA 2: CÂMERA DE TREINAMENTO (IA VISION) -->
+    <div id="tab-camera" class="tab-content hidden flex-col gap-2 flex-1">
+      <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-cyan-500/40 flex items-center justify-center">
+        <video id="webcam" class="w-full h-full object-cover mirror" playsinline autoplay muted></video>
+        <canvas id="output-canvas" class="absolute inset-0 w-full h-full"></canvas>
+        <div id="cam-counter-hud" class="absolute top-2 right-2 bg-slate-900/80 border border-cyan-400 px-3 py-1 rounded-xl text-center">
+          <span class="text-[9px] text-slate-400 block font-hud">FLEXÕES</span>
+          <span id="cam-reps" class="text-2xl font-black font-hud text-cyan-400">0</span>
+        </div>
       </div>
-      <div class="grid grid-cols-2 gap-2 text-xs font-hud text-slate-300">
-        <div>Distância: <span id="mission-dist" class="text-white font-bold">-</span></div>
-        <div>Tempo: <span id="mission-time" class="text-white font-bold">-</span></div>
-        <div>FC Média: <span id="mission-hr" class="text-white font-bold">-</span></div>
-        <div>Calorias: <span id="mission-cal" class="text-white font-bold">-</span></div>
+      <div class="flex gap-2">
+        <button id="btn-toggle-cam" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-hud text-xs py-3 rounded-xl transition">
+          INICIAR SENSOR ÓPTICO
+        </button>
+        <button id="btn-finish-cam" class="bg-emerald-600 hover:bg-emerald-500 text-white font-hud text-xs px-4 py-3 rounded-xl transition hidden">
+          SALVAR
+        </button>
       </div>
     </div>
   </main>
 
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50">
+    <button onclick="switchTab('missions')" id="nav-btn-missions" class="flex flex-col items-center text-cyan-400 font-hud text-[10px]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      MISSÕES
+    </button>
+    <button onclick="switchTab('camera')" id="nav-btn-camera" class="flex flex-col items-center text-slate-500 font-hud text-[10px]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+      IA CÂMERA
+    </button>
+  </nav>
+
   <script>
-    // Gerenciamento de Estado Local
-    let player = JSON.parse(localStorage.getItem('hero_player')) || {
+    // ESTADO PERSISTENTE DO GUERREIRO
+    let player = JSON.parse(localStorage.getItem('hero_player_v2')) || {
       level: 1,
       xp: 0,
       maxXp: 500,
       str: 10,
       agi: 10,
-      end: 10
+      end: 10,
+      streak: 1,
+      history: []
     };
+
+    // RENDERIZADOR DO AVATAR ESTILO AKIRA TORIYAMA (SVG COM PROGRESSÃO CORPORAL)
+    function renderToriyamaAvatar() {
+      const svg = document.getElementById('avatar-svg');
+      const container = document.getElementById('avatar-container');
+      const lvl = player.level;
+
+      // Largura dos ombros e peitoral escala com o nível
+      const shoulderWidth = Math.min(46, 28 + (lvl * 0.9));
+      const trapHeight = Math.min(22, 10 + (lvl * 0.6));
+      const chestBreadth = Math.min(40, 26 + (lvl * 0.7));
+      const hasAura = lvl >= 20;
+
+      container.className = `relative w-20 h-20 bg-slate-950 border-2 ${lvl >= 20 ? 'border-amber-400 aura-s' : 'border-cyan-400'} rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner`;
+
+      svg.innerHTML = `
+        <!-- Fundo com linhas de ação anime -->
+        <rect width="100" height="100" fill="#0f172a" />
+        <path d="M 50 50 L 0 0 M 50 50 L 100 0 M 50 50 L 0 100 M 50 50 L 100 100" stroke="#1e293b" stroke-width="1.5" />
+
+        <!-- Aura Saiyajin (se Rank S) -->
+        ${hasAura ? '<circle cx="50" cy="55" r="38" fill="none" stroke="#fbbf24" stroke-width="4" opacity="0.6" stroke-dasharray="6,4" />' : ''}
+
+        <!-- Trapézios e Ombros Musculosos (Traço grosso Toriyama) -->
+        <path d="M ${50 - shoulderWidth} 95 L ${50 - trapHeight} 58 L ${50 + trapHeight} 58 L ${50 + shoulderWidth} 95 Z" 
+              fill="#d97706" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+        
+        <!-- Detalhes do Peitoral Definido -->
+        <path d="M 50 62 L 50 85 M ${50 - chestBreadth/2} 75 C 50 85, 50 85, ${50 + chestBreadth/2} 75" 
+              stroke="#000" stroke-width="2.5" fill="none" />
+
+        <!-- Gola do Kimono Tático / Faixa de Combate -->
+        <path d="M ${50 - trapHeight - 2} 58 L 50 80 L ${50 + trapHeight + 2} 58" 
+              stroke="#0284c7" stroke-width="4" fill="none" />
+
+        <!-- Cabeça / Queixo Anguloso clássico Toriyama -->
+        <polygon points="36,36 50,56 64,36 62,28 38,28" 
+                 fill="#fed7aa" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+
+        <!-- Olhos e Expressão Determinada -->
+        <path d="M 40 40 L 47 42 M 60 40 L 53 42" stroke="#000" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="42,42 46,43 44,45" fill="#000" />
+        <polygon points="58,42 54,43 56,45" fill="#000" />
+
+        <!-- Cabelo Espetado Toriyama com Contornos Fortes -->
+        <polygon points="30,30 20,16 35,20 38,8 50,18 60,6 63,20 78,14 68,32 75,34 66,40 34,40 26,34" 
+                 fill="#1e293b" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+      `;
+    }
 
     function updateUI() {
       document.getElementById('player-level').textContent = player.level;
@@ -99,22 +215,25 @@
       document.getElementById('stat-str').textContent = player.str;
       document.getElementById('stat-agi').textContent = player.agi;
       document.getElementById('stat-end').textContent = player.end;
+      document.getElementById('streak-text').textContent = `🔥 ${player.streak} DIAS`;
 
-      const rankBadge = document.getElementById('rank-badge');
-      if (player.level >= 20) rankBadge.textContent = 'RANK S';
-      else if (player.level >= 15) rankBadge.textContent = 'RANK A';
-      else if (player.level >= 10) rankBadge.textContent = 'RANK B';
-      else if (player.level >= 5) rankBadge.textContent = 'RANK C';
-      else rankBadge.textContent = 'RANK E';
+      const rankTitle = document.getElementById('rank-title');
+      if (player.level >= 20) rankTitle.textContent = 'MESTRE SUPREMO - RANK S';
+      else if (player.level >= 15) rankTitle.textContent = 'VETERANO ELITE - RANK A';
+      else if (player.level >= 10) rankTitle.textContent = 'COMANDANTE TÁTICO - RANK B';
+      else if (player.level >= 5) rankTitle.textContent = 'SOLDADO DE COMBATE - RANK C';
+      else rankTitle.textContent = 'RECRUTA - RANK E';
 
-      localStorage.setItem('hero_player', JSON.stringify(player));
+      renderToriyamaAvatar();
+      renderHistory();
+      localStorage.setItem('hero_player_v2', JSON.stringify(player));
     }
 
     function addXP(amount, type) {
       player.xp += amount;
+      if (type === 'STR') player.str += 1;
       if (type === 'AGI') player.agi += 1;
       if (type === 'END') player.end += 1;
-      if (type === 'STR') player.str += 1;
 
       while (player.xp >= player.maxXp) {
         player.xp -= player.maxXp;
@@ -124,40 +243,180 @@
       updateUI();
     }
 
-    // Leitor e Processador do Arquivo TCX
+    function renderHistory() {
+      const container = document.getElementById('mission-history');
+      if (!player.history.length) return;
+      container.innerHTML = player.history.map(m => `
+        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-hud font-bold text-white block">${m.nome}</span>
+            <span class="text-[10px] text-slate-400">${m.detalhes}</span>
+          </div>
+          <span class="font-hud text-emerald-400 font-bold">+${m.xp} XP</span>
+        </div>
+      `).join('');
+    }
+
+    // REGISTRO DE SÉRIE RÁPIDA DE CALISTENIA
+    function logQuickRep(nome, reps, stat) {
+      const xp = reps * 3;
+      addXP(xp, stat);
+      player.history.unshift({
+        nome: `Série Rápida: ${nome}`,
+        detalhes: `${reps} reps validadas`,
+        xp: xp
+      });
+      if (player.history.length > 10) player.history.pop();
+      updateUI();
+    }
+
+    // LEITOR INTELIGENTE DE TCX ZEPP
     document.getElementById('tcx-input').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
       const text = await file.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(text, "application/xml");
+      const xml = new DOMParser().parseFromString(text, "application/xml");
 
       const lap = xml.querySelector("Lap");
-      const notes = xml.querySelector("Notes")?.textContent || "Missão Reconhecimento";
+      const activity = xml.querySelector("Activity");
+      const sportAttr = activity?.getAttribute("Sport") || "Other";
+      const notes = xml.querySelector("Notes")?.textContent || sportAttr;
 
-      const totalSeconds = Number(lap?.querySelector("TotalTimeSeconds")?.textContent || 0);
-      const distanceMeters = Number(lap?.querySelector("DistanceMeters")?.textContent || 0);
+      const totalSec = Number(lap?.querySelector("TotalTimeSeconds")?.textContent || 0);
+      const meters = Number(lap?.querySelector("DistanceMeters")?.textContent || 0);
       const calories = Number(lap?.querySelector("Calories")?.textContent || 0);
       const avgHR = Number(lap?.querySelector("AverageHeartRateBpm Value")?.textContent || 0);
 
-      // Conversão em Regras de Jogo
-      const km = (distanceMeters / 1000).toFixed(2);
-      const min = Math.round(totalSeconds / 60);
-      const xpBase = Math.round((distanceMeters / 1000) * 120 + min * 8);
-      const multiplicador = avgHR > 130 ? 1.25 : 1.0;
-      const xpFinal = Math.round(xpBase * multiplicador);
+      const km = (meters / 1000).toFixed(2);
+      const min = Math.round(totalSec / 60);
 
-      // Exibição do Card
-      document.getElementById('mission-title').textContent = notes.toUpperCase();
-      document.getElementById('mission-dist').textContent = `${km} km`;
-      document.getElementById('mission-time').textContent = `${min} min`;
-      document.getElementById('mission-hr').textContent = avgHR ? `${avgHR} bpm` : 'N/A';
-      document.getElementById('mission-cal').textContent = `${calories} kcal`;
-      document.getElementById('mission-xp').textContent = `+${xpFinal} XP`;
-      document.getElementById('mission-card').classList.remove('hidden');
+      // Determinação de foco
+      let foco = 'END';
+      if (meters > 0 && min > 0 && (meters / totalSec) > 2.5) foco = 'AGI'; // Corrida/Pedal veloz
+      if (notes.toLowerCase().includes('natação')) foco = 'STR';
 
-      addXP(xpFinal, distanceMeters > 0 ? 'AGI' : 'END');
+      const xpBase = Math.round((meters / 1000) * 110 + min * 8 + calories * 0.2);
+      const mult = avgHR > 140 ? 1.3 : 1.0;
+      const xpTotal = Math.round(xpBase * mult);
+
+      addXP(xpTotal, foco);
+
+      player.history.unshift({
+        nome: notes.toUpperCase(),
+        detalhes: `${km} km • ${min} min • ${avgHR ? avgHR + ' bpm' : calories + ' kcal'}`,
+        xp: xpTotal
+      });
+      if (player.history.length > 10) player.history.pop();
+      updateUI();
+    });
+
+    // SISTEMA DE ABAS
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('nav-btn-missions').classList.replace('text-cyan-400', 'text-slate-500');
+      document.getElementById('nav-btn-camera').classList.replace('text-cyan-400', 'text-slate-500');
+
+      if (tab === 'missions') {
+        document.getElementById('tab-missions').classList.remove('hidden');
+        document.getElementById('nav-btn-missions').classList.replace('text-slate-500', 'text-cyan-400');
+      } else {
+        document.getElementById('tab-camera').classList.remove('hidden');
+        document.getElementById('nav-btn-camera').classList.replace('text-slate-500', 'text-cyan-400');
+      }
+    }
+
+    // MOTOR DE VISÃO COMPUTACIONAL (MEDIAPIPE PUSH-UPS)
+    let camera = null;
+    let pushUpState = 'UP';
+    let repsCount = 0;
+
+    function findAngle(A, B, C) {
+      const radians = Math.atan2(C.y - B.y, C.x - B.x) - Math.atan2(A.y - B.y, A.x - B.x);
+      let angle = Math.abs((radians * 180.0) / Math.PI);
+      if (angle > 180.0) angle = 360 - angle;
+      return angle;
+    }
+
+    const videoElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('output-canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+
+    const pose = new Pose({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+    });
+
+    pose.setOptions({
+      modelComplexity: 1,
+      smoothLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+
+    pose.onResults((results) => {
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      if (!results.poseLandmarks) return;
+
+      const lm = results.poseLandmarks;
+      // Cotovelo esquerdo (11 = ombro, 13 = cotovelo, 15 = pulso)
+      const shoulder = lm[11];
+      const elbow = lm[13];
+      const wrist = lm[15];
+
+      if (shoulder && elbow && wrist) {
+        const elbowAngle = findAngle(shoulder, elbow, wrist);
+
+        if (elbowAngle < 90 && pushUpState === 'UP') {
+          pushUpState = 'DOWN';
+        }
+        if (elbowAngle > 160 && pushUpState === 'DOWN') {
+          pushUpState = 'UP';
+          repsCount++;
+          document.getElementById('cam-reps').textContent = repsCount;
+        }
+      }
+    });
+
+    document.getElementById('btn-toggle-cam').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-toggle-cam');
+      const btnFinish = document.getElementById('btn-finish-cam');
+
+      if (!camera) {
+        camera = new Camera(videoElement, {
+          onFrame: async () => {
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+            await pose.send({ image: videoElement });
+          },
+          width: 480,
+          height: 360
+        });
+        await camera.start();
+        btn.textContent = 'PAUSAR SENSOR';
+        btn.classList.replace('bg-cyan-600', 'bg-slate-700');
+        btnFinish.classList.remove('hidden');
+      } else {
+        camera.stop();
+        camera = null;
+        btn.textContent = 'RETOMAR SENSOR';
+        btn.classList.replace('bg-slate-700', 'bg-cyan-600');
+      }
+    });
+
+    document.getElementById('btn-finish-cam').addEventListener('click', () => {
+      if (repsCount > 0) {
+        logQuickRep('Flexões Ópticas (IA)', repsCount, 'STR');
+      }
+      repsCount = 0;
+      document.getElementById('cam-reps').textContent = '0';
+      if (camera) {
+        camera.stop();
+        camera = null;
+      }
+      document.getElementById('btn-toggle-cam').textContent = 'INICIAR SENSOR ÓPTICO';
+      document.getElementById('btn-toggle-cam').classList.replace('bg-slate-700', 'bg-cyan-600');
+      document.getElementById('btn-finish-cam').classList.add('hidden');
+      switchTab('missions');
     });
 
     updateUI();
