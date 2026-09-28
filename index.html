@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,9 +26,75 @@
     NOTIFICAÇÃO
   </div>
 
+  <!-- MODAL DO EXAME DE APTIDÃO (TESTE FÍSICO INICIAL / REAVALIAÇÃO) -->
+  <div id="exam-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto custom-scroll shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <h2 class="font-hud font-bold text-sm text-cyan-400">EXAME DE APTIDÃO FÍSICA</h2>
+          <span class="text-[10px] text-slate-400">Calibração do Scouter de Combate</span>
+        </div>
+        <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white font-hud text-lg px-2">✕</button>
+      </div>
+
+      <p class="text-[11px] text-slate-300 mb-3 leading-relaxed">
+        Preencha com os seus recordes atuais. Isso recalculará a sua base de atributos e o seu Poder de Luta.
+      </p>
+
+      <div class="flex flex-col gap-2.5 text-xs font-hud">
+        <!-- FORÇA -->
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-rose-950/60">
+          <span class="text-rose-400 font-bold block text-[10px] mb-1">POTÊNCIA SUPERIOR (FOR)</span>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[9px] text-slate-400 block">FLEXÕES MÁX.:</label>
+              <input type="number" id="exam-pushups" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-rose-400" placeholder="Ex: 35" />
+            </div>
+            <div>
+              <label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label>
+              <input type="number" id="exam-pullups" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-rose-400" placeholder="Ex: 8" />
+            </div>
+          </div>
+        </div>
+
+        <!-- CONSTITUIÇÃO -->
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-amber-950/60">
+          <span class="text-amber-400 font-bold block text-[10px] mb-1">CORE & SUSTENTAÇÃO (CON)</span>
+          <div>
+            <label class="text-[9px] text-slate-400 block">ABDOMINAIS EM 1 MINUTO (OU MÁX.):</label>
+            <input type="number" id="exam-abs" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-amber-400" placeholder="Ex: 40" />
+          </div>
+        </div>
+
+        <!-- AGILIDADE -->
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-cyan-950/60">
+          <span class="text-cyan-400 font-bold block text-[10px] mb-1">TIRO / VELOCIDADE (AGI)</span>
+          <div>
+            <label class="text-[9px] text-slate-400 block">DISTÂNCIA EM 10 MIN (KM):</label>
+            <input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-cyan-400" placeholder="Ex: 1.8" />
+          </div>
+        </div>
+
+        <!-- FÔLEGO -->
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-emerald-950/60">
+          <span class="text-emerald-400 font-bold block text-[10px] mb-1">VOLUME CONTÍNUO (END)</span>
+          <div>
+            <label class="text-[9px] text-slate-400 block">MAIOR CORRIDA CONTÍNUA (KM):</label>
+            <input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-emerald-400" placeholder="Ex: 5.0" />
+          </div>
+        </div>
+
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-cyan-600 to-amber-500 hover:from-cyan-500 hover:to-amber-400 text-white font-hud font-bold text-xs py-2.5 rounded-xl shadow-lg mt-1 active:scale-95 transition">
+          SALVAR EXAME & CALCULAR PODER
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- CABEÇALHO DO GUERREIRO -->
   <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg shadow-cyan-950/40 mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
+      <!-- Avatar Toriyama -->
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
         <svg id="avatar-svg" viewBox="0 0 100 100" class="w-full h-full"></svg>
       </div>
@@ -39,7 +104,11 @@
           <div>
             <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest uppercase block">RECRUTA E1</span>
             <h1 class="text-lg font-bold font-hud text-white leading-tight">THIAGO</h1>
-            <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud mt-0.5 inline-block">IMC 31.3 • COLOSSO</span>
+            <!-- SCOUTER DE PODER DE LUTA -->
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud inline-block">IMC 31.3 • COLOSSO</span>
+              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-hud inline-block font-bold">⚡ PODER: 1.150</span>
+            </div>
           </div>
           <div class="text-right">
             <span class="text-[9px] text-slate-400 block font-hud">RANK</span>
@@ -75,19 +144,31 @@
     </button>
   </section>
 
-  <!-- ATRIBUTOS TÁTICOS -->
-  <section class="grid grid-cols-3 gap-2 mb-3 font-hud text-center">
-    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
-      <span class="text-[10px] text-slate-400 block">FORÇA (STR)</span>
-      <span id="stat-str" class="text-lg font-bold text-rose-400">10</span>
+  <!-- ATRIBUTOS TÁTICOS (4 ATRIBUTOS: FOR, CON, AGI, END) -->
+  <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
+    <div class="flex justify-between items-center mb-2 px-1">
+      <span class="text-[10px] font-hud text-slate-400">ATRIBUTOS DE COMBATE</span>
+      <button type="button" onclick="openExamModal()" class="text-[10px] font-hud bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg transition cursor-pointer">
+        ⚙️ EXAME FÍSICO
+      </button>
     </div>
-    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
-      <span class="text-[10px] text-slate-400 block">AGILIDADE (AGI)</span>
-      <span id="stat-agi" class="text-lg font-bold text-cyan-400">10</span>
-    </div>
-    <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl">
-      <span class="text-[10px] text-slate-400 block">FÔLEGO (END)</span>
-      <span id="stat-end" class="text-lg font-bold text-emerald-400">10</span>
+    <div class="grid grid-cols-4 gap-1.5 font-hud text-center">
+      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block leading-tight">FORÇA</span>
+        <span id="stat-str" class="text-base font-bold text-rose-400">10</span>
+      </div>
+      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block leading-tight">BLIND.</span>
+        <span id="stat-con" class="text-base font-bold text-amber-400">10</span>
+      </div>
+      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block leading-tight">AGIL.</span>
+        <span id="stat-agi" class="text-base font-bold text-cyan-400">10</span>
+      </div>
+      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block leading-tight">FÔLEGO</span>
+        <span id="stat-end" class="text-base font-bold text-emerald-400">10</span>
+      </div>
     </div>
   </section>
 
@@ -97,7 +178,7 @@
     <!-- ABA 1: MISSÕES -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- PROTOCOLO SPARKS (4 SESSÕES DIÁRIAS DE CALISTENIA) -->
+      <!-- PROTOCOLO SPARKS (4 SESSÕES DIÁRIAS) -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-2">
           <div>
@@ -108,10 +189,7 @@
             0/4 CUMPRIDAS
           </span>
         </div>
-
-        <div class="grid grid-cols-2 gap-2 mt-2" id="sparks-slots-container">
-          <!-- Gerado dinamicamente -->
-        </div>
+        <div class="grid grid-cols-2 gap-2 mt-2" id="sparks-slots-container"></div>
       </div>
 
       <!-- Ordens do Dia (Quests) -->
@@ -138,14 +216,47 @@
         </div>
       </div>
 
+      <!-- Séries Rápidas Táticas -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
+        <span class="text-xs font-hud text-slate-400 block mb-2">MICRO-TREINO TÁTICO RÁPIDO</span>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button type="button" onclick="handleQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/40 text-[10px] font-hud p-2 rounded-xl text-rose-300 transition cursor-pointer">
+            +20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FOR)</span>
+          </button>
+          <button type="button" onclick="handleQuickRep('Barras Fixas', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/40 text-[10px] font-hud p-2 rounded-xl text-rose-300 transition cursor-pointer">
+            +5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span>
+          </button>
+          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-amber-500/40 text-[10px] font-hud p-2 rounded-xl text-amber-300 transition cursor-pointer">
+            +30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Sincronização TCX / GPX -->
-      <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-5 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer">
+      <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer">
         <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        <p class="font-hud font-bold text-xs tracking-wider text-white">IMPORTAR TREINO (.TCX OU .GPX)</p>
-        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5">Selecione o arquivo de 729 KB (TCX) ou 50 KB (GPX)</p>
+        <p class="font-hud font-bold text-xs tracking-wider text-white">IMPORTAR TREINO ZEPP (.TCX OU .GPX)</p>
+        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5">Corrida, Caminhada, Pilates, Treino Livre ou HIIT</p>
+      </div>
+
+      <!-- Módulo de Backup Local -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+        <div>
+          <span class="text-xs font-hud font-bold text-white block">SALVAGUARDA DE DADOS</span>
+          <span class="text-[10px] text-slate-400">Proteja seu progresso e XP</span>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="exportBackupData()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/40 font-hud text-[10px] px-2.5 py-1.5 rounded-lg transition cursor-pointer">
+            EXPORTAR
+          </button>
+          <label class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40 font-hud text-[10px] px-2.5 py-1.5 rounded-lg transition cursor-pointer flex items-center">
+            RESTAURAR
+            <input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" />
+          </label>
+        </div>
       </div>
     </div>
 
@@ -174,7 +285,7 @@
           <span id="calendar-month-year" class="font-hud text-sm font-bold text-white uppercase">SETEMBRO 2026</span>
           <div class="flex gap-2 text-xs font-hud">
             <span class="flex items-center gap-1 text-[10px] text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> AERÓBICO</span>
-            <span class="flex items-center gap-1 text-[10px] text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> CALISTENIA</span>
+            <span class="flex items-center gap-1 text-[10px] text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> FORÇA</span>
           </div>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center font-hud text-[10px] text-slate-400 mb-2">
@@ -252,16 +363,25 @@
 
     const todayStr = new Date().toDateString();
 
+    // ESTADO COMPLETO DO JOGADOR (COM 4 ATRIBUTOS & EXAME)
     let player = {
       level: 1,
       xp: 0,
       maxXp: 400,
-      str: 10,
-      agi: 10,
-      end: 10,
+      str: 10, // Força (membros superiores)
+      con: 10, // Blindagem (core, abdômen, Pilates)
+      agi: 10, // Agilidade (tiro 10 min, HIIT)
+      end: 10, // Fôlego (marcha contínua)
       weight: 96.0,
       heightCm: 175,
       streak: 1,
+      examBenchmark: {
+        pushups: 20,
+        pullups: 3,
+        abs: 25,
+        run10m: 1.5,
+        runMax: 3.0
+      },
       sparksRoutine: {
         date: todayStr,
         slots: [false, false, false, false]
@@ -271,11 +391,15 @@
     };
 
     try {
-      const saved = localStorage.getItem('hero_player_v11');
+      const saved = localStorage.getItem('hero_player_v13');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed === 'object') {
           player = Object.assign(player, parsed);
+          if (typeof player.con === 'undefined') player.con = 10;
+          if (!player.examBenchmark) {
+            player.examBenchmark = { pushups: 20, pullups: 3, abs: 25, run10m: 1.5, runMax: 3.0 };
+          }
           if (!player.sparksRoutine || player.sparksRoutine.date !== todayStr) {
             player.sparksRoutine = { date: todayStr, slots: [false, false, false, false] };
           }
@@ -298,7 +422,64 @@
       "SUPREMO (RANK S)"
     ];
 
-    // GESTÃO DOS 4 SLOTS DO PROTOCOLO SPARKS
+    // CÁLCULO DO SCOUTER (PODER DE LUTA BASEADO NOS 4 ATRIBUTOS)
+    function calculateCombatPower() {
+      const s = player.str || 10;
+      const c = player.con || 10;
+      const a = player.agi || 10;
+      const e = player.end || 10;
+      const lvl = player.level || 1;
+      const streak = player.streak || 1;
+
+      const basePower = (s * 20) + (c * 20) + (a * 25) + (e * 20);
+      return Math.round(basePower + (lvl * 110) + (streak * 35) + ((player.xp || 0) * 0.15));
+    }
+
+    // EXAME DE APTIDÃO FÍSICA (MODAL)
+    function openExamModal() {
+      const b = player.examBenchmark || { pushups: 20, pullups: 3, abs: 25, run10m: 1.5, runMax: 3.0 };
+      document.getElementById('exam-pushups').value = b.pushups;
+      document.getElementById('exam-pullups').value = b.pullups;
+      document.getElementById('exam-abs').value = b.abs;
+      document.getElementById('exam-run10m').value = b.run10m;
+      document.getElementById('exam-runmax').value = b.runMax;
+      document.getElementById('exam-modal').classList.remove('hidden');
+    }
+
+    function closeExamModal() {
+      document.getElementById('exam-modal').classList.add('hidden');
+    }
+
+    function saveExamTrial() {
+      const p = Math.max(0, parseInt(document.getElementById('exam-pushups').value) || 0);
+      const b = Math.max(0, parseInt(document.getElementById('exam-pullups').value) || 0);
+      const abs = Math.max(0, parseInt(document.getElementById('exam-abs').value) || 0);
+      const r10 = Math.max(0.1, parseFloat(document.getElementById('exam-run10m').value) || 1.0);
+      const rmax = Math.max(0.5, parseFloat(document.getElementById('exam-runmax').value) || 1.0);
+
+      player.examBenchmark = { pushups: p, pullups: b, abs: abs, run10m: r10, runMax: rmax };
+
+      // Conversão dos testes nos 4 atributos base (mínimo de 10)
+      player.str = Math.max(10, Math.round(p * 0.8 + (b * 3.5)));
+      player.con = Math.max(10, Math.round(abs * 0.7));
+      player.agi = Math.max(10, Math.round(r10 * 18));
+      player.end = Math.max(10, Math.round(rmax * 4.5));
+
+      addXP(50, null);
+      player.history.unshift({
+        nome: "EXAME DE APTIDÃO CONCLUÍDO",
+        detalhes: `FOR ${player.str} • CON ${player.con} • AGI ${player.agi} • END ${player.end}`,
+        tipo: "forca",
+        data: new Date().toISOString(),
+        xp: 50
+      });
+
+      closeExamModal();
+      updateUI();
+      showToast(`EXAME CONCLUÍDO! PODER RECIBADO: ${calculateCombatPower()}`);
+    }
+
+    // PROTOCOLO SPARKS
     function renderSparksRoutine() {
       const container = document.getElementById('sparks-slots-container');
       const counterEl = document.getElementById('sparks-counter');
@@ -334,23 +515,23 @@
       player.sparksRoutine.slots[index] = !currentState;
 
       if (!currentState) {
-        // Marcou como feito
-        addXP(25, 'STR');
+        // Alterna entre FOR e CON nas sessões de calistenia
+        const statGain = (index % 2 === 0) ? 'STR' : 'CON';
+        addXP(25, statGain);
         player.history.unshift({
           nome: `Sparks: Sessão 0${index + 1}`,
-          detalhes: "Micro-treino de calistenia validado",
+          detalhes: `Micro-sessão de calistenia (+1 ${statGain})`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 25
         });
 
-        // Bônus se completar todos os 4 no mesmo dia
         const allDone = player.sparksRoutine.slots.every(Boolean);
         if (allDone) {
-          addXP(50, 'STR');
+          addXP(50, 'CON');
           showToast("PROTOCOLO 4/4 COMPLETO! BÔNUS DE +50 XP");
         } else {
-          showToast(`Sessão 0${index + 1} Concluída! (+25 XP e +1 FOR)`);
+          showToast(`Sessão 0${index + 1} Concluída! (+25 XP e +1 ${statGain})`);
         }
       } else {
         showToast(`Sessão 0${index + 1} desmarcada.`, false);
@@ -408,6 +589,7 @@
 
       document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imcLabel}`;
       document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
+      document.getElementById('combat-power-badge').textContent = `⚡ PODER: ${calculateCombatPower().toLocaleString('pt-BR')}`;
 
       const isHighRank = lvl >= 13;
       const isRankS = lvl === 20;
@@ -597,9 +779,13 @@
         document.getElementById('player-level').textContent = player.level;
         document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
         document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
-        document.getElementById('stat-str').textContent = player.str;
-        document.getElementById('stat-agi').textContent = player.agi;
-        document.getElementById('stat-end').textContent = player.end;
+        
+        // Exibição dos 4 Atributos
+        document.getElementById('stat-str').textContent = player.str || 10;
+        document.getElementById('stat-con').textContent = player.con || 10;
+        document.getElementById('stat-agi').textContent = player.agi || 10;
+        document.getElementById('stat-end').textContent = player.end || 10;
+
         document.getElementById('streak-text').textContent = `🔥 ${player.streak} DIAS`;
 
         document.getElementById('input-height').value = player.heightCm;
@@ -611,7 +797,7 @@
         renderWeightModule();
         checkQuests();
 
-        localStorage.setItem('hero_player_v11', JSON.stringify(player));
+        localStorage.setItem('hero_player_v13', JSON.stringify(player));
       } catch (err) {
         console.error("Erro na UI:", err);
       }
@@ -619,9 +805,10 @@
 
     function addXP(amount, type) {
       player.xp += amount;
-      if (type === 'STR') player.str += 1;
-      if (type === 'AGI') player.agi += 1;
-      if (type === 'END') player.end += 1;
+      if (type === 'STR') player.str = (player.str || 10) + 1;
+      if (type === 'CON') player.con = (player.con || 10) + 1;
+      if (type === 'AGI') player.agi = (player.agi || 10) + 1;
+      if (type === 'END') player.end = (player.end || 10) + 1;
 
       while (player.xp >= player.maxXp && player.level < 20) {
         player.xp -= player.maxXp;
@@ -655,7 +842,58 @@
       if (statusEl) statusEl.textContent = `${count}/2 CONCLUÍDAS`;
     }
 
-    // LEITOR TCX / GPX
+    function handleQuickRep(nome, reps, stat) {
+      const xp = reps * 3;
+      addXP(xp, stat);
+      player.history.unshift({
+        nome: `Calistenia: ${nome}`,
+        detalhes: `${reps} reps validadas (+1 ${stat})`,
+        tipo: 'forca',
+        data: new Date().toISOString(),
+        xp: xp
+      });
+      if (player.history.length > 30) player.history.pop();
+      updateUI();
+      showToast(`+${reps} ${nome} registradas (+${xp} XP e +1 ${stat})`);
+    }
+
+    // EXPORTAR E RESTAURAR BACKUP
+    function exportBackupData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(player, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `hero_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("Backup gerado e baixado com sucesso!");
+    }
+
+    function importBackupData(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && typeof imported.level === 'number') {
+            player = Object.assign(player, imported);
+            if (typeof player.con === 'undefined') player.con = 10;
+            localStorage.setItem('hero_player_v13', JSON.stringify(player));
+            updateUI();
+            showToast("Dados do Guerreiro Restaurados com Sucesso!");
+          } else {
+            showToast("Arquivo de backup inválido!", false);
+          }
+        } catch (err) {
+          showToast("Erro ao processar JSON de backup.", false);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // LEITOR UNIVERSAL INTELIGENTE (MAPEIA OS 4 ATRIBUTOS)
     document.getElementById('tcx-input').addEventListener('change', function(e) {
       const file = e.target.files && e.target.files[0];
       const statusMsg = document.getElementById('tcx-status-msg');
@@ -684,7 +922,8 @@
             const lap = laps[0];
             const notesElem = xml.getElementsByTagName("Notes")[0];
             const sportAttr = xml.getElementsByTagName("Activity")[0]?.getAttribute("Sport") || "";
-            const missionName = (notesElem && notesElem.textContent.trim()) || sportAttr || "Treino Zepp";
+            const rawName = (notesElem && notesElem.textContent.trim()) || sportAttr || "Treino Zepp";
+            const lowerName = rawName.toLowerCase();
 
             const totalSec = Number(lap.getElementsByTagName("TotalTimeSeconds")[0]?.textContent || 0);
             const meters = Number(lap.getElementsByTagName("DistanceMeters")[0]?.textContent || 0);
@@ -695,31 +934,58 @@
             const min = Math.round(totalSec / 60);
 
             let foco = 'END';
-            if (meters > 0 && min > 0 && (meters / totalSec) > 2.5) foco = 'AGI';
-            if (missionName.toLowerCase().includes('natação')) foco = 'STR';
+            let activityType = 'aero';
+            let displayName = rawName.toUpperCase();
 
-            const xpBase = Math.round((meters / 1000) * 110 + min * 8 + calories * 0.2);
+            // Mapeamento nos 4 Atributos
+            if (lowerName.includes('pilates')) {
+              foco = 'CON'; // Pilates foca no core e blindagem
+              activityType = 'aero';
+              displayName = "PILATES (CORE & BLINDAGEM)";
+            } else if (lowerName.includes('livre') || lowerName.includes('força') || lowerName.includes('strength')) {
+              foco = 'STR'; // Treino livre/calistenia foca em força superior
+              activityType = 'forca';
+              displayName = "CALISTENIA / TREINO LIVRE";
+            } else if (lowerName.includes('hiit')) {
+              foco = 'AGI'; // HIIT foca em agilidade e explosão
+              activityType = 'aero';
+              displayName = "HIIT / ALTA INTENSIDADE";
+            } else if (meters > 0 && min > 0 && (meters / totalSec) > 2.5) {
+              foco = 'AGI';
+              displayName = "CORRIDA VELOZ";
+            } else {
+              foco = 'END'; // Caminhada e corrida contínua focam em fôlego
+            }
+
+            let xpBase = 0;
+            if (meters > 0) {
+              xpBase = Math.round((meters / 1000) * 110 + min * 8 + calories * 0.2);
+            } else {
+              xpBase = Math.round(min * 12 + calories * 0.25);
+            }
+
             const mult = hrVal > 140 ? 1.3 : 1.0;
-            const xpTotal = Math.round(xpBase * mult);
+            const xpTotal = Math.round(Math.max(30, xpBase * mult));
 
             addXP(xpTotal, foco);
             player.history.unshift({
-              nome: missionName.toUpperCase(),
-              detalhes: `${km} km • ${min} min • ${hrVal ? hrVal + ' bpm' : calories + ' kcal'}`,
-              tipo: 'aero',
+              nome: displayName,
+              detalhes: `${meters > 0 ? km + ' km • ' : ''}${min} min • ${hrVal ? hrVal + ' bpm' : calories + ' kcal'}`,
+              tipo: activityType,
               km: km,
               data: lap.getAttribute("StartTime") || new Date().toISOString(),
               xp: xpTotal
             });
             if (player.history.length > 30) player.history.pop();
 
-            statusMsg.textContent = `✅ Treino sincronizado: ${km} km (+${xpTotal} XP)`;
+            statusMsg.textContent = `✅ ${displayName} sincronizado: +${xpTotal} XP (+1 ${foco})`;
             statusMsg.className = "text-[11px] text-emerald-400 font-bold mt-0.5";
             updateUI();
-            showToast(`Missão Concluída: ${km} km (+${xpTotal} XP)`);
+            showToast(`${displayName} Concluído! (+${xpTotal} XP)`);
             return;
           }
 
+          // Fallback GPX
           const trkpts = xml.getElementsByTagName("trkpt");
           if (trkpts && trkpts.length > 0) {
             const nameElem = xml.getElementsByTagName("name")[0];
@@ -756,6 +1022,7 @@
       reader.readAsText(file);
     });
 
+    // SISTEMA DE TROCA DE ABAS
     function navigateToTab(tabId) {
       const tabs = ['missions', 'weight', 'calendar', 'camera'];
       tabs.forEach(t => {
@@ -778,6 +1045,7 @@
       if (tabId === 'weight') renderWeightModule();
     }
 
+    // CONTROLE DE CÂMERA
     let camRunning = false;
     function toggleCamera() {
       const btn = document.getElementById('btn-toggle-cam');
@@ -817,6 +1085,7 @@
       navigateToTab('missions');
     }
 
+    // INICIALIZAÇÃO
     updateUI();
   </script>
 </body>
