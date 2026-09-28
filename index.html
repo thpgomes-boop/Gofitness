@@ -21,8 +21,8 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24 select-none">
 
-  <!-- NOTIFICAÇÃO FLUTUANTE (FEEDBACK VISUAL DE AÇÕES) -->
-  <div id="toast" class="fixed top-3 left-3 right-3 z-50 bg-cyan-600 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border border-cyan-400 text-center transition-all duration-300 transform -translate-y-16 opacity-0 pointer-events-none">
+  <!-- NOTIFICAÇÃO TOAST VISUAL -->
+  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-20 opacity-0 pointer-events-none">
     NOTIFICAÇÃO
   </div>
 
@@ -39,7 +39,7 @@
           <div>
             <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest uppercase block">RECRUTA E1</span>
             <h1 class="text-lg font-bold font-hud text-white leading-tight">THIAGO</h1>
-            <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud mt-0.5 inline-block">IMC 24.6 • EQUILIBRADO</span>
+            <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud mt-0.5 inline-block">IMC 31.3 • COLOSSO</span>
           </div>
           <div class="text-right">
             <span class="text-[9px] text-slate-400 block font-hud">RANK</span>
@@ -58,16 +58,16 @@
     </div>
   </header>
 
-  <!-- CONTROLE BIOMÉTRICO (PESO + ALTURA = IMC) -->
+  <!-- CONTROLE BIOMÉTRICO (ALTURA 175 CM / PESO 96 KG) -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-hud gap-2">
     <div class="flex items-center gap-1.5">
       <span class="text-slate-400 text-[10px]">ALTURA:</span>
-      <input type="number" id="input-height" value="178" step="1" min="150" max="220" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
+      <input type="number" id="input-height" value="175" step="1" min="150" max="220" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
       <span class="text-slate-400 text-[10px]">cm</span>
     </div>
     <div class="flex items-center gap-1.5">
       <span class="text-slate-400 text-[10px]">PESO:</span>
-      <input type="number" id="input-weight" value="78.0" step="0.5" min="50" max="150" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
+      <input type="number" id="input-weight" value="96.0" step="0.5" min="50" max="150" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
       <span class="text-slate-400 text-[10px]">kg</span>
     </div>
     <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white px-3 py-1 rounded text-[10px] font-bold transition cursor-pointer shadow">
@@ -122,7 +122,7 @@
 
       <!-- Sincronização de Arquivo -->
       <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-5 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer">
-        <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
+        <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" />
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
@@ -187,7 +187,7 @@
     </div>
 
     <!-- ABA 4: CÂMERA IA -->
-    <div id="tab-camera" class="tab-content hidden flex-col gap-2 flex-1">
+    <div id="tab-camera" class="tab-content hidden flex flex-col gap-2 flex-1">
       <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-cyan-500/40 flex items-center justify-center">
         <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
         <canvas id="output-canvas" class="absolute inset-0 w-full h-full"></canvas>
@@ -236,17 +236,17 @@
   </nav>
 
   <script>
-    // SISTEMA DE NOTIFICAÇÃO (TOAST)
+    // TOAST NOTIFICAÇÃO
     function showToast(msg, isSuccess = true) {
       const toast = document.getElementById('toast');
       toast.textContent = msg;
       toast.className = `fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform translate-y-0 opacity-100 ${isSuccess ? 'bg-cyan-600 border-cyan-400' : 'bg-rose-600 border-rose-400'}`;
       setTimeout(() => {
-        toast.className = toast.className.replace('translate-y-0 opacity-100', '-translate-y-16 opacity-0');
+        toast.className = toast.className.replace('translate-y-0 opacity-100', '-translate-y-20 opacity-0');
       }, 3000);
     }
 
-    // ESTADO DO JOGADOR
+    // ESTADO PADRÃO (BASEADO NO SEU FÍSICO)
     let player = {
       level: 1,
       xp: 0,
@@ -254,25 +254,27 @@
       str: 10,
       agi: 10,
       end: 10,
-      weight: 78.0,
-      heightCm: 178,
+      weight: 96.0,
+      heightCm: 175,
       streak: 1,
-      weightHistory: [{ date: new Date().toISOString(), weight: 78.0 }],
+      weightHistory: [{ date: new Date().toISOString(), weight: 96.0 }],
       history: []
     };
 
     try {
-      const saved = localStorage.getItem('hero_player_v9');
+      const saved = localStorage.getItem('hero_player_v10');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed === 'object') {
           player = Object.assign(player, parsed);
-          if (!Array.isArray(player.weightHistory)) player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight }];
+          if (!Array.isArray(player.weightHistory) || !player.weightHistory.length) {
+            player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight }];
+          }
           if (!Array.isArray(player.history)) player.history = [];
         }
       }
     } catch (e) {
-      console.warn("Storage recuperado:", e);
+      console.warn("Storage reset:", e);
     }
 
     const RANK_NAMES = [
@@ -284,7 +286,7 @@
       "SUPREMO (RANK S)"
     ];
 
-    // REGISTRO DE PESO E ALTURA
+    // REGISTRO DE PESO E ALTURA (CÁLCULO IMC)
     function handleBiometricsSubmit() {
       const h = parseFloat(document.getElementById('input-height').value);
       const w = parseFloat(document.getElementById('input-weight').value);
@@ -313,18 +315,18 @@
       }
     }
 
-    // RENDERIZADOR DO AVATAR POR MATRIZ (IMC X RANK)
+    // RENDERIZADOR DO AVATAR ESTILO TORIYAMA
     function renderToriyamaAvatar() {
       const svg = document.getElementById('avatar-svg');
       const container = document.getElementById('avatar-container');
       if (!svg || !container) return;
 
       const lvl = Math.min(20, Math.max(1, player.level || 1));
-      const heightM = (player.heightCm || 178) / 100;
-      const imc = (player.weight || 78) / (heightM * heightM);
+      const heightM = (player.heightCm || 175) / 100;
+      const imc = (player.weight || 96) / (heightM * heightM);
 
-      let imcTier = 2;
-      let imcLabel = "EQUILIBRADO";
+      let imcTier = 4;
+      let imcLabel = "COLOSSO";
       if (imc < 20) { imcTier = 0; imcLabel = "ESGUIO / VELOZ"; }
       else if (imc < 23) { imcTier = 1; imcLabel = "ATLÉTICO LEVE"; }
       else if (imc < 26) { imcTier = 2; imcLabel = "EQUILIBRADO"; }
@@ -365,4 +367,408 @@
         <rect width="100" height="100" fill="#080e1e" />
         <path d="M 50 50 L 0 0 M 50 50 L 100 0 M 50 50 L 0 100 M 50 50 L 100 100" stroke="#172554" stroke-width="1.2" />
         ${extras}
-        <path d="M ${50 - shoulderBase} 98 L ${50 - neckWidth} 55 L ${50 + neckWidth
+        <path d="M ${50 - shoulderBase} 98 L ${50 - neckWidth} 55 L ${50 + neckWidth} 55 L ${50 + shoulderBase} 98 Z" fill="${giBase}" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+        <path d="M 50 55 L ${50 - shoulderBase} 98 L ${50 - shoulderBase + 7} 98 Z" fill="${giShadow}" opacity="0.4" />
+        <path d="M 50 60 L 50 86 M ${50 - (shoulderBase * 0.42)} 72 C 50 82, 50 82, ${50 + (shoulderBase * 0.42)} 72" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <path d="M ${50 - neckWidth - 1} 55 L 50 76 L ${50 + neckWidth + 1} 55" stroke="${shirtColor}" stroke-width="4" fill="none" />
+        <polygon points="${50 - neckWidth},55 ${50 + neckWidth},55 ${50 + (neckWidth*0.75)},42 ${50 - (neckWidth*0.75)},42" fill="${skinShadow}" stroke="#000" stroke-width="2.5" />
+        <polygon points="${50 - neckWidth + 3},55 ${50 + neckWidth - 3},55 ${50 + (neckWidth*0.6)},44 ${50 - (neckWidth*0.6)},44" fill="${skinBase}" />
+        <polygon points="${50 - jawWidth},32 50,54 ${50 + jawWidth},32 ${50 + (jawWidth * 0.8)},24 ${50 - (jawWidth * 0.8)},24" fill="${skinBase}" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+        <path d="M 39 36 L 47 39 M 61 36 L 53 39" stroke="#000" stroke-width="2.8" stroke-linecap="round" />
+        <polygon points="41,39 46,40 43,43" fill="#000" />
+        <polygon points="59,39 54,40 57,43" fill="#000" />
+        <path d="M 50 42 L 48 46 L 51 46" stroke="#000" stroke-width="1.5" fill="none" />
+        <line x1="46" y1="49" x2="54" y2="49" stroke="#000" stroke-width="2" stroke-linecap="round" />
+        <polygon points="28,26 14,12 32,16 34,2 48,13 60,0 62,16 80,10 68,28 74,31 64,36 34,36 24,30" fill="${isRankS ? '#fbbf24' : '#1e293b'}" stroke="#000" stroke-width="3" stroke-linejoin="round" />
+      `;
+    }
+
+    // RENDERIZADOR DO MÓDULO DE PESO (GRÁFICO + HISTÓRICO)
+    function renderWeightModule() {
+      const history = player.weightHistory || [];
+      const listContainer = document.getElementById('weight-log-list');
+      const chartSvg = document.getElementById('weight-chart');
+      if (!listContainer || !chartSvg) return;
+
+      if (!history.length) {
+        listContainer.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Sem histórico biométrico.</p>';
+        chartSvg.innerHTML = '';
+        return;
+      }
+
+      const sorted = history.slice().reverse();
+      let htmlRows = '';
+      for (let i = 0; i < sorted.length; i++) {
+        const item = sorted[i];
+        const d = new Date(item.date);
+        const dateStr = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        
+        let diffStr = '<span class="text-slate-500 text-[10px]">Base</span>';
+        if (i < sorted.length - 1) {
+          const diff = (item.weight - sorted[i + 1].weight).toFixed(1);
+          if (diff > 0) diffStr = `<span class="text-amber-400 font-bold text-[10px]">+${diff} kg</span>`;
+          else if (diff < 0) diffStr = `<span class="text-emerald-400 font-bold text-[10px]">${diff} kg</span>`;
+          else diffStr = `<span class="text-slate-500 text-[10px]">0.0 kg</span>`;
+        }
+
+        htmlRows += `
+          <div class="bg-slate-950 border border-slate-800 p-2 rounded-xl flex justify-between items-center text-xs">
+            <div>
+              <span class="font-hud font-bold text-white">${item.weight.toFixed(1)} kg</span>
+              <span class="text-[10px] text-slate-400 block">${dateStr}</span>
+            </div>
+            <div>${diffStr}</div>
+          </div>
+        `;
+      }
+      listContainer.innerHTML = htmlRows;
+
+      const weights = history.map(h => h.weight);
+      const minW = Math.min(...weights) - 1.5;
+      const maxW = Math.max(...weights) + 1.5;
+      const range = maxW - minW || 1;
+
+      const svgWidth = 280;
+      const svgHeight = 100;
+      const step = history.length > 1 ? svgWidth / (history.length - 1) : svgWidth / 2;
+
+      let pointsArr = [];
+      let circlesHtml = '';
+      for (let i = 0; i < history.length; i++) {
+        const x = history.length === 1 ? svgWidth / 2 : i * step;
+        const y = svgHeight - ((history[i].weight - minW) / range) * svgHeight;
+        pointsArr.push(`${x},${y}`);
+        circlesHtml += `<circle cx="${x}" cy="${y}" r="3.5" fill="#38bdf8" stroke="#050811" stroke-width="1.5" />`;
+      }
+
+      chartSvg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
+      chartSvg.innerHTML = `
+        <polyline fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${pointsArr.join(' ')}" />
+        ${circlesHtml}
+      `;
+    }
+
+    // CALENDÁRIO
+    let currentCalDate = new Date();
+
+    function renderCalendar() {
+      const grid = document.getElementById('calendar-grid');
+      const monthYearLabel = document.getElementById('calendar-month-year');
+      if (!grid || !monthYearLabel) return;
+      grid.innerHTML = '';
+
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      monthYearLabel.textContent = `${monthNames[month]} ${year}`;
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "py-2 text-slate-800";
+        grid.appendChild(emptyCell);
+      }
+
+      const workoutsByDay = {};
+      (player.history || []).forEach(item => {
+        if (!item.data) return;
+        const d = new Date(item.data);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+          const dayNum = d.getDate();
+          if (!workoutsByDay[dayNum]) workoutsByDay[dayNum] = [];
+          workoutsByDay[dayNum].push(item);
+        }
+      });
+
+      for (let d = 1; d <= totalDays; d++) {
+        const dayCell = document.createElement('div');
+        const hasWorkouts = workoutsByDay[d] && workoutsByDay[d].length > 0;
+        let dotColor = "bg-transparent";
+
+        if (hasWorkouts) {
+          const hasAero = workoutsByDay[d].some(w => w.tipo === 'aero');
+          const hasStr = workoutsByDay[d].some(w => w.tipo === 'forca');
+          dotColor = hasAero ? "bg-emerald-400" : (hasStr ? "bg-rose-400" : "bg-cyan-400");
+        }
+
+        dayCell.className = `py-2 rounded-xl flex flex-col items-center justify-center cursor-pointer border ${hasWorkouts ? 'border-slate-700 bg-slate-800/80 text-white' : 'border-slate-900 bg-slate-950/40 text-slate-500'} hover:border-cyan-500 transition`;
+        dayCell.innerHTML = `<span>${d}</span><span class="w-1.5 h-1.5 rounded-full ${dotColor} mt-0.5"></span>`;
+        dayCell.onclick = () => showDayWorkouts(d, workoutsByDay[d] || []);
+        grid.appendChild(dayCell);
+      }
+    }
+
+    function showDayWorkouts(day, workouts) {
+      const label = document.getElementById('selected-date-label');
+      const list = document.getElementById('selected-day-list');
+      if (!label || !list) return;
+      label.textContent = `MISSÕES DO DIA ${day}`;
+
+      if (!workouts.length) {
+        list.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Nenhum treino registrado neste dia.</p>';
+        return;
+      }
+
+      list.innerHTML = workouts.map(w => `
+        <div class="bg-slate-950 border border-slate-800 p-2 rounded-xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-hud font-bold text-white block">${w.nome}</span>
+            <span class="text-[10px] text-slate-400">${w.detalhes}</span>
+          </div>
+          <span class="font-hud text-emerald-400 font-bold">+${w.xp} XP</span>
+        </div>
+      `).join('');
+    }
+
+    // ATUALIZAÇÃO GERAL DA INTERFACE
+    function updateUI() {
+      try {
+        document.getElementById('player-level').textContent = player.level;
+        document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+        document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
+        document.getElementById('stat-str').textContent = player.str;
+        document.getElementById('stat-agi').textContent = player.agi;
+        document.getElementById('stat-end').textContent = player.end;
+        document.getElementById('streak-text').textContent = `🔥 ${player.streak} DIAS`;
+
+        document.getElementById('input-height').value = player.heightCm;
+        document.getElementById('input-weight').value = player.weight;
+
+        renderToriyamaAvatar();
+        renderCalendar();
+        renderWeightModule();
+        checkQuests();
+
+        localStorage.setItem('hero_player_v10', JSON.stringify(player));
+      } catch (err) {
+        console.error("Erro na UI:", err);
+      }
+    }
+
+    function addXP(amount, type) {
+      player.xp += amount;
+      if (type === 'STR') player.str += 1;
+      if (type === 'AGI') player.agi += 1;
+      if (type === 'END') player.end += 1;
+
+      while (player.xp >= player.maxXp && player.level < 20) {
+        player.xp -= player.maxXp;
+        player.level += 1;
+        player.maxXp = Math.round(player.maxXp * 1.25);
+        showToast(`SUBIU DE NÍVEL! NOVO RANK: ${RANK_NAMES[player.level - 1]}`);
+      }
+      updateUI();
+    }
+
+    function checkQuests() {
+      const today = new Date().toDateString();
+      const todayLogs = (player.history || []).filter(h => new Date(h.data).toDateString() === today);
+
+      let patrolDone = todayLogs.some(h => h.km && h.km >= 2.5);
+      let pushupsDone = todayLogs.some(h => h.nome && h.nome.includes('Flexões'));
+
+      const qPatrol = document.getElementById('q-patrol');
+      const qPushups = document.getElementById('q-pushups');
+
+      if (qPatrol && patrolDone) {
+        qPatrol.textContent = "COMPLETA (+50 XP)";
+        qPatrol.className = "font-hud text-[10px] text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800";
+      }
+      if (qPushups && pushupsDone) {
+        qPushups.textContent = "COMPLETA (+40 XP)";
+        qPushups.className = "font-hud text-[10px] text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800";
+      }
+
+      let count = (patrolDone ? 1 : 0) + (pushupsDone ? 1 : 0);
+      const statusEl = document.getElementById('quests-status');
+      if (statusEl) statusEl.textContent = `${count}/2 CONCLUÍDAS`;
+    }
+
+    function handleQuickRep(nome, reps, stat) {
+      const xp = reps * 3;
+      addXP(xp, stat);
+      player.history.unshift({
+        nome: `Calistenia: ${nome}`,
+        detalhes: `${reps} reps validadas`,
+        tipo: 'forca',
+        data: new Date().toISOString(),
+        xp: xp
+      });
+      if (player.history.length > 30) player.history.pop();
+      updateUI();
+      showToast(`+${reps} ${nome} registradas (+${xp} XP)`);
+    }
+
+    // LEITOR DE TREINOS (SUPORTA TCX E GPX COM AVISO CASO SEJA .FIT)
+    document.getElementById('tcx-input').addEventListener('change', function(e) {
+      const file = e.target.files && e.target.files[0];
+      const statusMsg = document.getElementById('tcx-status-msg');
+      if (!file) return;
+
+      const fileName = file.name.toLowerCase();
+      if (fileName.endsWith('.fit')) {
+        showToast("Arquivo .FIT selecionado! Escolha o de 729 KB (.TCX)", false);
+        statusMsg.textContent = "⚠️ Você escolheu o .FIT. Selecione o arquivo .TCX (729 KB)";
+        statusMsg.className = "text-[11px] text-amber-400 font-bold mt-0.5";
+        return;
+      }
+
+      statusMsg.textContent = "Lendo arquivo de treino...";
+      statusMsg.className = "text-[11px] text-cyan-400 font-bold mt-0.5";
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const text = evt.target.result;
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, "text/xml");
+
+          // Formato TCX
+          const laps = xml.getElementsByTagName("Lap");
+          if (laps && laps.length > 0) {
+            const lap = laps[0];
+            const notesElem = xml.getElementsByTagName("Notes")[0];
+            const sportAttr = xml.getElementsByTagName("Activity")[0]?.getAttribute("Sport") || "";
+            const missionName = (notesElem && notesElem.textContent.trim()) || sportAttr || "Treino Zepp";
+
+            const totalSec = Number(lap.getElementsByTagName("TotalTimeSeconds")[0]?.textContent || 0);
+            const meters = Number(lap.getElementsByTagName("DistanceMeters")[0]?.textContent || 0);
+            const calories = Number(lap.getElementsByTagName("Calories")[0]?.textContent || 0);
+            const hrVal = Number(lap.getElementsByTagName("AverageHeartRateBpm")[0]?.getElementsByTagName("Value")[0]?.textContent || 0);
+
+            const km = Number((meters / 1000).toFixed(2));
+            const min = Math.round(totalSec / 60);
+
+            let foco = 'END';
+            if (meters > 0 && min > 0 && (meters / totalSec) > 2.5) foco = 'AGI';
+            if (missionName.toLowerCase().includes('natação')) foco = 'STR';
+
+            const xpBase = Math.round((meters / 1000) * 110 + min * 8 + calories * 0.2);
+            const mult = hrVal > 140 ? 1.3 : 1.0;
+            const xpTotal = Math.round(xpBase * mult);
+
+            addXP(xpTotal, foco);
+            player.history.unshift({
+              nome: missionName.toUpperCase(),
+              detalhes: `${km} km • ${min} min • ${hrVal ? hrVal + ' bpm' : calories + ' kcal'}`,
+              tipo: 'aero',
+              km: km,
+              data: lap.getAttribute("StartTime") || new Date().toISOString(),
+              xp: xpTotal
+            });
+            if (player.history.length > 30) player.history.pop();
+
+            statusMsg.textContent = `✅ Treino sincronizado: ${km} km (+${xpTotal} XP)`;
+            statusMsg.className = "text-[11px] text-emerald-400 font-bold mt-0.5";
+            updateUI();
+            showToast(`Missão Concluída: ${km} km (+${xpTotal} XP)`);
+            return;
+          }
+
+          // Formato GPX
+          const trkpts = xml.getElementsByTagName("trkpt");
+          if (trkpts && trkpts.length > 0) {
+            const nameElem = xml.getElementsByTagName("name")[0];
+            const missionName = nameElem ? nameElem.textContent.trim() : "Corrida GPX";
+            const kmEstimate = Number(((trkpts.length * 1.5) / 1000).toFixed(2));
+            const xpTotal = Math.round(kmEstimate * 110 + 100);
+
+            addXP(xpTotal, 'AGI');
+            player.history.unshift({
+              nome: missionName.toUpperCase(),
+              detalhes: `${kmEstimate} km estimados via rota GPX`,
+              tipo: 'aero',
+              km: kmEstimate,
+              data: new Date().toISOString(),
+              xp: xpTotal
+            });
+            if (player.history.length > 30) player.history.pop();
+
+            statusMsg.textContent = `✅ Rota GPX sincronizada: ${kmEstimate} km (+${xpTotal} XP)`;
+            statusMsg.className = "text-[11px] text-emerald-400 font-bold mt-0.5";
+            updateUI();
+            showToast(`Rota GPX Concluída: ${kmEstimate} km (+${xpTotal} XP)`);
+            return;
+          }
+
+          throw new Error("Formato não reconhecido como TCX ou GPX.");
+        } catch (err) {
+          console.error(err);
+          statusMsg.textContent = "Erro na leitura. Selecione o arquivo .TCX ou .GPX";
+          statusMsg.className = "text-[11px] text-rose-400 font-bold mt-0.5";
+          showToast("Erro na leitura. Escolha o arquivo .TCX!", false);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // SISTEMA DE TROCA DE ABAS
+    function navigateToTab(tabId) {
+      const tabs = ['missions', 'weight', 'calendar', 'camera'];
+      tabs.forEach(t => {
+        const content = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`nav-btn-${t}`);
+        if (content) {
+          if (t === tabId) content.classList.remove('hidden');
+          else content.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tabId) {
+            btn.className = "flex flex-col items-center text-cyan-400 font-hud text-[10px] cursor-pointer";
+          } else {
+            btn.className = "flex flex-col items-center text-slate-500 font-hud text-[10px] cursor-pointer";
+          }
+        }
+      });
+
+      if (tabId === 'calendar') renderCalendar();
+      if (tabId === 'weight') renderWeightModule();
+    }
+
+    // CONTROLE DE CÂMERA
+    let camRunning = false;
+    function toggleCamera() {
+      const btn = document.getElementById('btn-toggle-cam');
+      const btnFinish = document.getElementById('btn-finish-cam');
+      if (!camRunning) {
+        btn.textContent = "CONECTANDO CÂMERA...";
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+          .then(stream => {
+            const video = document.getElementById('webcam');
+            video.srcObject = stream;
+            camRunning = true;
+            btn.textContent = "PAUSAR CÂMERA";
+            btn.className = "flex-1 bg-slate-700 text-white font-hud text-xs py-3 rounded-xl transition cursor-pointer";
+            btnFinish.classList.remove('hidden');
+            showToast("Câmera frontal ativada!");
+          })
+          .catch(err => {
+            console.error(err);
+            btn.textContent = "INICIAR SENSOR ÓPTICO";
+            showToast("Permissão da câmera necessária", false);
+          });
+      } else {
+        const video = document.getElementById('webcam');
+        if (video.srcObject) {
+          video.srcObject.getTracks().forEach(t => t.stop());
+          video.srcObject = null;
+        }
+        camRunning = false;
+        btn.textContent = "INICIAR SENSOR ÓPTICO";
+        btn.className = "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-hud text-xs py-3 rounded-xl transition cursor-pointer";
+      }
+    }
+
+    function finishCamera() {
+      toggleCamera();
+      document.getElementById('btn-finish-cam').classList.add('hidden');
+      navigateToTab('missions');
+    }
+
+    // INICIALIZAÇÃO IMEDIATA
+    updateUI();
+  </script>
+</body>
+</html>
