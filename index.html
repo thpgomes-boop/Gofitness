@@ -10,7 +10,6 @@
     body { font-family: 'Marcellus', serif; background-color: #07090e; }
     .font-epic { font-family: 'Cinzel', serif; }
     
-    /* AURA ANCESTRAL DO SANGUE DE NÚMENOR */
     @keyframes numenorAura {
       0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4), inset 0 0 8px rgba(212, 175, 55, 0.3); border-color: #d4af37; }
       50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.8), inset 0 0 15px rgba(245, 158, 11, 0.5); border-color: #fbbf24; }
@@ -18,6 +17,17 @@
     }
     .aura-numenor {
       animation: numenorAura 1.8s infinite alternate ease-in-out !important;
+    }
+
+    @keyframes bossShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px) rotate(-1deg); }
+      40% { transform: translateX(5px) rotate(1deg); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+    .shake-anim {
+      animation: bossShake 0.4s ease-in-out;
     }
 
     .custom-scroll::-webkit-scrollbar { width: 4px; }
@@ -57,7 +67,7 @@
   <!-- CABEÇALHO DO GUERREIRO GOMINSK -->
   <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <!-- Retrato de Gominsk com Aura Dinâmica de Batalha -->
+      <!-- Retrato de Gominsk -->
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
         <img id="avatar-img" src="" alt="Avatar Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
@@ -73,7 +83,6 @@
             <span id="rank-title" class="text-[10px] text-amber-400 font-epic tracking-widest block uppercase font-bold">SENTINELA DE FRONTEIRA I</span>
             <h1 class="text-lg font-bold font-epic text-white tracking-wider leading-tight">GOMINSK</h1>
             
-            <!-- Badges e Estado de Batalha -->
             <div class="flex flex-wrap items-center gap-1.5 mt-0.5">
               <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-epic">IMC 31.3 • COLOSSO</span>
               <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-epic font-bold">⚡ BRAVURA: 1.150</span>
@@ -125,10 +134,10 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL (COM RETRATO DO INIMIGO) -->
+      <!-- CERCO SEMANAL (COM GERADOR DE ÍMPETO E SELETOR DE GOLPES) -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
         <div class="flex items-center gap-3 mb-2.5">
-          <!-- Quadro do Inimigo com Upload ao Tocar -->
+          <!-- Quadro do Inimigo com Animação de Golpe -->
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
             <img id="boss-img" src="" alt="Troll de Gorgoroth" class="w-full h-full object-cover object-center hidden pointer-events-none" />
             <div id="boss-placeholder" class="text-center p-1.5 flex flex-col items-center justify-center pointer-events-none">
@@ -153,6 +162,7 @@
               <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM COMBATE</span>
             </div>
 
+            <!-- Barra de Vida do Inimigo -->
             <div class="w-full bg-slate-950 rounded-full h-2.5 border border-red-950 overflow-hidden mt-2">
               <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
             </div>
@@ -163,9 +173,60 @@
           </div>
         </div>
 
+        <!-- MEDIDOR DE ÍMPETO MARCIAL ACUMULADO -->
+        <div class="bg-slate-950/90 border border-amber-500/40 rounded-xl p-2.5 mb-2.5 shadow-inner">
+          <div class="flex justify-between items-center text-[10px] mb-1">
+            <span class="text-amber-400 font-bold flex items-center gap-1">⚡ ÍMPETO MARCIAL DISPONÍVEL:</span>
+            <span id="impeto-counter" class="text-amber-200 font-bold text-xs">0 PTS</span>
+          </div>
+          <div class="w-full bg-slate-900 rounded-full h-2 border border-amber-950 overflow-hidden">
+            <div id="impeto-bar" class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-0 transition-all duration-300"></div>
+          </div>
+          <span class="text-[9px] text-slate-400 font-sans block mt-1">Seus treinos acumulam Ímpeto. Descarregue golpes com a manobra tática desejada abaixo:</span>
+        </div>
+
+        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
+        <div class="grid grid-cols-2 gap-1.5 mb-2 text-left">
+          <!-- 1. Ruptura (FOR) -->
+          <button type="button" onclick="executeManeuver('STR')" class="bg-slate-950 border border-rose-600/50 hover:border-rose-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-rose-300">🗡️ GOLPE DE RUPTURA</span>
+              <span class="text-[8px] bg-rose-950 text-rose-400 border border-rose-800 px-1 rounded font-bold">FORÇA</span>
+            </div>
+            <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
+          </button>
+
+          <!-- 2. Escudo (CON) -->
+          <button type="button" onclick="executeManeuver('CON')" class="bg-slate-950 border border-amber-600/50 hover:border-amber-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-amber-300">🛡️ IMPACTO DE ESCUDO</span>
+              <span class="text-[8px] bg-amber-950 text-amber-400 border border-amber-800 px-1 rounded font-bold">BLIND.</span>
+            </div>
+            <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
+          </button>
+
+          <!-- 3. Disparo (AGI) -->
+          <button type="button" onclick="executeManeuver('AGI')" class="bg-slate-950 border border-cyan-600/50 hover:border-cyan-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-cyan-300">🏹 TIRO DE ITHILIEN</span>
+              <span class="text-[8px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-1 rounded font-bold">DESTREZA</span>
+            </div>
+            <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Chance Crítico</span>
+          </button>
+
+          <!-- 4. Cerco de Atrito (END) -->
+          <button type="button" onclick="executeManeuver('END')" class="bg-slate-950 border border-emerald-600/50 hover:border-emerald-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-emerald-300">⚔️ CERCO DE ATRITO</span>
+              <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded font-bold">VIGOR</span>
+            </div>
+            <span id="maneuver-desc-end" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
+          </button>
+        </div>
+
         <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2">
           <span class="text-sm">🛡️</span>
-          <span id="boss-story-log" class="leading-relaxed">As hostes da Sombra investem contra as muralhas. Cada marcha, vigília e golpe desferido nos treinos destrói a couraça da besta.</span>
+          <span id="boss-story-log" class="leading-relaxed">As hostes da Sombra investem contra as muralhas. Descarregue seu Ímpeto Marcial para ferir a besta.</span>
         </div>
       </div>
 
@@ -174,7 +235,7 @@
         <div class="flex justify-between items-center mb-2">
           <div>
             <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">DESPERTAR DA VIGÍLIA (ZEPP)</span></div>
-            <span class="text-[10px] text-slate-400 font-sans">Registo de descanso e patrulha ao alvorecer</span>
+            <span class="text-[10px] text-slate-400 font-sans">Gera Ímpeto Marcial e XP ao alvorecer</span>
           </div>
           <span id="sleep-buff-badge" class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">PENDENTE</span>
         </div>
@@ -205,7 +266,7 @@
       <!-- VIGÍLIA DOS GUARDIÕES (CALISTENIA / SPARKS) -->
       <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
-          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">Desperte o Sangue de Númenor cumprindo 4/4 postos</span></div>
+          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">+350 Ímpeto por posto • Desperta Sangue de Númenor em 4/4</span></div>
           <span id="sparks-counter" class="text-[10px] bg-amber-950/80 text-amber-300 px-2 py-0.5 rounded border border-amber-800/70">0/4 CUMPRIDOS</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-2">
@@ -230,11 +291,11 @@
 
       <!-- SÉRIES RÁPIDAS DE COMBATE -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-        <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS DE ARMAS</span>
+        <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS (GERA ÍMPETO)</span>
         <div class="grid grid-cols-3 gap-1.5 font-epic">
-          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FORÇA)</span></button>
-          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FORÇA)</span></button>
-          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(BLINDAGEM)</span></button>
+          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(+200 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+5 BARRAS<br><span class="text-[8px] text-slate-400">(+150 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(+250 ÍMPETO)</span></button>
         </div>
       </div>
 
@@ -342,9 +403,11 @@
       level: 1, xp: 0, maxXp: 800,
       str: 10, con: 10, agi: 10, end: 10,
       weight: 96.0, heightCm: 175, streak: 1,
+      impeto: 600, // Começa com Ímpeto para testar as manobras imediatamente
       avatarImage: null,
       enemyImage: null,
       battleState: { active: false, date: todayStr, multiplier: 1.5 },
+      equipment: { weapon: null, armor: null, relic: null }, // Arquitetura para a próxima etapa
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
       bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false },
@@ -381,7 +444,10 @@
 
     player.maxXp = Math.max(800, (player.level || 1) * 800);
 
-    // Ajusta o Chefe Semanal para 85.000 HP se estiver com o padrão antigo
+    if (player.impeto === undefined || player.impeto === null) {
+      player.impeto = 600;
+    }
+
     if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
       const bossHpScale = 85000 + ((player.level || 1) * 5000);
       player.bossRaid = {
@@ -413,7 +479,124 @@
       return Math.round((s * 22) + (c * 22) + (a * 26) + (e * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
     }
 
-    // GESTÃO DO RETRATO DE GOMINSK
+    // GESTÃO DE ÍMPETO MARCIAL
+    function addImpeto(amount, source) {
+      player.impeto = Math.min(10000, (player.impeto || 0) + amount);
+      showToast(`+${amount} ÍMPETO MARCIAL (${source})!`, true);
+      updateCombatManeuversUI();
+    }
+
+    // EXECUÇÃO DE MANOBRAS TÁTICAS (COMBATE ATIVO)
+    function executeManeuver(statType) {
+      if (!player.bossRaid || player.bossRaid.defeated) {
+        showToast("O Troll já foi neutralizado esta semana!");
+        return;
+      }
+
+      const cost = 250;
+      if ((player.impeto || 0) < cost) {
+        showToast(`Ímpeto Marcial insuficiente! Você precisa de ${cost} pts. Realize treinos para acumular.`, false);
+        return;
+      }
+
+      player.impeto -= cost;
+
+      let baseDmg = cost;
+      let statVal = 10;
+      let maneuverName = "";
+      let isCrit = false;
+
+      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
+
+      if (statType === 'STR') {
+        statVal = player.str || 10;
+        maneuverName = "Golpe de Ruptura";
+        baseDmg = Math.round(cost * (1 + (statVal / 25)));
+      } else if (statType === 'CON') {
+        statVal = player.con || 10;
+        maneuverName = "Impacto de Escudo";
+        baseDmg = Math.round(cost * (1 + (statVal / 25)));
+      } else if (statType === 'AGI') {
+        statVal = player.agi || 10;
+        maneuverName = "Tiro de Ithilien";
+        // Chance de Acerto Crítico (25%)
+        isCrit = Math.random() < 0.25;
+        baseDmg = Math.round(cost * (1 + (statVal / 22)) * (isCrit ? 1.75 : 1.0));
+      } else if (statType === 'END') {
+        statVal = player.end || 10;
+        maneuverName = "Cerco de Atrito";
+        baseDmg = Math.round(cost * (1 + (statVal / 25)));
+      }
+
+      const finalDamage = isBattleActive ? Math.round(baseDmg * (player.battleState.multiplier || 1.5)) : baseDmg;
+
+      player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - finalDamage);
+
+      // Animação de tremor no chefe
+      const bossContainer = document.getElementById('boss-avatar-container');
+      if (bossContainer) {
+        bossContainer.classList.remove('shake-anim');
+        void bossContainer.offsetWidth; // Força re-render
+        bossContainer.classList.add('shake-anim');
+      }
+
+      if (player.bossRaid.currentHp <= 0) {
+        player.bossRaid.defeated = true;
+        addXP(400, statType);
+        player.history.unshift({
+          nome: "🏆 VITÓRIA NO CERCO DE MINAS TIRITH",
+          detalhes: `${player.bossRaid.name} derrotado com ${maneuverName} (+400 XP)`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 400
+        });
+        showToast(`GOLPE FATAL! ${player.bossRaid.name} FOI DERRUBADO! (+400 XP)`);
+      } else {
+        const critText = isCrit ? " [CRÍTICO 1.75x!]" : "";
+        const numenorText = isBattleActive ? " [NÚMENOR 1.5x]" : "";
+        showToast(`💥 ${maneuverName.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} HP${critText}${numenorText}!`);
+        
+        const log = document.getElementById('boss-story-log');
+        if (log) {
+          log.textContent = `Gominsk desferiu ${maneuverName}! O golpe consumiu 250 de Ímpeto amplificado pelo atributo (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
+        }
+      }
+
+      renderBossRaid();
+      updateCombatManeuversUI();
+      localStorage.setItem('hero_player_v27', JSON.stringify(player));
+    }
+
+    function updateCombatManeuversUI() {
+      const impeto = player.impeto || 0;
+      const counterEl = document.getElementById('impeto-counter');
+      const barEl = document.getElementById('impeto-bar');
+      if (counterEl) counterEl.textContent = `${impeto.toLocaleString('pt-BR')} PTS`;
+      if (barEl) {
+        const pct = Math.min(100, Math.round((impeto / 2000) * 100));
+        barEl.style.width = `${pct}%`;
+      }
+
+      const isBattle = player.battleState && player.battleState.active && player.battleState.date === todayStr;
+      const mult = isBattle ? (player.battleState.multiplier || 1.5) : 1.0;
+
+      const dmgStr = Math.round(250 * (1 + ((player.str || 10) / 25)) * mult);
+      const dmgCon = Math.round(250 * (1 + ((player.con || 10) / 25)) * mult);
+      const dmgAgi = Math.round(250 * (1 + ((player.agi || 10) / 22)) * mult);
+      const dmgEnd = Math.round(250 * (1 + ((player.end || 10) / 25)) * mult);
+
+      const dStr = document.getElementById('maneuver-desc-str');
+      const dCon = document.getElementById('maneuver-desc-con');
+      const dAgi = document.getElementById('maneuver-desc-agi');
+      const dEnd = document.getElementById('maneuver-desc-end');
+
+      if (dStr) dStr.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgStr} HP`;
+      if (dCon) dCon.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgCon} HP`;
+      if (dAgi) dAgi.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgAgi} HP (Crítico)`;
+      if (dEnd) dEnd.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgEnd} HP`;
+    }
+
+    // RETRATOS
     function handleAvatarUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -453,11 +636,8 @@
       document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
       document.getElementById('combat-power-badge').textContent = `⚡ BRAVURA: ${calculateCombatPower().toLocaleString('pt-BR')}`;
 
-      if (battleBadge) {
-        battleBadge.classList.toggle('hidden', !isBattleActive);
-      }
+      if (battleBadge) battleBadge.classList.toggle('hidden', !isBattleActive);
 
-      // Moldura normal ou Aura de Batalha de Númenor
       if (isBattleActive) {
         container.className = "relative w-24 h-24 bg-slate-950 border-2 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-2xl aura-numenor";
       } else {
@@ -475,7 +655,6 @@
       }
     }
 
-    // RETRATO DO TROLL DE GORGOROTH
     function handleBossUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -499,36 +678,6 @@
       reader.readAsDataURL(file);
     }
 
-    // DANO DO CERCO COM MULTIPLICADOR DO ESTADO DE BATALHA
-    function dealBossDamage(baseDamage, sourceName) {
-      if (!player.bossRaid || player.bossRaid.defeated) return;
-
-      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
-      const actualDamage = isBattleActive ? Math.round(baseDamage * (player.battleState.multiplier || 1.5)) : baseDamage;
-
-      player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - actualDamage);
-
-      if (player.bossRaid.currentHp <= 0) {
-        player.bossRaid.defeated = true;
-        addXP(400, 'STR');
-        player.history.unshift({
-          nome: "🏆 VITÓRIA NO CERCO DE MINAS TIRITH",
-          detalhes: `${player.bossRaid.name} foi derrubado (+400 XP)`,
-          tipo: "forca",
-          data: new Date().toISOString(),
-          xp: 400
-        });
-        showToast("A BESTA CAIU! VITÓRIA NAS MURALHAS! (+400 XP)");
-      } else {
-        if (isBattleActive) {
-          showToast(`⚔️ GOLPE DE NÚMENOR: -${actualDamage.toLocaleString('pt-BR')} HP (${sourceName})!`);
-        } else {
-          showToast(`-${actualDamage.toLocaleString('pt-BR')} Dano no Chefe (${sourceName})!`);
-        }
-      }
-      renderBossRaid();
-    }
-
     function renderBossRaid() {
       const raid = player.bossRaid;
       if (!raid) return;
@@ -539,7 +688,6 @@
       document.getElementById('boss-hp-percent').textContent = `${percent}%`;
 
       const badge = document.getElementById('boss-status-badge');
-      const log = document.getElementById('boss-story-log');
       const bossContainer = document.getElementById('boss-avatar-container');
       const bossImg = document.getElementById('boss-img');
       const bossPlaceholder = document.getElementById('boss-placeholder');
@@ -557,35 +705,25 @@
       if (raid.defeated) {
         badge.textContent = "ABATIDO";
         badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
-        log.textContent = "A fortaleza resistiu! A besta de Mordor jaz derrotada diante da disciplina das hostes de Gominsk.";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-emerald-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group filter grayscale contrast-125 opacity-70";
       } else {
         badge.textContent = "EM COMBATE";
         badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group";
-
-        if (percent > 65) {
-          log.textContent = "O Troll de Gorgoroth avança com couraça espessa. Marchas e patrulhas desgastam a sua guarda externa.";
-        } else if (percent > 30) {
-          log.textContent = "Couraça despedaçada! Os treinos contínuos abriram fendas na defesa da fera. Mantenha os ataques marciais.";
-        } else {
-          log.textContent = "ESTRUTURA CRÍTICA! A fera titubeia diante dos portões. Desfira os golpes finais com a vigília de armas!";
-        }
       }
     }
 
-    // ATIVAÇÃO DO ESTADO DE BATALHA (SANGUE DE NÚMENOR)
     function checkBattleStateActivation() {
       const sparksDone = player.sparksRoutine && player.sparksRoutine.slots.every(Boolean);
-
       if (sparksDone && (!player.battleState.active || player.battleState.date !== todayStr)) {
         player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
         showToast("🔥 O SANGUE DE NÚMENOR DESPERTOU! 1.5x DANO NO CERCO!", true);
         renderToriyamaAvatar();
+        updateCombatManeuversUI();
       }
     }
 
-    // VIGÍLIA DOS GUARDIÕES (CALISTENIA SPARKS)
+    // SPARKS (CALISTENIA)
     function renderSparksRoutine() {
       let completedCount = 0;
       for (let i = 0; i < 4; i++) {
@@ -618,19 +756,18 @@
       if (isDone) {
         const statGain = (index % 2 === 0) ? 'STR' : 'CON';
         addXP(25, statGain);
-        dealBossDamage(500, `Posto 0${index + 1}`);
+        addImpeto(350, `Posto 0${index + 1}`);
         player.history.unshift({
           nome: `Vigília: Posto 0${index + 1}`,
-          detalhes: `Treino de calistenia (+1 ${statGain})`,
+          detalhes: `Treino de calistenia (+1 ${statGain} • +350 Ímpeto)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 25
         });
 
-        // Verificação de fechamento do dia (desperta o Sangue de Númenor)
         if (player.sparksRoutine.slots.every(Boolean)) {
           addXP(50, 'CON');
-          dealBossDamage(1000, "Vigília Plena das Muralhas");
+          addImpeto(600, "Vigília Plena 4/4");
           checkBattleStateActivation();
         } else {
           showToast(`Posto 0${index + 1} Consagrado! (+25 XP e +1 ${statGain})`);
@@ -655,32 +792,35 @@
       player.morningReport = { date: todayStr, sleepScore: sleepInput, steps: stepsInput, completed: true };
 
       let bonusXp = 0;
+      let impetoGanho = 0;
+
       if (sleepInput >= 70) {
         bonusXp += 40;
-        dealBossDamage(1000, "Bênção do Descanso Pleno");
+        impetoGanho += 600;
       } else if (sleepInput > 0) {
         bonusXp += 20;
-        dealBossDamage(500, "Descanso da Guarda");
+        impetoGanho += 300;
       }
 
       if (stepsInput > 0) {
         const stepXp = Math.min(80, Math.round((stepsInput / 1000) * 8));
         bonusXp += stepXp;
-        const stepDamage = Math.round((stepsInput / 1000) * 150);
-        dealBossDamage(stepDamage, "Patrulha das Fronteiras");
+        impetoGanho += Math.round((stepsInput / 1000) * 150);
       }
 
       addXP(bonusXp, 'END');
+      addImpeto(impetoGanho, "Vigília Matinal");
+
       player.history.unshift({
         nome: "DESPERTAR DA VIGÍLIA",
-        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos de patrulha`,
+        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos (+${impetoGanho} Ímpeto)`,
         tipo: "aero", data: new Date().toISOString(), xp: bonusXp
       });
 
       document.getElementById('input-manual-sleep').value = '';
       document.getElementById('input-manual-steps').value = '';
       updateUI();
-      showToast(`Vigília Registrada com Glória! (+${bonusXp} XP)`);
+      showToast(`Vigília Registrada com Glória! (+${impetoGanho} Ímpeto)`);
     }
 
     // FONTES DA CIDADELA
@@ -689,14 +829,15 @@
       if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
         player.hydration.completed = true;
         addXP(30, 'CON');
+        addImpeto(250, "Hidratação Plena");
         player.history.unshift({
           nome: "FONTES DA CIDADELA SACIADAS",
-          detalhes: "Meta diária de águas puras cumprida",
+          detalhes: "Meta diária de águas puras (+250 Ímpeto)",
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 30
         });
-        showToast("ÁGUAS DA CIDADELA COMPLETAS! (+30 XP e +1 BLINDAGEM)");
+        showToast("ÁGUAS DA CIDADELA COMPLETAS! (+30 XP e +250 Ímpeto)");
       } else {
         showToast(`+${ml} ml de águas puras consumidas!`);
       }
@@ -709,7 +850,6 @@
       showToast("Fontes reiniciadas.", false);
     }
 
-    // PROGRESSÃO DE PATENTE
     function addXP(amount, type) {
       player.xp += amount;
       if (type === 'STR') player.str = (player.str || 10) + 1;
@@ -728,19 +868,19 @@
 
     function handleQuickRep(nome, reps, stat) {
       const xp = reps * 2;
+      const impetoGain = reps * 10;
       addXP(xp, stat);
-      const dmg = Math.round(reps * 8);
-      dealBossDamage(dmg, nome);
+      addImpeto(impetoGain, nome);
       player.history.unshift({
         nome: nome,
-        detalhes: `${reps} repetições consagradas (+1 ${stat})`,
+        detalhes: `${reps} repetições (+1 ${stat} • +${impetoGain} Ímpeto)`,
         tipo: 'forca',
         data: new Date().toISOString(),
         xp: xp
       });
       if (player.history.length > 50) player.history.pop();
       updateUI();
-      showToast(`+${reps} manobras de ${nome}! (+${xp} XP)`);
+      showToast(`+${reps} manobras de ${nome}! (+${impetoGain} Ímpeto)`);
     }
 
     function handleBiometricsSubmit() {
@@ -750,9 +890,10 @@
         player.heightCm = h; player.weight = w;
         player.weightHistory.push({ date: new Date().toISOString(), weight: w });
         addXP(20, 'END');
+        addImpeto(200, "Pesagem");
         player.history.unshift({
           nome: "REGISTO DE MASSA",
-          detalhes: `${w.toFixed(1)} kg • ${h} cm`,
+          detalhes: `${w.toFixed(1)} kg • ${h} cm (+200 Ímpeto)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 20
@@ -787,10 +928,10 @@
       player.end = Math.max(10, Math.round(rmax * 4.5));
 
       addXP(50, null);
-      dealBossDamage(2000, "Golpe da Provação");
+      addImpeto(1000, "Provação Física");
       player.history.unshift({
         nome: "PROVAÇÃO MARCIAL CONCLUÍDA",
-        detalhes: `FOR ${player.str} • BLIND ${player.con} • DEST ${player.agi} • VIG ${player.end}`,
+        detalhes: `FOR ${player.str} • BLIND ${player.con} • DEST ${player.agi} • VIG ${player.end} (+1.000 Ímpeto)`,
         tipo: "forca",
         data: new Date().toISOString(),
         xp: 50
@@ -825,7 +966,7 @@
       reader.readAsText(file);
     }
 
-    // LEITOR DE MARCHA TCX / GPX
+    // LEITOR TCX / GPX
     document.getElementById('tcx-input').addEventListener('change', function(e) {
       const file = e.target.files && event.target.files[0];
       const statusMsg = document.getElementById('tcx-status-msg');
@@ -846,24 +987,25 @@
             const min = Math.round(totalSec / 60);
 
             const xpTotal = Math.max(30, Math.round(km * 75 + min * 6));
-            const baseDamage = Math.round(km > 0 ? (km * 600 + min * 25) : (min * 70));
+            const impetoGain = Math.round(km > 0 ? (km * 450 + min * 20) : (min * 35));
 
-            // Marchas pesadas (> 4 km) ativam o Sangue de Númenor
             if (km >= 4.0) {
               player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
               showToast("🔥 MARCHA HERÓICA! O SANGUE DE NÚMENOR DESPERTOU!");
             }
 
             addXP(xpTotal, km > 0 ? 'END' : 'CON');
-            dealBossDamage(baseDamage, rawName);
+            addImpeto(impetoGain, rawName);
+
             player.history.unshift({
               nome: rawName.toUpperCase(),
-              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min de marcha armada`,
+              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min (+${impetoGain} Ímpeto)`,
               tipo: km > 0 ? 'aero' : 'forca',
               data: new Date().toISOString(),
               xp: xpTotal
             });
-            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP registrado)`;
+            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP e +${impetoGain} Ímpeto)`;
+            showToast(`${rawName} Concluído com Glória!`);
             updateUI();
           }
         } catch(err) { statusMsg.textContent = "Erro na leitura do papiro TCX."; }
@@ -871,7 +1013,7 @@
       reader.readAsText(file);
     });
 
-    // DIÁRIO DAS CRÔNICAS (CALENDÁRIO)
+    // CALENDÁRIO
     let selectedCalendarDay = new Date().getDate();
 
     function renderCalendarModule() {
@@ -1034,8 +1176,9 @@
       renderToriyamaAvatar();
       renderBossRaid();
       renderSparksRoutine();
+      updateCombatManeuversUI();
 
-      localStorage.setItem('hero_player_v26', JSON.stringify(player));
+      localStorage.setItem('hero_player_v27', JSON.stringify(player));
     }
 
     updateUI();
