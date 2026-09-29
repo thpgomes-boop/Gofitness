@@ -3,52 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Hero Fitness System - RPG Pro</title>
+  <title>Crônicas de Gominsk - Sistema Dúnedain</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Marcellus&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Rajdhani', sans-serif; background-color: #050811; }
-    .font-hud { font-family: 'Orbitron', monospace; }
-    .aura-s { animation: pulseAura 2s infinite alternate; }
-    @keyframes pulseAura { 0% { filter: drop-shadow(0 0 8px #06b6d4); } 100% { filter: drop-shadow(0 0 30px #f59e0b); } }
+    body { font-family: 'Marcellus', serif; background-color: #07090e; }
+    .font-epic { font-family: 'Cinzel', serif; }
+    .aura-s { animation: pulseAura 2.5s infinite alternate; }
+    @keyframes pulseAura { 0% { filter: drop-shadow(0 0 8px #d4af37); } 100% { filter: drop-shadow(0 0 28px #f59e0b); } }
     .custom-scroll::-webkit-scrollbar { width: 4px; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #242c3d; border-radius: 4px; }
   </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24 select-none">
 
-  <!-- NOTIFICAÇÃO TOAST -->
-  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none">
-    NOTIFICAÇÃO
+  <!-- NOTIFICAÇÃO TOAST VISUAL -->
+  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-amber-200 font-epic text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none bg-slate-900 border-amber-600/70">
+    PROCLAMAÇÃO
   </div>
 
-  <!-- MODAL EXAME DE APTIDÃO -->
+  <!-- MODAL DE PROVAÇÃO MARCIAL (EXAME FÍSICO) -->
   <div id="exam-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl p-4 w-full max-w-sm font-hud text-xs">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 w-full max-w-sm font-epic text-xs shadow-2xl">
       <div class="flex justify-between items-center mb-3">
-        <h2 class="font-bold text-cyan-400">EXAME DE APTIDÃO FÍSICA</h2>
-        <button type="button" onclick="closeExamModal()" class="text-slate-400 text-lg px-2">✕</button>
+        <h2 class="font-bold text-amber-400">PROVAÇÃO DOS DÚNEDAIN</h2>
+        <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
       </div>
-      <div class="flex flex-col gap-2">
+      <p class="text-[11px] font-sans text-slate-300 mb-3 leading-relaxed">
+        Preencha com os seus limites marciais para consagrar seus atributos e o Poderio da Linhagem.
+      </p>
+      <div class="flex flex-col gap-2 font-epic">
         <div class="grid grid-cols-2 gap-2">
-          <div><label class="text-[9px] text-slate-400 block">FLEXÕES MÁX:</label><input type="number" id="exam-pushups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="35" /></div>
-          <div><label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label><input type="number" id="exam-pullups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="8" /></div>
+          <div><label class="text-[9px] text-slate-400 block">FLEXÕES MÁX.:</label><input type="number" id="exam-pushups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="35" /></div>
+          <div><label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label><input type="number" id="exam-pullups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="8" /></div>
         </div>
-        <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="40" /></div>
-        <div><label class="text-[9px] text-slate-400 block">TIRO 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="1.8" /></div>
-        <div><label class="text-[9px] text-slate-400 block">CORRIDA MÁX (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="5.0" /></div>
-        <button type="button" onclick="saveExamTrial()" class="w-full bg-cyan-600 hover:bg-cyan-500 font-bold py-2.5 rounded-xl text-white mt-1 transition">CALCULAR PODER</button>
+        <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS EM 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="40" /></div>
+        <div><label class="text-[9px] text-slate-400 block">MARCHA RÁPIDA 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="1.8" /></div>
+        <div><label class="text-[9px] text-slate-400 block">MAIOR TRAVESSIA CONTÍNUA (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="5.0" /></div>
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-bold py-2.5 rounded-xl text-white mt-1 shadow transition active:scale-95">CONSAGRAR PODERIO</button>
       </div>
     </div>
   </div>
 
   <!-- CABEÇALHO DO GUERREIRO -->
-  <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3 shadow-lg mb-3">
+  <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
+      <!-- Container do Avatar (Estilo Toriyama com Moldura de Númenor) -->
+      <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
         <img id="avatar-img" src="" alt="Avatar" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
-          <span class="text-2xl">📷</span><span class="text-[9px] font-hud text-cyan-400 font-bold leading-tight block">TOCAR P/ CARREGAR</span>
+          <span class="text-2xl mb-0.5">⚔️</span>
+          <span class="text-[9px] font-epic text-amber-300 font-bold leading-tight block">RETRATO DO GUERREIRO</span>
         </div>
         <input type="file" id="avatar-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" onchange="handleAvatarUpload(event)" />
       </div>
@@ -56,187 +61,187 @@
       <div class="flex-1">
         <div class="flex justify-between items-start">
           <div>
-            <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest block uppercase">RECRUTA E1</span>
-            <h1 class="text-lg font-bold font-hud text-white leading-tight">THIAGO</h1>
+            <span id="rank-title" class="text-[10px] text-amber-400 font-epic tracking-widest block uppercase font-bold">SENTINELA DE FRONTEIRA I</span>
+            <h1 class="text-lg font-bold font-epic text-white tracking-wider leading-tight">GOMINSK</h1>
             <div class="flex items-center gap-1.5 mt-0.5">
-              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud">IMC 31.3 • COLOSSO</span>
-              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-hud font-bold">⚡ PODER: 1.150</span>
+              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-epic">IMC 31.3 • COLOSSO</span>
+              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-epic font-bold">⚡ BRAVURA: 1.150</span>
             </div>
           </div>
           <div class="text-right">
-            <span class="text-[9px] text-slate-400 block font-hud">RANK</span>
-            <span id="player-level" class="text-2xl font-black font-hud text-cyan-400 leading-none">1</span>
+            <span class="text-[9px] text-slate-400 block font-epic tracking-wider">PATENTE</span>
+            <span id="player-level" class="text-2xl font-black font-epic text-amber-400 leading-none">1</span>
           </div>
         </div>
 
-        <div class="w-full bg-slate-950 rounded-full h-3 border border-cyan-900/80 overflow-hidden mt-2">
-          <div id="xp-bar" class="bg-gradient-to-r from-cyan-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
+        <div class="w-full bg-slate-950 rounded-full h-2.5 border border-amber-900/40 overflow-hidden mt-2">
+          <div id="xp-bar" class="bg-gradient-to-r from-amber-600 via-amber-400 to-amber-200 h-full w-0 transition-all duration-500"></div>
         </div>
-        <div class="flex justify-between text-[11px] font-hud text-slate-400 mt-1">
-          <span id="xp-text">0 / 400 XP</span><span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA</span>
+        <div class="flex justify-between text-[11px] font-epic text-slate-400 mt-1">
+          <span id="xp-text">0 / 800 XP</span><span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA DE GLÓRIA</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- BIOMETRIA -->
-  <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-hud gap-2">
-    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">ALTURA:</span><input type="number" id="input-height" value="175" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">cm</span></div>
-    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">PESO:</span><input type="number" id="input-weight" value="96.0" step="0.5" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">kg</span></div>
-    <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1 rounded text-[10px] font-bold transition">REGISTRAR</button>
+  <!-- CONTROLE BIOMÉTRICO -->
+  <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-epic gap-2">
+    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">ESTATURA:</span><input type="number" id="input-height" value="175" class="w-14 bg-slate-950 border border-amber-500/40 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-amber-400" /><span class="text-slate-400 text-[10px]">cm</span></div>
+    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">MASSA:</span><input type="number" id="input-weight" value="96.0" step="0.5" class="w-14 bg-slate-950 border border-amber-500/40 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-amber-400" /><span class="text-slate-400 text-[10px]">kg</span></div>
+    <button type="button" onclick="handleBiometricsSubmit()" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-300 px-3 py-1 rounded text-[10px] font-bold transition active:scale-95">REGISTRAR</button>
   </section>
 
-  <!-- ATRIBUTOS TÁTICOS -->
+  <!-- ATRIBUTOS MARCIAIS -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
-    <div class="flex justify-between items-center mb-2 px-1 font-hud text-[10px]">
-      <span class="text-slate-400">ATRIBUTOS DE COMBATE</span>
-      <button type="button" onclick="openExamModal()" class="bg-cyan-950 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg transition">⚙️ EXAME FÍSICO</button>
+    <div class="flex justify-between items-center mb-2 px-1 font-epic text-[10px]">
+      <span class="text-slate-400 tracking-wider">VIRTUDES DE COMBATE</span>
+      <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900">⚔️ PROVAÇÃO FÍSICA</button>
     </div>
-    <div class="grid grid-cols-4 gap-1.5 font-hud text-center">
-      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FORÇA</span><span id="stat-str" class="text-base font-bold text-rose-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">BLIND.</span><span id="stat-con" class="text-base font-bold text-amber-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">AGIL.</span><span id="stat-agi" class="text-base font-bold text-cyan-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FÔLEGO</span><span id="stat-end" class="text-base font-bold text-emerald-400">10</span></div>
+    <div class="grid grid-cols-4 gap-1.5 font-epic text-center">
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FORÇA</span><span id="stat-str" class="text-base font-bold text-rose-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">BLIND.</span><span id="stat-con" class="text-base font-bold text-amber-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">DESTREZA</span><span id="stat-agi" class="text-base font-bold text-cyan-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">VIGOR</span><span id="stat-end" class="text-base font-bold text-emerald-400">10</span></div>
     </div>
   </section>
 
   <!-- CORPO PRINCIPAL COM ABAS -->
   <main class="flex-1 flex flex-col gap-3">
 
-    <!-- ABA 1: MISSÕES -->
+    <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- RELATÓRIO MATINAL ZEPP -->
-      <div class="bg-gradient-to-r from-indigo-950/70 to-slate-900 border border-indigo-500/50 rounded-2xl p-3 shadow-lg font-hud">
+      <!-- CERCO SEMANAL (A GRANDE AMEAÇA DE GORGOROTH) -->
+      <div class="bg-gradient-to-r from-red-950/60 via-slate-900 to-slate-950 border border-red-700/50 rounded-2xl p-3.5 shadow-xl font-epic">
+        <div class="flex justify-between items-start mb-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+              <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest">O CERCO DA FORTALEZA</span>
+            </div>
+            <h3 id="boss-name" class="font-bold text-sm text-white tracking-wide">TROLL DE COMBATE DE GORGOROTH</h3>
+          </div>
+          <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold">EM COMBATE</span>
+        </div>
+        <div class="w-full bg-slate-950 rounded-full h-3 border border-red-950 overflow-hidden mb-1.5">
+          <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
+        </div>
+        <div class="flex justify-between text-[10px] text-slate-400 mb-2">
+          <span id="boss-hp-text">85.000 / 85.000 HP</span><span id="boss-hp-percent" class="text-red-400 font-bold">100%</span>
+        </div>
+        <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2">
+          <span class="text-sm">🛡️</span>
+          <span id="boss-story-log" class="leading-relaxed">As hostes da Sombra investem contra as muralhas. Cada marcha, vigília e golpe desferido nos treinos destrói a couraça da besta.</span>
+        </div>
+      </div>
+
+      <!-- DESPERTAR DA VIGÍLIA (SONO E PASSOS DO ZEPP) -->
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950/60 border border-indigo-500/40 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
           <div>
-            <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">RELATÓRIO MATINAL (ZEPP)</span></div>
-            <span class="text-[10px] text-slate-400 font-sans">Insira os dados do relógio ao acordar</span>
+            <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">DESPERTAR DA VIGÍLIA (ZEPP)</span></div>
+            <span class="text-[10px] text-slate-400 font-sans">Registo de descanso e patrulha ao alvorecer</span>
           </div>
           <span id="sleep-buff-badge" class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">PENDENTE</span>
         </div>
         <div class="grid grid-cols-2 gap-2 bg-slate-950/80 p-2 rounded-xl border border-indigo-950">
-          <div><label class="text-[9px] text-slate-400 block">PONTOS DE SONO:</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs" /></div>
-          <div><label class="text-[9px] text-slate-400 block">PASSOS TOTAIS:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs" /></div>
+          <div><label class="text-[9px] text-slate-400 block">PONTOS DE VIGÍLIA (SONO):</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
+          <div><label class="text-[9px] text-slate-400 block">PASSOS DA PATRULHA:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
         </div>
-        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-2 rounded-xl text-xs font-bold transition">REGISTRAR SONO & PASSOS</button>
+        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition">CONSAGRAR VIGÍLIA & PASSOS</button>
       </div>
 
-      <!-- HIDRATAÇÃO TÁTICA -->
-      <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
-        <div class="flex justify-between items-center mb-1.5 font-hud">
-          <div><span class="text-xs font-bold text-cyan-400 block">HIDRATAÇÃO TÁTICA (CON)</span><span class="text-[10px] text-slate-400 font-sans">Meta diária: 3.000 ml</span></div>
+      <!-- FONTES DA CIDADELA (HIDRATAÇÃO TÁTICA) -->
+      <div class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3 shadow-lg">
+        <div class="flex justify-between items-center mb-1.5 font-epic">
+          <div><span class="text-xs font-bold text-cyan-300 block">FONTES DA CIDADELA (BLINDAGEM)</span><span class="text-[10px] text-slate-400 font-sans">Quota diária de águas puras: 3.000 ml</span></div>
           <span id="water-current-text" class="text-xs text-cyan-300 font-bold">0 / 3.000 ml</span>
         </div>
         <div class="w-full bg-slate-950 rounded-full h-2.5 border border-cyan-950 overflow-hidden mb-2">
-          <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-600 to-cyan-300 h-full w-0 transition-all duration-300"></div>
+          <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-700 to-cyan-400 h-full w-0 transition-all duration-300"></div>
         </div>
-        <div class="grid grid-cols-4 gap-1.5 font-hud text-[10px]">
-          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+250 ml</button>
-          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+500 ml</button>
-          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+1.000 ml</button>
+        <div class="grid grid-cols-4 gap-1.5 font-epic text-[10px]">
+          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+250 ml</button>
+          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+500 ml</button>
+          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+1.000 ml</button>
           <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg transition">ZERAR</button>
         </div>
       </div>
 
-      <!-- INCURSÃO SEMANAL (BOSS RAID) -->
-      <div class="bg-slate-900/90 border border-rose-500/50 rounded-2xl p-3.5 shadow-xl font-hud">
-        <div class="flex justify-between items-start mb-2">
-          <div>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span><span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">INCURSÃO SEMANAL</span></div>
-            <h3 id="boss-name" class="font-bold text-sm text-white">AUTÔMATO BLINDADO MK-I</h3>
-          </div>
-          <span id="boss-status-badge" class="text-[9px] bg-rose-950 border border-rose-700 text-rose-300 px-2 py-0.5 rounded uppercase font-bold">ATIVO</span>
-        </div>
-        <div class="w-full bg-slate-950 rounded-full h-3 border border-rose-950 overflow-hidden mb-1.5">
-          <div id="boss-hp-bar" class="bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-400 h-full w-full transition-all duration-500"></div>
-        </div>
-        <div class="flex justify-between text-[10px] text-slate-400 mb-2">
-          <span id="boss-hp-text">50.000 / 50.000 HP</span><span id="boss-hp-percent" class="text-rose-400 font-bold">100%</span>
-        </div>
-        <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300">
-          📡 <span id="boss-story-log">Ameaça blindada em aproximação no setor. Cada treino registrado bombardeia a estrutura do inimigo.</span>
-        </div>
-      </div>
-
-      <!-- PROTOCOLO SPARKS (CALISTENIA) -->
-      <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg font-hud">
+      <!-- VIGÍLIA DOS GUARDIÕES (CALISTENIA / SPARKS) -->
+      <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
-          <div><span class="text-xs font-bold text-cyan-400 block">PROTOCOLO SPARKS (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 micro-sessões diárias</span></div>
-          <span id="sparks-counter" class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">0/4 CUMPRIDAS</span>
+          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 postos de treino diários</span></div>
+          <span id="sparks-counter" class="text-[10px] bg-amber-950/80 text-amber-300 px-2 py-0.5 rounded border border-amber-800/70">0/4 CUMPRIDOS</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-2">
-          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
-            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 01</span><span id="sparks-status-0" class="text-[9px] text-slate-500">PENDENTE</span></div>
+          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-amber-500 transition cursor-pointer">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">POSTO I</span><span id="sparks-status-0" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-0" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
-            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 02</span><span id="sparks-status-1" class="text-[9px] text-slate-500">PENDENTE</span></div>
+          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-amber-500 transition cursor-pointer">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">POSTO II</span><span id="sparks-status-1" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-1" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
-            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 03</span><span id="sparks-status-2" class="text-[9px] text-slate-500">PENDENTE</span></div>
+          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-amber-500 transition cursor-pointer">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">POSTO III</span><span id="sparks-status-2" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-2" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-3" onclick="toggleSparksSlot(3)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
-            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 04</span><span id="sparks-status-3" class="text-[9px] text-slate-500">PENDENTE</span></div>
+          <button type="button" id="sparks-btn-3" onclick="toggleSparksSlot(3)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-amber-500 transition cursor-pointer">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">POSTO IV</span><span id="sparks-status-3" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-3" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
         </div>
       </div>
 
-      <!-- SÉRIES RÁPIDAS -->
+      <!-- SÉRIES RÁPIDAS DE COMBATE -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-        <span class="text-xs font-hud text-slate-400 block mb-2">MICRO-TREINO TÁTICO RÁPIDO</span>
-        <div class="grid grid-cols-3 gap-1.5 font-hud">
-          <button type="button" onclick="handleQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
-          <button type="button" onclick="handleQuickRep('Barras', 5, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
-          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span></button>
+        <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS DE ARMAS</span>
+        <div class="grid grid-cols-3 gap-1.5 font-epic">
+          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FORÇA)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FORÇA)</span></button>
+          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(BLINDAGEM)</span></button>
         </div>
       </div>
 
-      <!-- TCX / GPX -->
-      <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer">
+      <!-- INTEGRAÇÃO TCX / GPX -->
+      <div class="border-2 border-dashed border-amber-500/30 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition">
         <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" />
-        <p class="font-hud font-bold text-xs text-white">IMPORTAR TREINO ZEPP (.TCX OU .GPX)</p>
-        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5">Corrida, Caminhada, Pilates ou HIIT</p>
+        <p class="font-epic font-bold text-xs text-amber-300 tracking-wider">IMPORTAR MARCHA REGISTRADA (.TCX OU .GPX)</p>
+        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5 font-sans">Marcha dos Vaus, Travessia, Pilates ou Treino de Lança</p>
       </div>
 
       <!-- SALVAGUARDA DE DADOS -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-hud">
-        <div><span class="text-xs font-bold text-white block">SALVAGUARDA DE DADOS</span><span class="text-[10px] text-slate-400 font-sans">Proteja o seu progresso</span></div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-epic">
+        <div><span class="text-xs font-bold text-white block">ARQUIVO DE NÚMENOR</span><span class="text-[10px] text-slate-400 font-sans">Guarde a história da sua linhagem</span></div>
         <div class="flex gap-2 text-[10px]">
-          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-cyan-400 border border-cyan-500/40 px-2.5 py-1.5 rounded-lg transition">EXPORTAR</button>
-          <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center transition">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
+          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-amber-300 border border-amber-500/40 px-2.5 py-1.5 rounded-lg transition hover:bg-slate-700">EXPORTAR</button>
+          <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center transition hover:bg-slate-700">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
         </div>
       </div>
     </div>
 
-    <!-- ABA 2: PESO -->
+    <!-- ABA 2: MASSA & FORMA -->
     <div id="tab-weight" class="tab-content hidden flex flex-col gap-3">
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
-        <span class="font-hud text-xs font-bold text-white uppercase block mb-3">HISTÓRICO BIOMÉTRICO</span>
-        <div id="weight-log-list" class="flex flex-col gap-1.5 max-h-72 overflow-y-auto custom-scroll"></div>
+        <span class="font-epic text-xs font-bold text-amber-300 uppercase block mb-3 tracking-wider">REGISTO DE MASSA CORPORAL</span>
+        <div id="weight-log-list" class="flex flex-col gap-1.5 max-h-72 overflow-y-auto custom-scroll font-epic"></div>
       </div>
     </div>
 
-    <!-- ABA 3: DIÁRIO (CALENDÁRIO INTERATIVO COMPLETO) -->
-    <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-hud">
+    <!-- ABA 3: DIÁRIO DA CAMPANHA (CALENDÁRIO INTERATIVO) -->
+    <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-epic">
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-lg">
         <div class="flex justify-between items-center mb-3">
-          <span id="calendar-month-year" class="text-sm font-bold text-white uppercase tracking-wider">SETEMBRO 2026</span>
+          <span id="calendar-month-year" class="text-sm font-bold text-amber-300 uppercase tracking-widest">SETEMBRO 2026</span>
           <div class="flex gap-2 text-[9px]">
-            <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> AERÓBICO</span>
-            <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> FORÇA</span>
+            <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> MARCHA</span>
+            <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> COMBATE</span>
           </div>
         </div>
-
-        <!-- Cabeçalho dos Dias da Semana -->
         <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 mb-2">
           <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
         </div>
-
-        <!-- Grelha dos Dias -->
         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
       </div>
 
@@ -244,29 +249,29 @@
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex-1 shadow-lg">
         <span class="text-xs text-amber-400 block mb-2" id="selected-date-label">REGISTO DO DIA</span>
         <div id="selected-day-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto custom-scroll font-sans">
-          <p class="text-xs text-slate-500 text-center py-3 font-hud">Selecione um dia do calendário.</p>
+          <p class="text-xs text-slate-500 text-center py-3 font-epic">Selecione um dia da vigília.</p>
         </div>
       </div>
     </div>
 
-    <!-- ABA 4: CÂMERA IA -->
+    <!-- ABA 4: OLHO DE PALANTÍR (CÂMERA IA) -->
     <div id="tab-camera" class="tab-content hidden flex flex-col gap-2">
-      <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-cyan-500/40 flex items-center justify-center">
+      <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-amber-500/40 flex items-center justify-center">
         <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
-        <div class="absolute top-2 right-2 bg-slate-900/80 border border-cyan-400 px-3 py-1 rounded-xl text-center font-hud">
-          <span class="text-[9px] text-slate-400 block">SENSOR</span><span class="text-xl font-bold text-cyan-400">ATIVO</span>
+        <div class="absolute top-2 right-2 bg-slate-900/80 border border-amber-400 px-3 py-1 rounded-xl text-center font-epic">
+          <span class="text-[9px] text-slate-400 block">VISÃO</span><span class="text-base font-bold text-amber-300">ATIVA</span>
         </div>
       </div>
-      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-cyan-600 text-white font-hud text-xs py-3 rounded-xl transition">INICIAR CÂMERA</button>
+      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-slate-800 border border-amber-500/50 hover:bg-slate-700 text-amber-300 font-epic text-xs py-3 rounded-xl transition">INVOCAR SENSOR ÓPTICO</button>
     </div>
   </main>
 
   <!-- NAVEGAÇÃO INFERIOR -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-hud text-[10px]">
-    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center cursor-pointer">⚡ MISSÕES</button>
-    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center cursor-pointer">⚖️ PESO</button>
-    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center cursor-pointer">📅 DIÁRIO</button>
-    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center cursor-pointer">👁️ CÂMERA</button>
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-epic text-[10px]">
+    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-amber-400 flex flex-col items-center cursor-pointer">⚔️ MISSÕES</button>
+    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center cursor-pointer">⚖️ MASSA</button>
+    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center cursor-pointer">📜 CRÔNICAS</button>
+    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center cursor-pointer">👁️ PALANTÍR</button>
   </nav>
 
   <script>
@@ -274,7 +279,7 @@
       const toast = document.getElementById('toast');
       if (!toast) return;
       toast.textContent = msg;
-      toast.className = `fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform translate-y-0 opacity-100 ${isSuccess ? 'bg-cyan-600 border-cyan-400' : 'bg-rose-600 border-rose-400'}`;
+      toast.className = `fixed top-3 left-3 right-3 z-50 text-amber-200 font-epic text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform translate-y-0 opacity-100 ${isSuccess ? 'bg-slate-900 border-amber-500/70 text-amber-300' : 'bg-red-950 border-red-500 text-red-200'}`;
       setTimeout(() => { toast.className = toast.className.replace('translate-y-0 opacity-100', '-translate-y-24 opacity-0'); }, 3000);
     }
 
@@ -290,20 +295,30 @@
     const todayStr = new Date().toDateString();
     const currentWeekId = getCurrentWeekId();
 
+    // HIERARQUIA DE PATENTES DÚNEDAIN / GONDOR
+    const RANK_NAMES = [
+      "SENTINELA DE FRONTEIRA I", "SENTINELA DE FRONTEIRA II", "SENTINELA DE FRONTEIRA III", "SENTINELA DE FRONTEIRA IV",
+      "BATEDOR DE ITHILIEN I", "BATEDOR DE ITHILIEN II", "BATEDOR DE ITHILIEN III", "BATEDOR DE ITHILIEN IV",
+      "PATRULHEIRO DÚNEDAIN I", "PATRULHEIRO DÚNEDAIN II", "PATRULHEIRO DÚNEDAIN III", "PATRULHEIRO DÚNEDAIN IV",
+      "CAPITÃO DA GUARDA DA TORRE I", "CAPITÃO DA GUARDA DA TORRE II", "CAPITÃO DA GUARDA DA TORRE III", "CAPITÃO DA GUARDA DA TORRE IV",
+      "CAMPEÃO DA ÁRVORE BRANCA I", "CAMPEÃO DA ÁRVORE BRANCA II", "CAMPEÃO DA ÁRVORE BRANCA III",
+      "REI DOS HOMENS (RANK S)"
+    ];
+
     let player = {
-      level: 1, xp: 0, maxXp: 400,
+      level: 1, xp: 0, maxXp: 800,
       str: 10, con: 10, agi: 10, end: 10,
       weight: 96.0, heightCm: 175, streak: 1, avatarImage: null,
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
-      bossRaid: { weekId: currentWeekId, name: "AUTÔMATO BLINDADO MK-I", maxHp: 50000, currentHp: 50000, defeated: false },
+      bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false },
       examBenchmark: { pushups: 20, pullups: 3, abs: 25, run10m: 1.5, runMax: 3.0 },
       sparksRoutine: { date: todayStr, slots: [false, false, false, false] },
       weightHistory: [{ date: new Date().toISOString(), weight: 96.0 }],
       history: []
     };
 
-    // Resgate de Dados
+    // Recuperação Inteligente de Progresso
     try {
       let bestSave = null;
       for (let i = 0; i < localStorage.length; i++) {
@@ -312,18 +327,35 @@
           try {
             const data = JSON.parse(localStorage.getItem(k));
             if (data && typeof data === 'object') {
-              if (!bestSave || ((data.level || 1) * 1000 + (data.xp || 0)) > ((bestSave.level || 1) * 1000 + (bestSave.xp || 0))) {
+              if (!bestSave || ((data.level || 1) * 2000 + (data.xp || 0)) > ((bestSave.level || 1) * 2000 + (bestSave.xp || 0))) {
                 bestSave = data;
               }
             }
           } catch(e){}
         }
       }
-      if (bestSave) player = Object.assign(player, bestSave);
+      if (bestSave) {
+        player = Object.assign(player, bestSave);
+      }
     } catch (e) {}
 
     const savedAvatar = localStorage.getItem('hero_custom_avatar');
     if (savedAvatar) player.avatarImage = savedAvatar;
+
+    // Recalibra curva de XP realista (Nível * 800)
+    player.maxXp = Math.max(800, (player.level || 1) * 800);
+
+    // Ajusta o Chefe Semanal para 85.000 HP se estiver com o padrão antigo
+    if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
+      const bossHpScale = 85000 + ((player.level || 1) * 5000);
+      player.bossRaid = {
+        weekId: currentWeekId,
+        name: "TROLL DE COMBATE DE GORGOROTH",
+        maxHp: bossHpScale,
+        currentHp: bossHpScale,
+        defeated: false
+      };
+    }
 
     if (!player.sparksRoutine || !Array.isArray(player.sparksRoutine.slots) || player.sparksRoutine.slots.length !== 4 || player.sparksRoutine.date !== todayStr) {
       player.sparksRoutine = { date: todayStr, slots: [false, false, false, false] };
@@ -331,28 +363,18 @@
     if (!player.hydration || player.hydration.date !== todayStr) {
       player.hydration = { date: todayStr, currentMl: 0, goalMl: 3000, completed: false };
     }
-    if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId) {
-      player.bossRaid = { weekId: currentWeekId, name: "AUTÔMATO BLINDADO MK-I", maxHp: 50000, currentHp: 50000, defeated: false };
-    }
     if (!Array.isArray(player.history)) player.history = [];
     if (!Array.isArray(player.weightHistory) || !player.weightHistory.length) {
       player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight || 96.0 }];
     }
 
-    const RANK_NAMES = [
-      "RECRUTA E1", "RECRUTA E2", "RECRUTA E3", "RECRUTA E4",
-      "BATEDOR D1", "BATEDOR D2", "BATEDOR D3", "BATEDOR D4",
-      "GUERREIRO C1", "GUERREIRO C2", "GUERREIRO C3", "GUERREIRO C4",
-      "COMANDANTE B1", "COMANDANTE B2", "COMANDANTE B3", "COMANDANTE B4",
-      "LENDA A1", "LENDA A2", "LENDA A3", "SUPREMO (RANK S)"
-    ];
-
     function calculateCombatPower() {
       const s = player.str || 10, c = player.con || 10, a = player.agi || 10, e = player.end || 10;
       const lvl = player.level || 1, streak = player.streak || 1;
-      return Math.round((s * 20) + (c * 20) + (a * 25) + (e * 20) + (lvl * 110) + (streak * 35) + ((player.xp || 0) * 0.15));
+      return Math.round((s * 22) + (c * 22) + (a * 26) + (e * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
     }
 
+    // Avatar com Estilo Akira Toriyama Preservado
     function handleAvatarUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -369,7 +391,7 @@
           player.avatarImage = compressed;
           try { localStorage.setItem('hero_custom_avatar', compressed); } catch(err){}
           renderToriyamaAvatar();
-          showToast("Avatar atualizado com sucesso!");
+          showToast("Retrato de Gominsk consagrado!");
         };
         img.src = e.target.result;
       };
@@ -386,11 +408,11 @@
       const heightM = (player.heightCm || 175) / 100;
       const imc = (player.weight || 96) / (heightM * heightM);
 
-      document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ATLÉTICO' : (imc < 30 ? 'PESADO' : 'COLOSSO')}`;
+      document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ESGUIO' : (imc < 30 ? 'ATLÉTICO' : 'COLOSSO')}`;
       document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
-      document.getElementById('combat-power-badge').textContent = `⚡ PODER: ${calculateCombatPower().toLocaleString('pt-BR')}`;
+      document.getElementById('combat-power-badge').textContent = `⚡ BRAVURA: ${calculateCombatPower().toLocaleString('pt-BR')}`;
 
-      container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400 aura-s' : (lvl >= 13 ? 'border-cyan-400' : 'border-slate-700')} rounded-xl overflow-hidden flex items-center justify-center shrink-0`;
+      container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400 aura-s' : (lvl >= 13 ? 'border-amber-400' : 'border-amber-600/60')} rounded-xl overflow-hidden flex items-center justify-center shrink-0`;
 
       const avatarToUse = player.avatarImage || localStorage.getItem('hero_custom_avatar');
       if (avatarToUse) {
@@ -403,135 +425,22 @@
       }
     }
 
-    function renderSparksRoutine() {
-      let completedCount = 0;
-      for (let i = 0; i < 4; i++) {
-        const isDone = !!player.sparksRoutine.slots[i];
-        if (isDone) completedCount++;
-        const btn = document.getElementById(`sparks-btn-${i}`);
-        const statusText = document.getElementById(`sparks-status-${i}`);
-        const checkIcon = document.getElementById(`sparks-check-${i}`);
-        if (btn && statusText && checkIcon) {
-          if (isDone) {
-            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-emerald-950/70 border-emerald-500/60 text-emerald-300";
-            statusText.textContent = "CONCLUÍDA (+25 XP)";
-            statusText.className = "text-[9px] text-emerald-400";
-            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black bg-emerald-500 border-emerald-400 text-slate-950";
-          } else {
-            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500";
-            statusText.textContent = "PENDENTE";
-            statusText.className = "text-[9px] text-slate-500";
-            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent";
-          }
-        }
-      }
-      const counterEl = document.getElementById('sparks-counter');
-      if (counterEl) counterEl.textContent = `${completedCount}/4 CUMPRIDAS`;
-    }
-
-    function toggleSparksSlot(index) {
-      player.sparksRoutine.slots[index] = !player.sparksRoutine.slots[index];
-      const isDone = player.sparksRoutine.slots[index];
-      if (isDone) {
-        const statGain = (index % 2 === 0) ? 'STR' : 'CON';
-        addXP(25, statGain);
-        dealBossDamage(1500, `Sparks 0${index + 1}`);
-        player.history.unshift({
-          nome: `Sparks: Sessão 0${index + 1}`,
-          detalhes: `Micro-sessão de calistenia (+1 ${statGain})`,
-          tipo: "forca",
-          data: new Date().toISOString(),
-          xp: 25
-        });
-        showToast(`Sessão 0${index + 1} Concluída! (+25 XP e +1 ${statGain})`);
-      } else {
-        showToast(`Sessão 0${index + 1} desmarcada.`, false);
-      }
-      if (player.history.length > 50) player.history.pop();
-      updateUI();
-    }
-
-    function handleManualZeppSubmit() {
-      const sleepInput = parseInt(document.getElementById('input-manual-sleep').value) || 0;
-      const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
-
-      if (sleepInput <= 0 && stepsInput <= 0) {
-        showToast("Insira ao menos a pontuação de sono ou os passos.", false);
-        return;
-      }
-
-      player.morningReport = { date: todayStr, sleepScore: sleepInput, steps: stepsInput, completed: true };
-
-      let bonusXp = 0;
-      if (sleepInput >= 70) {
-        bonusXp += 50;
-        dealBossDamage(1500, "Descanso Pleno");
-      } else if (sleepInput > 0) {
-        bonusXp += 25;
-        dealBossDamage(800, "Descanso Regular");
-      }
-
-      if (stepsInput > 0) {
-        const stepXp = Math.min(100, Math.round((stepsInput / 1000) * 10));
-        bonusXp += stepXp;
-        dealBossDamage(Math.round((stepsInput / 1000) * 500), "Patrulha de Passos");
-      }
-
-      addXP(bonusXp, 'END');
-      player.history.unshift({
-        nome: "RELATÓRIO MATINAL ZEPP",
-        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos`,
-        tipo: "aero",
-        data: new Date().toISOString(),
-        xp: bonusXp
-      });
-      if (player.history.length > 50) player.history.pop();
-
-      document.getElementById('input-manual-sleep').value = '';
-      document.getElementById('input-manual-steps').value = '';
-      updateUI();
-      showToast(`Relatório Registrado! (+${bonusXp} XP)`);
-    }
-
-    function addWater(ml) {
-      player.hydration.currentMl = Math.min(6000, player.hydration.currentMl + ml);
-      if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
-        player.hydration.completed = true;
-        addXP(30, 'CON');
-        player.history.unshift({
-          nome: "META DE HIDRATAÇÃO",
-          detalhes: `Meta de 3.000 ml batida com sucesso`,
-          tipo: "forca",
-          data: new Date().toISOString(),
-          xp: 30
-        });
-        showToast("META DE ÁGUA ATINGIDA! (+30 XP e +1 CON)");
-      } else {
-        showToast(`+${ml} ml registrados!`);
-      }
-      updateUI();
-    }
-
-    function resetWater() {
-      player.hydration.currentMl = 0; player.hydration.completed = false;
-      updateUI();
-      showToast("Contador de água zerado.", false);
-    }
-
+    // MECÂNICA DO CERCO (BOSS RAID REBALANCEADA)
     function dealBossDamage(damage, sourceName) {
       if (!player.bossRaid || player.bossRaid.defeated) return;
       player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - damage);
+
       if (player.bossRaid.currentHp <= 0) {
         player.bossRaid.defeated = true;
-        addXP(300, 'STR');
+        addXP(400, 'STR');
         player.history.unshift({
-          nome: "🏆 INCURSÃO SEMANAL VENCIDA",
-          detalhes: `${player.bossRaid.name} derrotado (+300 XP)`,
+          nome: "🏆 VITÓRIA NO CERCO DE MINAS TIRITH",
+          detalhes: `${player.bossRaid.name} foi derrubado (+400 XP)`,
           tipo: "forca",
           data: new Date().toISOString(),
-          xp: 300
+          xp: 400
         });
-        showToast("INCURSÃO VITORIOSA! CHEFE DESTRUÍDO! (+300 XP)");
+        showToast("A BESTA CAIU! VITÓRIA NAS MURALHAS! (+400 XP)");
       }
       renderBossRaid();
     }
@@ -543,9 +452,153 @@
       document.getElementById('boss-hp-bar').style.width = `${percent}%`;
       document.getElementById('boss-hp-text').textContent = `${raid.currentHp.toLocaleString('pt-BR')} / ${raid.maxHp.toLocaleString('pt-BR')} HP`;
       document.getElementById('boss-hp-percent').textContent = `${percent}%`;
-      document.getElementById('boss-status-badge').textContent = raid.defeated ? "NEUTRALIZADO" : "ATIVO";
+
+      const badge = document.getElementById('boss-status-badge');
+      const log = document.getElementById('boss-story-log');
+
+      if (raid.defeated) {
+        badge.textContent = "ABATIDO";
+        badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold";
+        log.textContent = "A fortaleza resistiu! A besta de Mordor jaz derrotada diante da disciplina das hostes de Gominsk.";
+      } else {
+        badge.textContent = "EM COMBATE";
+        badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold";
+        if (percent > 65) {
+          log.textContent = "O Troll de Gorgoroth avança com couraça espessa. Marchas e patrulhas desgastam a sua guarda externa.";
+        } else if (percent > 30) {
+          log.textContent = "Couraça despedaçada! Os treinos contínuos abriram fendas na defesa da fera. Mantenha os ataques marciais.";
+        } else {
+          log.textContent = "ESTRUTURA CRÍTICA! A fera titubeia diante dos portões. Desfira os golpes finais com a vigília de armas!";
+        }
+      }
     }
 
+    // VIGÍLIA DOS GUARDIÕES (CALISTENIA SPARKS)
+    function renderSparksRoutine() {
+      let completedCount = 0;
+      for (let i = 0; i < 4; i++) {
+        const isDone = !!player.sparksRoutine.slots[i];
+        if (isDone) completedCount++;
+        const btn = document.getElementById(`sparks-btn-${i}`);
+        const statusText = document.getElementById(`sparks-status-${i}`);
+        const checkIcon = document.getElementById(`sparks-check-${i}`);
+        if (btn && statusText && checkIcon) {
+          if (isDone) {
+            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-amber-950/60 border-amber-500/70 text-amber-200 transition cursor-pointer";
+            statusText.textContent = "CUMPRIDO (+25 XP)";
+            statusText.className = "text-[9px] text-amber-300 font-bold";
+            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black bg-amber-500 border-amber-300 text-slate-950";
+          } else {
+            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-amber-500 transition cursor-pointer";
+            statusText.textContent = "PENDENTE";
+            statusText.className = "text-[9px] text-slate-500";
+            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent";
+          }
+        }
+      }
+      const counterEl = document.getElementById('sparks-counter');
+      if (counterEl) counterEl.textContent = `${completedCount}/4 CUMPRIDOS`;
+    }
+
+    function toggleSparksSlot(index) {
+      player.sparksRoutine.slots[index] = !player.sparksRoutine.slots[index];
+      const isDone = player.sparksRoutine.slots[index];
+      if (isDone) {
+        const statGain = (index % 2 === 0) ? 'STR' : 'CON';
+        addXP(25, statGain);
+        dealBossDamage(500, `Posto 0${index + 1}`);
+        player.history.unshift({
+          nome: `Vigília: Posto 0${index + 1}`,
+          detalhes: `Treino de calistenia (+1 ${statGain})`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 25
+        });
+
+        // Bônus por fechar os 4 postos do dia
+        if (player.sparksRoutine.slots.every(Boolean)) {
+          addXP(50, 'CON');
+          dealBossDamage(1000, "Vigília Plena das Muralhas");
+          showToast("VIGÍLIA COMPLETA 4/4! BÔNUS DE +50 XP");
+        } else {
+          showToast(`Posto 0${index + 1} Consagrado! (+25 XP e +1 ${statGain})`);
+        }
+      } else {
+        showToast(`Posto 0${index + 1} desmarcado.`, false);
+      }
+      if (player.history.length > 50) player.history.pop();
+      updateUI();
+    }
+
+    // REGISTO MATINAL DO ZEPP COM DANO REBALANCEADO
+    function handleManualZeppSubmit() {
+      const sleepInput = parseInt(document.getElementById('input-manual-sleep').value) || 0;
+      const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
+
+      if (sleepInput <= 0 && stepsInput <= 0) {
+        showToast("Insira ao menos os pontos de vigília ou passos.", false);
+        return;
+      }
+
+      player.morningReport = { date: todayStr, sleepScore: sleepInput, steps: stepsInput, completed: true };
+
+      let bonusXp = 0;
+      if (sleepInput >= 70) {
+        bonusXp += 40;
+        dealBossDamage(1000, "Bênção do Descanso Pleno");
+      } else if (sleepInput > 0) {
+        bonusXp += 20;
+        dealBossDamage(500, "Descanso da Guarda");
+      }
+
+      if (stepsInput > 0) {
+        // 150 de dano e 10 XP por 1.000 passos (balanceado)
+        const stepXp = Math.min(80, Math.round((stepsInput / 1000) * 8));
+        bonusXp += stepXp;
+        const stepDamage = Math.round((stepsInput / 1000) * 150);
+        dealBossDamage(stepDamage, "Patrulha das Fronteiras");
+      }
+
+      addXP(bonusXp, 'END');
+      player.history.unshift({
+        nome: "DESPERTAR DA VIGÍLIA",
+        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos de patrulha`,
+        tipo: "aero", data: new Date().toISOString(), xp: bonusXp
+      });
+
+      document.getElementById('input-manual-sleep').value = '';
+      document.getElementById('input-manual-steps').value = '';
+      updateUI();
+      showToast(`Vigília Registrada com Glória! (+${bonusXp} XP)`);
+    }
+
+    // FONTES DA CIDADELA (ÁGUA)
+    function addWater(ml) {
+      player.hydration.currentMl = Math.min(6000, player.hydration.currentMl + ml);
+      if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
+        player.hydration.completed = true;
+        addXP(30, 'CON');
+        player.history.unshift({
+          nome: "FONTES DA CIDADELA SACIADAS",
+          detalhes: "Meta diária de águas puras cumprida",
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 30
+        });
+        showToast("ÁGUAS DA CIDADELA COMPLETAS! (+30 XP e +1 BLINDAGEM)");
+      } else {
+        showToast(`+${ml} ml de águas puras consumidas!`);
+      }
+      updateUI();
+    }
+
+    function resetWater() {
+      player.hydration.currentMl = 0; player.hydration.completed = false;
+      updateUI();
+      showToast("Fontes reiniciadas.", false);
+    }
+
+    // SISTEMA DE PROGRESSÃO DE PATENTE (CURVA CONTROLADA)
     function addXP(amount, type) {
       player.xp += amount;
       if (type === 'STR') player.str = (player.str || 10) + 1;
@@ -553,29 +606,32 @@
       if (type === 'AGI') player.agi = (player.agi || 10) + 1;
       if (type === 'END') player.end = (player.end || 10) + 1;
 
+      // Cada patente requer Nível * 800 XP
       while (player.xp >= player.maxXp && player.level < 20) {
         player.xp -= player.maxXp;
         player.level += 1;
-        player.maxXp = Math.round(player.maxXp * 1.25);
-        showToast(`SUBIU DE NÍVEL! NOVO RANK: ${RANK_NAMES[player.level - 1]}`);
+        player.maxXp = player.level * 800;
+        showToast(`NOVA PATENTE ALCANÇADA: ${RANK_NAMES[player.level - 1]}!`);
       }
       updateUI();
     }
 
     function handleQuickRep(nome, reps, stat) {
-      const xp = reps * 3;
+      const xp = reps * 2;
       addXP(xp, stat);
-      dealBossDamage(reps * 20, nome);
+      // Dano balanceado para micro-repetições
+      const dmg = Math.round(reps * 8);
+      dealBossDamage(dmg, nome);
       player.history.unshift({
-        nome: `Calistenia: ${nome}`,
-        detalhes: `${reps} repetições validadas (+1 ${stat})`,
+        nome: nome,
+        detalhes: `${reps} repetições consagradas (+1 ${stat})`,
         tipo: 'forca',
         data: new Date().toISOString(),
         xp: xp
       });
       if (player.history.length > 50) player.history.pop();
       updateUI();
-      showToast(`+${reps} ${nome} registradas! (+${xp} XP)`);
+      showToast(`+${reps} manobras de ${nome}! (+${xp} XP)`);
     }
 
     function handleBiometricsSubmit() {
@@ -586,13 +642,13 @@
         player.weightHistory.push({ date: new Date().toISOString(), weight: w });
         addXP(20, 'END');
         player.history.unshift({
-          nome: "PESAGEM REGISTRADA",
+          nome: "REGISTO DE MASSA",
           detalhes: `${w.toFixed(1)} kg • ${h} cm`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 20
         });
-        showToast(`Peso atualizado: ${w.toFixed(1)} kg (+20 XP)`);
+        showToast(`Massa consagrada: ${w.toFixed(1)} kg (+20 XP)`);
         updateUI();
       }
     }
@@ -622,24 +678,25 @@
       player.end = Math.max(10, Math.round(rmax * 4.5));
 
       addXP(50, null);
+      dealBossDamage(2000, "Golpe da Provação");
       player.history.unshift({
-        nome: "EXAME DE APTIDÃO FÍSICA",
-        detalhes: `FOR ${player.str} • CON ${player.con} • AGI ${player.agi} • END ${player.end}`,
+        nome: "PROVAÇÃO MARCIAL CONCLUÍDA",
+        detalhes: `FOR ${player.str} • BLIND ${player.con} • DEST ${player.agi} • VIG ${player.end}`,
         tipo: "forca",
         data: new Date().toISOString(),
         xp: 50
       });
       closeExamModal();
-      showToast(`EXAME CONCLUÍDO! PODER: ${calculateCombatPower()}`);
+      showToast(`PROVAÇÃO CONSAGRADA! BRAVURA: ${calculateCombatPower()}`);
       updateUI();
     }
 
     function exportBackupData() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(player, null, 2));
       const a = document.createElement('a'); a.href = dataStr;
-      a.download = `hero_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `cronicas_gominsk_${new Date().toISOString().slice(0,10)}.json`;
       a.click(); a.remove();
-      showToast("Backup gerado e baixado!");
+      showToast("Crônicas de Gominsk arquivadas!");
     }
 
     function importBackupData(event) {
@@ -652,13 +709,14 @@
           if (imported && typeof imported.level === 'number') {
             player = Object.assign(player, imported);
             updateUI();
-            showToast("Dados Restaurados com Sucesso!");
+            showToast("História de Gominsk Restaurada!");
           }
-        } catch(err) { showToast("Arquivo inválido.", false); }
+        } catch(err) { showToast("Arquivo ilegível.", false); }
       };
       reader.readAsText(file);
     }
 
+    // LEITOR DE MARCHA TCX / GPX REBALANCEADO
     document.getElementById('tcx-input').addEventListener('change', function(e) {
       const file = e.target.files && event.target.files[0];
       const statusMsg = document.getElementById('tcx-status-msg');
@@ -672,32 +730,35 @@
           if (laps && laps.length > 0) {
             const lap = laps[0];
             const notesElem = xml.getElementsByTagName("Notes")[0];
-            const rawName = (notesElem && notesElem.textContent.trim()) || "Treino Zepp";
+            const rawName = (notesElem && notesElem.textContent.trim()) || "Treino Marcial";
             const meters = Number(lap.getElementsByTagName("DistanceMeters")[0]?.textContent || 0);
             const totalSec = Number(lap.getElementsByTagName("TotalTimeSeconds")[0]?.textContent || 0);
             const km = Number((meters / 1000).toFixed(2));
             const min = Math.round(totalSec / 60);
 
-            const xpTotal = Math.max(30, Math.round(km * 110 + min * 10));
+            // Dano calibrado: Marcha forte de 5 km = ~3.500 dano no Boss
+            const xpTotal = Math.max(30, Math.round(km * 75 + min * 6));
+            const bossDamage = Math.round(km > 0 ? (km * 600 + min * 25) : (min * 70));
+
             addXP(xpTotal, km > 0 ? 'END' : 'CON');
-            dealBossDamage(Math.round(km > 0 ? km * 1000 : min * 50), rawName);
+            dealBossDamage(bossDamage, rawName);
             player.history.unshift({
               nome: rawName.toUpperCase(),
-              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min de sessão`,
+              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min de marcha armada`,
               tipo: km > 0 ? 'aero' : 'forca',
               data: new Date().toISOString(),
               xp: xpTotal
             });
-            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP)`;
-            showToast(`${rawName} Concluído! (+${xpTotal} XP)`);
+            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP e -${bossDamage.toLocaleString('pt-BR')} HP no Boss)`;
+            showToast(`${rawName} Concluído com Glória!`);
             updateUI();
           }
-        } catch(err) { statusMsg.textContent = "Erro na leitura do TCX."; }
+        } catch(err) { statusMsg.textContent = "Erro na leitura do papiro TCX."; }
       };
       reader.readAsText(file);
     });
 
-    // MÓDULO CALENDÁRIO INTERATIVO
+    // MÓDULO DO DIÁRIO DAS CRÔNICAS (CALENDÁRIO INTERATIVO)
     let selectedCalendarDay = new Date().getDate();
 
     function renderCalendarModule() {
@@ -715,14 +776,12 @@
       const firstDayIndex = new Date(year, month, 1).getDay();
       const totalDays = new Date(year, month + 1, 0).getDate();
 
-      // Espaçadores do início do mês
       for (let i = 0; i < firstDayIndex; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.className = "py-2.5 text-slate-800 opacity-20";
         grid.appendChild(emptyCell);
       }
 
-      // Agrupa histórico por dia do mês atual
       const eventsByDay = {};
       (player.history || []).forEach(item => {
         if (!item.data) return;
@@ -750,10 +809,10 @@
         }
 
         cell.className = `py-2 rounded-xl flex flex-col items-center justify-center cursor-pointer border transition ${
-          isSelected ? 'border-cyan-400 bg-cyan-950/60 text-white font-bold' : (
-            hasEvents ? 'border-slate-700 bg-slate-800/60 text-slate-200' : 'border-slate-900 bg-slate-950/30 text-slate-500'
+          isSelected ? 'border-amber-400 bg-amber-950/60 text-amber-200 font-bold' : (
+            hasEvents ? 'border-slate-700 bg-slate-800/60 text-slate-200' : 'border-slate-900 bg-slate-950/30 text-slate-600'
           )
-        } hover:border-cyan-500`;
+        } hover:border-amber-500`;
 
         cell.innerHTML = `
           <span>${day}</span>
@@ -777,10 +836,10 @@
       const list = document.getElementById('selected-day-list');
       if (!label || !list) return;
 
-      label.textContent = `MISSÕES DE ${day} DE ${monthName.toUpperCase()}`;
+      label.textContent = `CRÔNICAS DE ${day} DE ${monthName.toUpperCase()}`;
 
       if (!events || !events.length) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-hud">Nenhuma atividade registrada neste dia.</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum feito marcial registrado nesta data.</p>`;
         return;
       }
 
@@ -790,10 +849,10 @@
         return `
           <div class="bg-slate-950 border ${isAero ? 'border-emerald-950' : 'border-rose-950'} p-2 rounded-xl flex items-center justify-between text-xs">
             <div>
-              <span class="font-hud font-bold text-white block text-[11px]">${e.nome}</span>
+              <span class="font-epic font-bold text-white block text-[11px]">${e.nome}</span>
               <span class="text-[10px] text-slate-400">${e.detalhes} ${timeStr ? '• ' + timeStr : ''}</span>
             </div>
-            <span class="font-hud ${isAero ? 'text-emerald-400' : 'text-rose-400'} font-bold text-xs shrink-0 ml-2">+${e.xp} XP</span>
+            <span class="font-epic ${isAero ? 'text-emerald-400' : 'text-rose-400'} font-bold text-xs shrink-0 ml-2">+${e.xp} XP</span>
           </div>
         `;
       }).join('');
@@ -804,7 +863,7 @@
         const el = document.getElementById(`tab-${t}`);
         const btn = document.getElementById(`nav-btn-${t}`);
         if (el) el.classList.toggle('hidden', t !== tabId);
-        if (btn) btn.className = t === tabId ? "text-cyan-400 flex flex-col items-center cursor-pointer" : "text-slate-500 flex flex-col items-center cursor-pointer";
+        if (btn) btn.className = t === tabId ? "text-amber-400 flex flex-col items-center cursor-pointer" : "text-slate-500 flex flex-col items-center cursor-pointer";
       });
       if (tabId === 'calendar') renderCalendarModule();
       if (tabId === 'weight') renderWeightModule();
@@ -814,7 +873,7 @@
       const list = document.getElementById('weight-log-list');
       if (!list) return;
       list.innerHTML = (player.weightHistory || []).slice().reverse().map(item => `
-        <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-xl flex justify-between text-xs font-hud">
+        <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-xl flex justify-between text-xs font-epic">
           <span class="text-white font-bold">${item.weight.toFixed(1)} kg</span>
           <span class="text-slate-500 text-[10px]">${new Date(item.date).toLocaleDateString('pt-BR')}</span>
         </div>
@@ -828,24 +887,24 @@
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
           .then(stream => {
             document.getElementById('webcam').srcObject = stream;
-            camRunning = true; btn.textContent = "DESLIGAR CÂMERA";
-          }).catch(() => showToast("Permissão de câmera necessária.", false));
+            camRunning = true; btn.textContent = "OCULTAR PALANTÍR";
+          }).catch(() => showToast("Visão do Palantír bloqueada.", false));
       } else {
         const v = document.getElementById('webcam');
         if (v.srcObject) v.srcObject.getTracks().forEach(t => t.stop());
-        camRunning = false; btn.textContent = "INICIAR CÂMERA";
+        camRunning = false; btn.textContent = "INVOCAR SENSOR ÓPTICO";
       }
     }
 
     function updateUI() {
       document.getElementById('player-level').textContent = player.level;
-      document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+      document.getElementById('xp-bar').style.width = `${Math.min(100, (player.xp / player.maxXp) * 100)}%`;
       document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
       document.getElementById('stat-str').textContent = player.str || 10;
       document.getElementById('stat-con').textContent = player.con || 10;
       document.getElementById('stat-agi').textContent = player.agi || 10;
       document.getElementById('stat-end').textContent = player.end || 10;
-      document.getElementById('streak-text').textContent = `🔥 ${player.streak} DIAS`;
+      document.getElementById('streak-text').textContent = `🔥 ${player.streak} ${player.streak > 1 ? 'DIAS DE GLÓRIA' : 'DIA DE GLÓRIA'}`;
       document.getElementById('input-height').value = player.heightCm;
       document.getElementById('input-weight').value = player.weight;
 
@@ -855,15 +914,15 @@
 
       const sleepBadge = document.getElementById('sleep-buff-badge');
       if (player.morningReport && player.morningReport.completed) {
-        sleepBadge.textContent = `SONO: ${player.morningReport.sleepScore} PTS`;
-        sleepBadge.className = "text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded font-bold";
+        sleepBadge.textContent = `VIGÍLIA: ${player.morningReport.sleepScore} PTS`;
+        sleepBadge.className = "text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded font-bold";
       }
 
       renderToriyamaAvatar();
       renderBossRaid();
       renderSparksRoutine();
 
-      localStorage.setItem('hero_player_v23', JSON.stringify(player));
+      localStorage.setItem('hero_player_v24', JSON.stringify(player));
     }
 
     updateUI();
