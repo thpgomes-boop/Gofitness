@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Crônicas de Gominsk - Sistema Dúnedain</title>
+  <title>Crônicas de Gominsk - Lei da Fronteira</title>
   
   <!-- CONFIGURAÇÃO PWA -->
   <link rel="manifest" href="manifest.json">
@@ -19,13 +19,13 @@
     body { font-family: 'Marcellus', serif; background-color: #07090e; }
     .font-epic { font-family: 'Cinzel', serif; }
     
-    @keyframes numenorAura {
-      0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4), inset 0 0 8px rgba(212, 175, 55, 0.3); border-color: #d4af37; }
-      50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.8), inset 0 0 15px rgba(245, 158, 11, 0.5); border-color: #fbbf24; }
-      100% { box-shadow: 0 0 35px rgba(217, 119, 6, 0.95), inset 0 0 22px rgba(217, 119, 6, 0.7); border-color: #f59e0b; }
+    @keyframes bloodEyesAura {
+      0% { box-shadow: 0 0 10px rgba(220, 38, 38, 0.4), inset 0 0 8px rgba(220, 38, 38, 0.3); border-color: #dc2626; }
+      50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(239, 68, 68, 0.5); border-color: #f87171; }
+      100% { box-shadow: 0 0 35px rgba(185, 28, 28, 0.95), inset 0 0 22px rgba(185, 28, 28, 0.7); border-color: #ef4444; }
     }
-    .aura-numenor {
-      animation: numenorAura 1.8s infinite alternate ease-in-out !important;
+    .aura-blood {
+      animation: bloodEyesAura 1.8s infinite alternate ease-in-out !important;
     }
 
     @keyframes bossShake {
@@ -55,61 +55,61 @@
 
   <!-- NOTIFICAÇÃO TOAST VISUAL -->
   <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-amber-200 font-epic text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none bg-slate-900 border-amber-600/70">
-    PROCLAMAÇÃO
+    COMUNICADO
   </div>
 
-  <!-- MODAL DE ESPÓLIOS DE GUERRA (LOOT DROP) -->
+  <!-- MODAL DE ESPÓLIOS DE GUERRA (LOOT DROP DE OFICINA) -->
   <div id="loot-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-500/70 rounded-3xl p-5 w-full max-w-sm font-epic text-center shadow-2xl relative overflow-hidden">
       <div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
       <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-      <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest block mb-1">VITÓRIA NAS MURALHAS</span>
-      <h2 class="text-base font-black text-white mb-3">ESPÓLIOS DE GORGOROTH</h2>
+      <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest block mb-1">ALVO DESARTICULADO</span>
+      <h2 class="text-base font-black text-white mb-3">ESPÓLIOS DO SUBMUNDO</h2>
 
       <div id="loot-card-display" class="bg-slate-950 border-2 border-amber-500/80 rounded-2xl p-4 mb-4 shadow-xl loot-card-anim">
-        <span id="loot-item-icon" class="text-4xl block mb-1">⚔️</span>
-        <span id="loot-item-rarity" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block mb-1">HERANÇA DE NÚMENOR</span>
+        <span id="loot-item-icon" class="text-4xl block mb-1">🥊</span>
+        <span id="loot-item-rarity" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block mb-1">EQUIPAMENTO DE CHOQUE</span>
         <h3 id="loot-item-name" class="text-sm font-bold text-amber-200 leading-tight mb-1">NOME DO ITEM</h3>
         <span id="loot-item-bonus" class="text-[11px] text-emerald-400 font-sans font-bold block mb-2">+4 FORÇA • +2 DESTREZA</span>
-        <p id="loot-item-lore" class="text-[10px] text-slate-400 font-sans italic leading-relaxed">Descrição ancestral da relíquia forjada nas eras passadas.</p>
+        <p id="loot-item-lore" class="text-[10px] text-slate-400 font-sans italic leading-relaxed">Descrição do equipamento recuperado no setor da fronteira.</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <button type="button" id="loot-btn-equip" onclick="claimAndEquipLoot()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition active:scale-95 shadow cursor-pointer">
-          EQUIPAR IMEDIATAMENTE
+          EQUIPAR AGORA
         </button>
         <button type="button" onclick="claimAndStoreLoot()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-2 rounded-xl text-xs border border-amber-500/40 transition cursor-pointer">
-          GUARDAR NO ARSENAL
+          GUARDAR NO ARMÁRIO
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL DO ARSENAL DE GONDOR -->
+  <!-- MODAL DO ARSENAL DA FRONTEIRA -->
   <div id="arsenal-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 w-full max-w-sm font-epic text-xs shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex justify-between items-center mb-2 pb-2 border-b border-amber-950">
         <div>
-          <h2 id="arsenal-modal-title" class="font-bold text-amber-300 text-sm">FORJA DE GONDOR</h2>
-          <span class="text-[10px] text-slate-400 font-sans">Selecione o equipamento para consagrar</span>
+          <h2 id="arsenal-modal-title" class="font-bold text-amber-300 text-sm">ARMÁRIO TÁTICO</h2>
+          <span class="text-[10px] text-slate-400 font-sans">Selecione o equipamento para a ronda</span>
         </div>
         <button type="button" onclick="closeArsenalModal()" class="text-slate-400 hover:text-white text-lg px-2 cursor-pointer">✕</button>
       </div>
       <div id="arsenal-modal-list" class="flex flex-col gap-2 overflow-y-auto custom-scroll my-2 flex-1 pr-1"></div>
-      <button type="button" onclick="closeArsenalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl text-xs font-bold border border-amber-500/30 cursor-pointer">FECHAR FORJA</button>
+      <button type="button" onclick="closeArsenalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl text-xs font-bold border border-amber-500/30 cursor-pointer">FECHAR ARMÁRIO</button>
     </div>
   </div>
 
-  <!-- MODAL DE PROVAÇÃO MARCIAL -->
+  <!-- MODAL DE TESTE FÍSICO OPERACIONAL -->
   <div id="exam-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 w-full max-w-sm font-epic text-xs shadow-2xl">
       <div class="flex justify-between items-center mb-3">
-        <h2 class="font-bold text-amber-400">PROVAÇÃO DOS DÚNEDAIN</h2>
+        <h2 class="font-bold text-amber-400">TESTE DE APTIDÃO OPERACIONAL</h2>
         <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white text-lg px-2 cursor-pointer">✕</button>
       </div>
       <p class="text-[11px] font-sans text-slate-300 mb-3 leading-relaxed">
-        Preencha com os seus limites marciais para consagrar os seus atributos e o Poderio da Linhagem.
+        Insira suas marcas físicas máximas para calibrar sua força de combate na fronteira.
       </p>
       <div class="flex flex-col gap-2 font-epic">
         <div class="grid grid-cols-2 gap-2">
@@ -117,21 +117,21 @@
           <div><label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label><input type="number" id="exam-pullups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="8" /></div>
         </div>
         <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS EM 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="40" /></div>
-        <div><label class="text-[9px] text-slate-400 block">MARCHA RÁPIDA 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="1.8" /></div>
-        <div><label class="text-[9px] text-slate-400 block">MAIOR TRAVESSIA CONTÍNUA (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="5.0" /></div>
-        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-bold py-2.5 rounded-xl text-white mt-1 shadow transition active:scale-95 cursor-pointer">CONSAGRAR PODERIO</button>
+        <div><label class="text-[9px] text-slate-400 block">TIRO DE CORRIDA 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="1.8" /></div>
+        <div><label class="text-[9px] text-slate-400 block">LONGO ALCANCE CONTÍNUO (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="5.0" /></div>
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-bold py-2.5 rounded-xl text-white mt-1 shadow transition active:scale-95 cursor-pointer">CONSAGRAR CAPACIDADE</button>
       </div>
     </div>
   </div>
 
-  <!-- CABEÇALHO DO GUERREIRO GOMINSK -->
+  <!-- CABEÇALHO DO OPERADOR GOMINSK -->
   <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
-        <img id="avatar-img" src="" alt="Avatar Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
+        <img id="avatar-img" src="" alt="Operador Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
-          <span class="text-2xl mb-0.5">⚔️</span>
-          <span class="text-[9px] font-epic text-amber-300 font-bold leading-tight block">RETRATO DO GUERREIRO</span>
+          <span class="text-2xl mb-0.5">🥊</span>
+          <span class="text-[9px] font-epic text-amber-300 font-bold leading-tight block">FOTO DO OPERADOR</span>
         </div>
         <input type="file" id="avatar-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" onchange="handleAvatarUpload(event)" />
       </div>
@@ -139,14 +139,14 @@
       <div class="flex-1">
         <div class="flex justify-between items-start">
           <div>
-            <span id="rank-title" class="text-[10px] text-amber-400 font-epic tracking-widest block uppercase font-bold">SENTINELA DE FRONTEIRA I</span>
+            <span id="rank-title" class="text-[10px] text-amber-400 font-epic tracking-widest block uppercase font-bold">SENTINELA DA LINHA I</span>
             <h1 class="text-lg font-bold font-epic text-white tracking-wider leading-tight">GOMINSK</h1>
             
             <div class="flex flex-wrap items-center gap-1.5 mt-0.5">
-              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-epic">IMC 31.3 • COLOSSO</span>
-              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-epic font-bold">⚡ BRAVURA: 1.150</span>
-              <span id="battle-state-badge" class="text-[9px] bg-amber-500/20 border border-amber-400 text-amber-300 px-1.5 py-0.5 rounded font-epic font-black hidden animate-pulse">
-                🔥 SANGUE DE NÚMENOR (1.5x DANO)
+              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-epic">IMC 31.3 • CARCAÇA PESADA</span>
+              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-epic font-bold">⚡ REPUTAÇÃO: 1.150</span>
+              <span id="battle-state-badge" class="text-[9px] bg-red-950/80 border border-red-500 text-red-300 px-1.5 py-0.5 rounded font-epic font-black hidden animate-pulse">
+                🔥 SANGUE NOS OLHOS (1.5x DANO)
               </span>
             </div>
           </div>
@@ -160,7 +160,7 @@
           <div id="xp-bar" class="bg-gradient-to-r from-amber-600 via-amber-400 to-amber-200 h-full w-0 transition-all duration-500"></div>
         </div>
         <div class="flex justify-between text-[11px] font-epic text-slate-400 mt-1">
-          <span id="xp-text">0 / 800 XP</span><span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA DE GLÓRIA</span>
+          <span id="xp-text">0 / 800 XP</span><span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA NA LINHA</span>
         </div>
       </div>
     </div>
@@ -173,11 +173,11 @@
     <button type="button" onclick="handleBiometricsSubmit()" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-300 px-3 py-1 rounded text-[10px] font-bold transition active:scale-95 cursor-pointer">REGISTAR</button>
   </section>
 
-  <!-- ATRIBUTOS MARCIAIS -->
+  <!-- ATRIBUTOS OPERACIONAIS (BASE + ARSENAL) -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
     <div class="flex justify-between items-center mb-2 px-1 font-epic text-[10px]">
-      <span class="text-slate-400 tracking-wider">VIRTUDES EFETIVAS (BASE + ARSENAL)</span>
-      <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900 cursor-pointer">⚔️ PROVAÇÃO FÍSICA</button>
+      <span class="text-slate-400 tracking-wider">CAPACIDADE EFETIVA (BASE + ARSENAL)</span>
+      <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900 cursor-pointer">📋 TESTE FÍSICO</button>
     </div>
     <div class="grid grid-cols-4 gap-1.5 font-epic text-center">
       <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
@@ -189,38 +189,38 @@
         <span id="stat-con" class="text-base font-bold text-amber-400">10</span>
       </div>
       <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block">DESTREZA</span>
+        <span class="text-[9px] text-slate-400 block">REFLEXO</span>
         <span id="stat-agi" class="text-base font-bold text-cyan-400">10</span>
       </div>
       <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block">VIGOR</span>
+        <span class="text-[9px] text-slate-400 block">FÔLEGO</span>
         <span id="stat-end" class="text-base font-bold text-emerald-400">10</span>
       </div>
     </div>
   </section>
 
-  <!-- O ARSENAL DE GONDOR -->
+  <!-- O ARSENAL DA FRONTEIRA (OFICINA & GARAGEM) -->
   <section class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3 mb-3 shadow-lg font-epic">
     <div class="flex justify-between items-center mb-2 px-0.5">
-      <span class="text-xs font-bold text-amber-300 tracking-wider">O ARSENAL DE GONDOR</span>
-      <span class="text-[9px] text-slate-400 font-sans">Toque para forjar / alterar</span>
+      <span class="text-xs font-bold text-amber-300 tracking-wider">O ARSENAL DA FRONTEIRA</span>
+      <span class="text-[9px] text-slate-400 font-sans">Toque para equipar</span>
     </div>
     <div class="grid grid-cols-3 gap-2">
       <button type="button" onclick="openArsenalModal('weapon')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
         <span class="text-[8px] text-slate-400 block mb-0.5">ARMA ATIVA</span>
-        <span id="slot-name-weapon" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Adaga Oesternesse</span>
-        <span id="slot-bonus-weapon" class="text-[9px] text-rose-400 font-sans block mt-0.5">+2 FOR • +1 DEST</span>
+        <span id="slot-name-weapon" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Soqueira de Latão</span>
+        <span id="slot-bonus-weapon" class="text-[9px] text-rose-400 font-sans block mt-0.5">+2 FOR • +1 REF</span>
       </button>
 
       <button type="button" onclick="openArsenalModal('armor')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
-        <span class="text-[8px] text-slate-400 block mb-0.5">COURAÇA</span>
-        <span id="slot-name-armor" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Manto Batedor</span>
-        <span id="slot-bonus-armor" class="text-[9px] text-amber-400 font-sans block mt-0.5">+2 DEST • +1 BLIND</span>
+        <span class="text-[8px] text-slate-400 block mb-0.5">PROTEÇÃO</span>
+        <span id="slot-name-armor" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Jaqueta de Couro</span>
+        <span id="slot-bonus-armor" class="text-[9px] text-amber-400 font-sans block mt-0.5">+2 REF • +1 BLIND</span>
       </button>
 
       <button type="button" onclick="openArsenalModal('relic')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
-        <span class="text-[8px] text-slate-400 block mb-0.5">RELÍQUIA</span>
-        <span id="slot-name-relic" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Estrela Dúnedain</span>
+        <span class="text-[8px] text-slate-400 block mb-0.5">UTILITÁRIO</span>
+        <span id="slot-name-relic" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Zippo Arranhado</span>
         <span id="slot-bonus-relic" class="text-[9px] text-emerald-400 font-sans block mt-0.5">+1 em Todos</span>
       </button>
     </div>
@@ -229,17 +229,17 @@
   <!-- CORPO PRINCIPAL COM ABAS -->
   <main class="flex-1 flex flex-col gap-3">
 
-    <!-- ABA 1: MISSÕES E BATALHAS -->
+    <!-- ABA 1: MISSÕES E CONFRONTOS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL -->
+      <!-- O CERCO / ALVO DA SEMANA -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
         <div class="flex items-center gap-3 mb-2.5">
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
-            <img id="boss-img" src="" alt="Troll de Gorgoroth" class="w-full h-full object-cover object-center hidden pointer-events-none" />
+            <img id="boss-img" src="" alt="O Capataz da Draga" class="w-full h-full object-cover object-center hidden pointer-events-none" />
             <div id="boss-placeholder" class="text-center p-1.5 flex flex-col items-center justify-center pointer-events-none">
-              <span class="text-2xl mb-0.5">👹</span>
-              <span class="text-[8px] font-epic text-red-400 font-bold leading-tight block">FOTO DO TROLL</span>
+              <span class="text-2xl mb-0.5">💀</span>
+              <span class="text-[8px] font-epic text-red-400 font-bold leading-tight block">FOTO DO ALVO</span>
             </div>
             <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[8px] font-epic text-red-300 font-bold pointer-events-none text-center p-1">
               ALTERAR
@@ -252,111 +252,111 @@
               <div>
                 <div class="flex items-center gap-1.5">
                   <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                  <span id="campaign-chapter-label" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block">CAPÍTULO I: OS VAUS DE ANDUIN</span>
+                  <span id="campaign-chapter-label" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block">OPERACIONAL 01: O PORTO DE AREIA</span>
                 </div>
-                <h3 id="boss-name" class="font-bold text-xs sm:text-sm text-white tracking-wide leading-tight">TROLL DE COMBATE DE GORGOROTH</h3>
+                <h3 id="boss-name" class="font-bold text-xs sm:text-sm text-white tracking-wide leading-tight">O CAPATAZ DA DRAGA</h3>
               </div>
-              <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM COMBATE</span>
+              <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM CONFRONTO</span>
             </div>
 
             <div class="w-full bg-slate-950 rounded-full h-2.5 border border-red-950 overflow-hidden mt-2">
               <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
             </div>
             <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-              <span id="boss-hp-text">85.000 / 85.000 HP</span>
+              <span id="boss-hp-text">85.000 / 85.000 RES</span>
               <span id="boss-hp-percent" class="text-red-400 font-bold">100%</span>
             </div>
           </div>
         </div>
 
-        <!-- BANNER DE ESPÓLIOS -->
+        <!-- BANNER DE ESPÓLIOS (VITÓRIA) -->
         <div id="loot-claim-container" class="hidden mb-2.5">
           <button type="button" onclick="triggerLootDropCeremony()" class="w-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-xl border border-yellow-300 transition active:scale-95 animate-bounce cursor-pointer">
-            <span class="text-base">🏆</span> REIVINDICAR ESPÓLIOS DE GUERRA
+            <span class="text-base">🏆</span> RECOLHER ESPÓLIOS DO CONFRONTO
           </button>
         </div>
 
-        <!-- MEDIDOR DE ÍMPETO MARCIAL -->
+        <!-- MEDIDOR DE FÔLEGO DE LUTA / ADRENALINA -->
         <div class="bg-slate-950/90 border border-amber-500/40 rounded-xl p-2.5 mb-2.5 shadow-inner">
           <div class="flex justify-between items-center text-[10px] mb-1">
-            <span class="text-amber-400 font-bold flex items-center gap-1">⚡ ÍMPETO MARCIAL DISPONÍVEL:</span>
+            <span class="text-amber-400 font-bold flex items-center gap-1">⚡ FÔLEGO DE COMBATE:</span>
             <span id="impeto-counter" class="text-amber-200 font-bold text-xs">0 PTS</span>
           </div>
           <div class="w-full bg-slate-900 rounded-full h-2 border border-amber-950 overflow-hidden">
             <div id="impeto-bar" class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-0 transition-all duration-300"></div>
           </div>
-          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e desfira manobras balanceadas por custo:</span>
+          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule fôlego com treinos reais e descarregue a trocação round a round:</span>
         </div>
 
-        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
+        <!-- AS 4 MANOBRAS DE TROCAÇÃO FRANCA -->
         <div class="grid grid-cols-2 gap-1.5 mb-2 text-left">
-          <!-- 1. Tiro de Ithilien (AGI - Custo Baixo 120 Ímpeto) -->
+          <!-- 1. Jab de Encontro (REFLEXO - 120 Fôlego) -->
           <button type="button" onclick="executeManeuver('AGI')" class="bg-slate-950 border border-cyan-600/50 hover:border-cyan-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-cyan-300">🏹 TIRO DE ITHILIEN</span>
-              <span class="text-[8px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-1 rounded font-bold">120 ÍMPETO</span>
+              <span class="font-bold text-[10px] text-cyan-300">🥊 JAB DE ENCONTRO</span>
+              <span class="text-[8px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-1 rounded font-bold">120 FÔLEGO</span>
             </div>
-            <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 190 HP (35% Crítico)</span>
+            <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 190 (35% Crítico)</span>
           </button>
 
-          <!-- 2. Cerco de Atrito (END - Custo Médio 250 Ímpeto) -->
+          <!-- 2. Pressão de Grade / Clinch (FÔLEGO - 250 Fôlego) -->
           <button type="button" onclick="executeManeuver('END')" class="bg-slate-950 border border-emerald-600/50 hover:border-emerald-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-emerald-300">⚔️ CERCO DE ATRITO</span>
-              <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded font-bold">250 ÍMPETO</span>
+              <span class="font-bold text-[10px] text-emerald-300">⛓️ PRESSÃO DE GRADE</span>
+              <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded font-bold">250 FÔLEGO</span>
             </div>
-            <span id="maneuver-desc-end" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 360 HP</span>
+            <span id="maneuver-desc-end" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 360</span>
           </button>
 
-          <!-- 3. Impacto de Escudo (CON - Custo Pesado 400 Ímpeto) -->
+          <!-- 3. Guarda Alta & Ombrada (BLINDAGEM - 400 Fôlego) -->
           <button type="button" onclick="executeManeuver('CON')" class="bg-slate-950 border border-amber-600/50 hover:border-amber-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-amber-300">🛡️ IMPACTO DE ESCUDO</span>
-              <span class="text-[8px] bg-amber-950 text-amber-400 border border-amber-800 px-1 rounded font-bold">400 ÍMPETO</span>
+              <span class="font-bold text-[10px] text-amber-300">🛡️ GUARDA & OMBRADA</span>
+              <span class="text-[8px] bg-amber-950 text-amber-400 border border-amber-800 px-1 rounded font-bold">400 FÔLEGO</span>
             </div>
-            <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 620 HP</span>
+            <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 620</span>
           </button>
 
-          <!-- 4. Golpe de Ruptura (STR - Custo Supremo 600 Ímpeto) -->
+          <!-- 4. Overhand de Direita (FORÇA - 600 Fôlego) -->
           <button type="button" onclick="executeManeuver('STR')" class="bg-slate-950 border border-rose-600/50 hover:border-rose-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-rose-300">🗡️ GOLPE DE RUPTURA</span>
-              <span class="text-[8px] bg-rose-950 text-rose-400 border border-rose-800 px-1 rounded font-bold">600 ÍMPETO</span>
+              <span class="font-bold text-[10px] text-rose-300">💥 OVERHAND DE DIREITA</span>
+              <span class="text-[8px] bg-rose-950 text-rose-400 border border-rose-800 px-1 rounded font-bold">600 FÔLEGO</span>
             </div>
-            <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 980 HP</span>
+            <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 980</span>
           </button>
         </div>
 
-        <!-- PERGAMINHO NARRATIVO -->
+        <!-- RELATÓRIO OPERACIONAL DINÂMICO -->
         <div class="bg-slate-950/80 border border-amber-600/30 p-2.5 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2 shadow-inner">
-          <span class="text-base text-amber-400">📜</span>
+          <span class="text-base text-amber-400">📋</span>
           <div class="flex-1">
-            <span id="boss-story-stage" class="text-[9px] font-epic text-amber-400 font-bold block uppercase mb-0.5">ORDEM DE MARCHA:</span>
-            <span id="boss-story-log" class="leading-relaxed block">As águas do Anduin descem escuras. Pegadas pesadas foram avistadas nos vaus. Gominsk prepara as suas armas para conter a vanguarda.</span>
+            <span id="boss-story-stage" class="text-[9px] font-epic text-amber-400 font-bold block uppercase mb-0.5">ORDEM DA RONDA:</span>
+            <span id="boss-story-log" class="leading-relaxed block">O mormaço de 42°C esquenta o cascalho do porto de areia. O Capataz comanda o abastecimento clandestino. Gominsk cerca o barranco para o choque.</span>
           </div>
         </div>
       </div>
 
-      <!-- DESPERTAR DA VIGÍLIA (SONO E PASSOS DO ZEPP) -->
+      <!-- ALVORADA & RONDA PERIMETRAL (ZEPP) -->
       <div class="bg-gradient-to-r from-slate-900 to-indigo-950/60 border border-indigo-500/40 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
           <div>
-            <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">DESPERTAR DA VIGÍLIA (ZEPP)</span></div>
-            <span class="text-[10px] text-slate-400 font-sans">Gera Ímpeto Marcial e XP ao alvorecer</span>
+            <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">ALVORADA & RONDA (ZEPP)</span></div>
+            <span class="text-[10px] text-slate-400 font-sans">Recuperação da carcaça e quilometragem a pé</span>
           </div>
           <span id="sleep-buff-badge" class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">PENDENTE</span>
         </div>
         <div class="grid grid-cols-2 gap-2 bg-slate-950/80 p-2 rounded-xl border border-indigo-950">
-          <div><label class="text-[9px] text-slate-400 block">PONTOS DE VIGÍLIA (SONO):</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
-          <div><label class="text-[9px] text-slate-400 block">PASSOS DA PATRULHA:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
+          <div><label class="text-[9px] text-slate-400 block">PONTUAÇÃO DE SONO:</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
+          <div><label class="text-[9px] text-slate-400 block">PASSOS DA RONDA:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
         </div>
-        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition cursor-pointer">CONSAGRAR VIGÍLIA & PASSOS</button>
+        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition cursor-pointer">REGISTAR ALVORADA & PASSOS</button>
       </div>
 
-      <!-- FONTES DA CIDADELA -->
+      <!-- QUEBRAR A FORNALHA (HIDRATAÇÃO TÁTICA) -->
       <div class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-1.5 font-epic">
-          <div><span class="text-xs font-bold text-cyan-300 block">FONTES DA CIDADELA (BLINDAGEM)</span><span class="text-[10px] text-slate-400 font-sans">Quota diária de águas puras: 3.000 ml</span></div>
+          <div><span class="text-xs font-bold text-cyan-300 block">QUEBRAR A FORNALHA (HIDRATAÇÃO)</span><span class="text-[10px] text-slate-400 font-sans">Sobrevivência sob o calor: 3.000 ml</span></div>
           <span id="water-current-text" class="text-xs text-cyan-300 font-bold">0 / 3.000 ml</span>
         </div>
         <div class="w-full bg-slate-950 rounded-full h-2.5 border border-cyan-950 overflow-hidden mb-2">
@@ -370,10 +370,10 @@
         </div>
       </div>
 
-      <!-- VIGÍLIA DOS GUARDIÕES -->
+      <!-- CONDICIONAMENTO DE CELA / GARAGEM (CALISTENIA) -->
       <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
-          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">+350 Ímpeto por posto • Desperta Sangue de Númenor em 4/4</span></div>
+          <div><span class="text-xs font-bold text-amber-300 block">CONDICIONAMENTO DE GARAGEM (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">+350 Fôlego por posto • Sangue nos Olhos com 4/4</span></div>
           <span id="sparks-counter" class="text-[10px] bg-amber-950/80 text-amber-300 px-2 py-0.5 rounded border border-amber-800/70">0/4 CUMPRIDOS</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-2">
@@ -396,26 +396,26 @@
         </div>
       </div>
 
-      <!-- SÉRIES RÁPIDAS -->
+      <!-- SÉRIES RÁPIDAS NO CONCRETO -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-        <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS (GERA ÍMPETO)</span>
+        <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">SÉRIES RÁPIDAS (GERA FÔLEGO)</span>
         <div class="grid grid-cols-3 gap-1.5 font-epic">
-          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(+200 ÍMPETO)</span></button>
-          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+5 BARRAS<br><span class="text-[8px] text-slate-400">(+150 ÍMPETO)</span></button>
-          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95 cursor-pointer">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(+250 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Flexões no Concreto', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(+200 FÔLEGO)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras no Cano', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+5 BARRAS<br><span class="text-[8px] text-slate-400">(+150 FÔLEGO)</span></button>
+          <button type="button" onclick="handleQuickRep('Abdômen na Terra', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95 cursor-pointer">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(+250 FÔLEGO)</span></button>
         </div>
       </div>
 
-      <!-- INTEGRAÇÃO TCX / GPX -->
+      <!-- INCURSÃO REGISTRADA (TCX / GPX) -->
       <div class="border-2 border-dashed border-amber-500/30 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition">
         <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" />
-        <p class="font-epic font-bold text-xs text-amber-300 tracking-wider">IMPORTAR MARCHA REGISTADA (.TCX OU .GPX)</p>
-        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5 font-sans">Marcha dos Vaus, Travessia, Pilates ou Treino de Lança</p>
+        <p class="font-epic font-bold text-xs text-amber-300 tracking-wider">IMPORTAR INCURSÃO NO CASCALHO (.TCX OU .GPX)</p>
+        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5 font-sans">Corrida no asfalto, pedal na poeira, travessia ou circuito de força</p>
       </div>
 
       <!-- SALVAGUARDA DE DADOS & BOTÃO REINICIAR -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-epic">
-        <div><span class="text-xs font-bold text-white block">ARQUIVO DE NÚMENOR</span><span class="text-[10px] text-slate-400 font-sans">Guarde ou reinicie a campanha</span></div>
+        <div><span class="text-xs font-bold text-white block">ARQUIVO DA FRONTEIRA</span><span class="text-[10px] text-slate-400 font-sans">Backup ou reinício da campanha</span></div>
         <div class="flex gap-1.5 text-[10px]">
           <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-amber-300 border border-amber-500/40 px-2.5 py-1.5 rounded-lg transition hover:bg-slate-700 cursor-pointer">EXPORTAR</button>
           <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center transition hover:bg-slate-700">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
@@ -424,7 +424,7 @@
       </div>
     </div>
 
-    <!-- ABA 2: MASSA & FORMA -->
+    <!-- ABA 2: MASSA & CARCAÇA -->
     <div id="tab-weight" class="tab-content hidden flex flex-col gap-3">
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
         <span class="font-epic text-xs font-bold text-amber-300 uppercase block mb-3 tracking-wider">REGISTO DE MASSA CORPORAL</span>
@@ -432,22 +432,22 @@
       </div>
     </div>
 
-    <!-- ABA 3: DIÁRIO DA CAMPANHA -->
+    <!-- ABA 3: LIVRO DE OCORRÊNCIAS (CALENDÁRIO & CÓDICE) -->
     <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-epic">
       <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3.5 shadow-lg">
         <div class="flex justify-between items-center mb-2">
           <div>
-            <span class="text-xs font-bold text-amber-300 block tracking-widest">O CÓDICE DA CAMPANHA</span>
-            <span class="text-[9px] text-slate-400 font-sans">A crônica épica das 20 semanas de Gominsk</span>
+            <span class="text-xs font-bold text-amber-300 block tracking-widest">LIVRO DE OCORRÊNCIAS</span>
+            <span class="text-[9px] text-slate-400 font-sans">A crônica das 20 operações de Gominsk</span>
           </div>
-          <span id="codice-progress-badge" class="text-[9px] bg-amber-950 border border-amber-600/70 text-amber-300 px-2 py-0.5 rounded font-bold">CAP. 1 / 20</span>
+          <span id="codice-progress-badge" class="text-[9px] bg-amber-950 border border-amber-600/70 text-amber-300 px-2 py-0.5 rounded font-bold">OP. 1 / 20</span>
         </div>
 
         <div id="codice-chapters-carousel" class="flex gap-2 overflow-x-auto custom-scroll pb-2 mb-2"></div>
 
         <div id="codice-reader-view" class="bg-slate-950/90 border border-amber-600/30 p-3 rounded-xl text-left shadow-inner">
-          <span id="codice-chapter-title" class="font-bold text-amber-200 text-xs block mb-1">CAPÍTULO I: OS VAUS DE ANDUIN</span>
-          <p id="codice-chapter-body" class="text-[11px] text-slate-300 font-sans leading-relaxed">Carregando crônicas...</p>
+          <span id="codice-chapter-title" class="font-bold text-amber-200 text-xs block mb-1">OPERACIONAL 01: O PORTO DE AREIA</span>
+          <p id="codice-chapter-body" class="text-[11px] text-slate-300 font-sans leading-relaxed">Carregando relatório operacional...</p>
         </div>
       </div>
 
@@ -455,8 +455,8 @@
         <div class="flex justify-between items-center mb-3">
           <span id="calendar-month-year" class="text-sm font-bold text-amber-300 uppercase tracking-widest">SETEMBRO 2026</span>
           <div class="flex gap-2 text-[9px]">
-            <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> MARCHA</span>
-            <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> COMBATE</span>
+            <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> RONDA</span>
+            <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> CHOQUE</span>
           </div>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 mb-2">
@@ -468,29 +468,29 @@
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex-1 shadow-lg">
         <span class="text-xs text-amber-400 block mb-2" id="selected-date-label">REGISTO DO DIA</span>
         <div id="selected-day-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto custom-scroll font-sans">
-          <p class="text-xs text-slate-500 text-center py-3 font-epic">Selecione um dia da vigília.</p>
+          <p class="text-xs text-slate-500 text-center py-3 font-epic">Selecione uma data da ronda.</p>
         </div>
       </div>
     </div>
 
-    <!-- ABA 4: OLHO DE PALANTÍR -->
+    <!-- ABA 4: OLHO DA VIGIA (CÂMERA) -->
     <div id="tab-camera" class="tab-content hidden flex flex-col gap-2">
       <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-amber-500/40 flex items-center justify-center">
         <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
         <div class="absolute top-2 right-2 bg-slate-900/80 border border-amber-400 px-3 py-1 rounded-xl text-center font-epic">
-          <span class="text-[9px] text-slate-400 block">VISÃO</span><span class="text-base font-bold text-amber-300">ATIVA</span>
+          <span class="text-[9px] text-slate-400 block">VIGIA</span><span class="text-base font-bold text-amber-300">ATIVA</span>
         </div>
       </div>
-      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-slate-800 border border-amber-500/50 hover:bg-slate-700 text-amber-300 font-epic text-xs py-3 rounded-xl transition cursor-pointer">INVOCAR SENSOR ÓPTICO</button>
+      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-slate-800 border border-amber-500/50 hover:bg-slate-700 text-amber-300 font-epic text-xs py-3 rounded-xl transition cursor-pointer">ATIVAR SENSOR ÓPTICO</button>
     </div>
   </main>
 
   <!-- NAVEGAÇÃO INFERIOR -->
   <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-epic text-[10px]">
-    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-amber-400 flex flex-col items-center cursor-pointer">⚔️ MISSÕES</button>
-    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center cursor-pointer">⚖️ MASSA</button>
-    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center cursor-pointer">📜 CRÔNICAS</button>
-    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center cursor-pointer">👁️ PALANTÍR</button>
+    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-amber-400 flex flex-col items-center cursor-pointer">🥊 RONDAS</button>
+    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center cursor-pointer">⚖️ CARCAÇA</button>
+    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center cursor-pointer">📋 OCORRÊNCIAS</button>
+    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center cursor-pointer">👁️ VIGIA</button>
   </nav>
 
   <script>
@@ -514,165 +514,172 @@
     const todayStr = new Date().toDateString();
     const currentWeekId = getCurrentWeekId();
 
+    // 20 PATENTES TÁTICAS DE FRONTEIRA
     const RANK_NAMES = [
-      "SENTINELA DE FRONTEIRA I", "SENTINELA DE FRONTEIRA II", "SENTINELA DE FRONTEIRA III", "SENTINELA DE FRONTEIRA IV",
-      "BATEDOR DE ITHILIEN I", "BATEDOR DE ITHILIEN II", "BATEDOR DE ITHILIEN III", "BATEDOR DE ITHILIEN IV",
-      "PATRULHEIRO DÚNEDAIN I", "PATRULHEIRO DÚNEDAIN II", "PATRULHEIRO DÚNEDAIN III", "PATRULHEIRO DÚNEDAIN IV",
-      "CAPITÃO DA GUARDA DA TORRE I", "CAPITÃO DA GUARDA DA TORRE II", "CAPITÃO DA GUARDA DA TORRE III", "CAPITÃO DA GUARDA DA TORRE IV",
-      "CAMPEÃO DA ÁRVORE BRANCA I", "CAMPEÃO DA ÁRVORE BRANCA II", "CAMPEÃO DA ÁRVORE BRANCA III",
-      "REI DOS HOMENS (RANK S)"
+      "SENTINELA DA LINHA I", "SENTINELA DA LINHA II", "SENTINELA DA LINHA III", "SENTINELA DA LINHA IV",
+      "OPERADOR DA FRONTEIRA I", "OPERADOR DA FRONTEIRA II", "OPERADOR DA FRONTEIRA III", "OPERADOR DA FRONTEIRA IV",
+      "BATEDOR DO CASCALHO I", "BATEDOR DO CASCALHO II", "BATEDOR DO CASCALHO III", "BATEDOR DO CASCALHO IV",
+      "ENFORCER DO SETOR I", "ENFORCER DO SETOR II", "ENFORCER DO SETOR III", "ENFORCER DO SETOR IV",
+      "XERIFE DA LINHA SECA I", "XERIFE DA LINHA SECA II", "XERIFE DA LINHA SECA III",
+      "DONO DA FRONTEIRA (RANK S)"
     ];
 
+    // AS 20 OPERAÇÕES DO LIVRO DE OCORRÊNCIAS
     const CAMPAIGN_CHAPTERS = [
       {
-        cap: 1, title: "A Sombra sobre os Vaus de Anduin", act: "Ato I: As Sentinelas",
-        stage1: "As águas do Anduin descem escuras nesta estação. Pegadas pesadas de uma besta de Mordor foram vistas nas margens. Gominsk prepara suas armas para conter a vanguarda.",
-        stage2: "A besta investe com fúria contra a linha de estacas! Os golpes contínuos da guarda começam a estilhaçar a armadura rústica do monstro.",
-        stage3: "O Troll cai nas pedras do rio com estrondo ecoando pelas colinas. Os vaus foram preservados pela disciplina de ferro dos Dúnedain!"
+        cap: 1, title: "O Capataz do Porto de Areia", act: "Ato I: A Linha de Contenção",
+        stage1: "O calor de 42°C ferve a água do rio. No porto de areia, o Capataz e seus homens descarregam tambores clandestinos. Gominsk cerca o barranco para o choque.",
+        stage2: "A briga estoura no ferro e na poeira! O Capataz acusa os golpes na costela, cospe sangue e tenta recuar para a draga enferrujada.",
+        stage3: "Com um golpe brutal no queixo, o brutamontes beija o cascalho quente desacordado. O porto clandestino está desarticulado!"
       },
       {
-        cap: 2, title: "O Rastreio nos Pântanos Mortos", act: "Ato I: As Sentinelas",
-        stage1: "Luzes espectrais tremulam nas névoas da charneca. Batedores orcs vasculham as ruínas à procura de rotas para violar as linhas de Gondor.",
-        stage2: "Gominsk cerca as patrulhas entre os juncos cinzentos. As lâminas curtas brilham no nevoeiro desarticulando a ofensiva.",
-        stage3: "A charneca silencia. As hostes da Sombra recuam em desordem perante a implacável vigília das fronteiras."
+        cap: 2, title: "Emboscada na Estrada Velha de Chão", act: "Ato I: A Linha de Contenção",
+        stage1: "Faróis apagados cruzando o mato seco. Uma coluna de caminhonetes irregulares tenta furar o bloqueio da linha.",
+        stage2: "Gominsk quebra a ponta da escolta no desarme rápido. A poeira sobe alta encobrindo a trocação corpo a corpo.",
+        stage3: "Os comparsas abandonam a carga e dispersam no mato. A estrada de chão permanece sob controle."
       },
       {
-        cap: 3, title: "A Vanguarda de Morannon", act: "Ato I: As Sentinelas",
-        stage1: "Portões de ferro rangem ao longe. Bandos de Uruk-hai com escudos largos marcham em formação fechada.",
-        stage2: "O impacto do combate abala as fileiras. A constância das manobras de Gominsk quebra a ponta da cunha inimiga.",
-        stage3: "A formação orc despedaça-se. Estandartes negros ardem abandonados na planície rochosa."
+        cap: 3, title: "O Desmanche nos Confins do Cascalho", act: "Ato I: A Linha de Contenção",
+        stage1: "Oficina clandestina operando atrás de um galpão de madeira. Cortadores de maçarico e homens armados de barra de ferro.",
+        stage2: "Incursão direta derrubando as portas de zinco. Golpes secos e ombradas esmagam a resistência na fumaça de óleo.",
+        stage3: "O maquinário foi apreendido e os operadores da oficina rendidos. Menos uma engrenagem do submundo."
       },
       {
-        cap: 4, title: "A Queda do Posto Avançado", act: "Ato I: As Sentinelas",
-        stage1: "Uma torre de vigia antiga é sitiada por feras armadas de malhos. A guarnição precisa resistir até o alvorecer.",
-        stage2: "Flechadas e investidas de escudo rechaçam os invasores das escadarias de pedra.",
-        stage3: "O cerco é rompido! O alvorecer revela as encostas limpas. A patente de Sentinela está plenamente consagrada."
+        cap: 4, title: "O Desertor da Pista Noturna", act: "Ato I: A Linha de Contenção",
+        stage1: "Pista de pouso no meio do nada com iluminação de garrafa pet. Um ex-militar mercenário faz a segurança do frete.",
+        stage2: "Confronto técnico e violento. Bloqueios de antebraço e esquivas milimétricas sob o zumbido do motor da aeronave.",
+        stage3: "O desertor cai imobilizado com chave no braço. A pista foi desativada e a patente de Sentinela consagrada!"
       },
       {
-        cap: 5, title: "As Trilhas Ocultas de Ithilien", act: "Ato I: As Sentinelas",
-        stage1: "Entre samambaias e carvalhos antigos, Gominsk lidera a marcha furtiva nas terras verdes sob o olhar de Mordor.",
-        stage2: "Guerra de emboscada. Disparos rápidos desmantelam caravanas de suprimentos que abasteciam os acampamentos negros.",
-        stage3: "Ithilien respira aliviada. O inimigo teme agora cada sussurro das folhas nas árvores."
+        cap: 5, title: "Tempestade de Poeira no Perímetro", act: "Ato II: O Cerco Fluvial",
+        stage1: "Vento sufocante e terra vermelha cobrindo o horizonte. Batedores armados rondam as cercas do destacamento.",
+        stage2: "Patrulha de choque na visibilidade zero. Cada curva da cerca é limpa na força dos punhos e na estamina de ferro.",
+        stage3: "Os invasores batem em retirada com as costelas amassadas. O perímetro não vacilou diante da ventania."
       },
       {
-        cap: 6, title: "A Emboscada na Floresta Cinzenta", act: "Ato II: Ithilien",
-        stage1: "Regimentos de Haradrim com cimitarras recurvadas avançam pelas estradas do Sul.",
-        stage2: "A marcha rápida fecha o cerco. As manobras de arco e adaga impõem pesadas baixas aos homens do deserto.",
-        stage3: "As linhas do Sul dispersam-se pelos desfiladeiros. O caminho da floresta permanece sob domínio dos Dúnedain."
+        cap: 6, title: "O Cobrador da Rota Sul", act: "Ato II: O Cerco Fluvial",
+        stage1: "Um agiota violento que cobra devedores quebrando ossos em oficinas mecânicas tenta expandir seu domínio.",
+        stage2: "Gominsk trava o brutamontes no concreto. A trocação é seca e implacável contra as paredes graxentas.",
+        stage3: "O cobrador perde o ar e os dentes no piso sujo. O terror da Rota Sul foi anulado."
       },
       {
-        cap: 7, title: "O Refúgio de Henneth Annûn", act: "Ato II: Ithilien",
-        stage1: "Atrás da cortina de água da Janela do Sol Poente, a companhia reúne forças e repara suas cotas de malha.",
-        stage2: "Inimigos descobrem as ravinas de acesso! Uma batalha encarniçada trava-se nas rochas molhadas da cachoeira.",
-        stage3: "O santuário secreto foi protegido. As águas limpas levam os vestígios da contenda."
+        cap: 7, title: "Incursão no Braço Morto do Rio", act: "Ato II: O Cerco Fluvial",
+        stage1: "Voadeiras camufladas entre os aguapés num corixo isolado. Carregamento pesado de armas leves prestes a descer a correnteza.",
+        stage2: "Aproximação a nado e combate na lama do barranco. Golpes rápidos quebram a formação dos barqueiros armados.",
+        stage3: "As embarcações foram amarradas e a rota fluvial selada. As águas da fronteira voltam ao silêncio."
       },
       {
-        cap: 8, title: "A Passagem Proibida de Morgul", act: "Ato II: Ithilien",
-        stage1: "Um fedor adocicado de podridão sobe do Vale Fantasma. Criaturas com armaduras pontiagudas rondam a encosta.",
-        stage2: "O Sangue de Númenor pulsa firme contra o terror que emana das muralhas de Minas Morgul.",
-        stage3: "A vanguarda corrompida foi expulsa de volta às gargantas escuras. O posto de Batedor está concluído!"
+        cap: 8, title: "A Noite dos Faróis Apagados", act: "Ato II: O Cerco Fluvial",
+        stage1: "Madrugada sem lua. Uma caravana de assalto avança silenciosa pelas trilhas de gado para cercar a cidade.",
+        stage2: "Gominsk assume a dianteira da barreira com coturno fincado na terra e sangue frio nas veias.",
+        stage3: "A ponta da coluna foi esmagada. Os sobreviventes recuam pelo breu. O posto de Operador está concluído!"
       },
       {
-        cap: 9, title: "O Estandarte dos Dúnedain", act: "Ato III: O Cerco",
-        stage1: "O chamado às armas ecoa pelas colinas. Gominsk desfralda a flâmula prateada da linhagem real.",
-        stage2: "Hostes combinadas de orcs e trolls tentam sufocar a resistência no vale aberto.",
-        stage3: "O estandarte não caiu! A moral dos guerreiros de Gondor renova-se ao redor da liderança de Gominsk."
+        cap: 9, title: "Quebra de Bloqueio na Ponte Velha", act: "Ato III: A Guerra da Fronteira",
+        stage1: "A velha ponte de ferro sobre o rio foi tomada por uma quadrilha fortemente armada exigindo pedágio.",
+        stage2: "Avanço frontal com escudo improvisado. Cada passo desconta a audácia dos marginais no asfalto trincado.",
+        stage3: "A travessia foi liberada. A ponte continua sendo território de ordem e respeito."
       },
       {
-        cap: 10, title: "A Batalha dos Vaus de Osgiliath", act: "Ato III: O Cerco",
-        stage1: "Pontes destruídas e barcaças negras cruzando o grande rio sob chuva de flechas incendiárias.",
-        stage2: "Combate cerrado corpo a corpo entre as ruínas das praças ancestrais de pedra.",
-        stage3: "A travessia do inimigo foi contida com bravura inabalável. O rio permanece como fosso protetor."
+        cap: 10, title: "O Enforcer da Serraria Desativada", act: "Ato III: A Guerra da Fronteira",
+        stage1: "Montanhas de serragem e troncos apodrecidos. Um gigante perigoso esconde ali um esconderijo de fugitivos.",
+        stage2: "Briga bruta de clinch e joelhadas entre as serras paradas. O peso da carcaça de Gominsk fala mais alto.",
+        stage3: "O enforcer desmorona sobre a casca de peroba. O esconderijo foi desmantelado."
       },
       {
-        cap: 11, title: "As Muralhas do Rammas Echor", act: "Ato III: O Cerco",
-        stage1: "A muralha exterior que cerca os campos de Pelennor é bombardeada por catapultas colossais.",
-        stage2: "Gominsk lidera a contraofensiva nas brechas da alvenaria com golpes implacáveis de montante.",
-        stage3: "As fendas foram seladas com aço e disciplina. O tempo ganho permite preparar a Cidadela."
+        cap: 11, title: "Fogo Cruzado no Frigorífico Abandonado", act: "Ato III: A Guerra da Fronteira",
+        stage1: "Ganchos enferrujados e corredores de azulejo quebrado. Uma reunião do alto escalão do crime acontece no local.",
+        stage2: "Ruptura de portas e combate físico em curta distância. Nocaute atrás de nocaute na cerâmica fria.",
+        stage3: "Todos os operadores do cartel algemados no piso de cimento. A espinha dorsal do esquema foi quebrada."
       },
       {
-        cap: 12, title: "O Fogo nos Campos de Pelennor", act: "Ato III: O Cerco",
-        stage1: "Mares de lanças negras inundam a planície verdejante. A fumaça esconde as estrelas e o sol.",
-        stage2: "Resistência heroica contra o avanço das feras de guerra couraçadas.",
-        stage3: "As linhas de vanguarda foram sustentadas. Gominsk é aclamado entre os Patrulheiros de elite!"
+        cap: 12, title: "O Truque do Barro Seco", act: "Ato III: A Guerra da Fronteira",
+        stage1: "Travessia forçada de 15 km sob o sol do meio-dia para cercar um comboio atolado no barro seco da várzea.",
+        stage2: "Resistência cardiovascular brutal. Gominsk chega inteiro onde os outros desmaiam de desidratação.",
+        stage3: "Os fugitivos se entregam sem fôlego nem para levantar as mãos. A reputação de Batedor está cravada!"
       },
       {
-        cap: 13, title: "O Portão da Cidade Branca", act: "Ato IV: A Cidadela",
-        stage1: "Grond e os aríetes negros aproximam-se dos grandes portões de ferro forjado de Minas Tirith.",
-        stage2: "Chamas e fúria sob os arcos monumentais. Cada repetição marcial é uma barreira contra o colapso.",
-        stage3: "Os portões resistem! A primeira muralha permanece intransponível para a desesperança."
+        cap: 13, title: "A Retomada da Linha Férrea", act: "Ato IV: O Domínio do Território",
+        stage1: "Vagões enferrujados abandonados servindo de fortaleza para atiradores da milícia local.",
+        stage2: "Subida nos estribos de ferro sob calor extremo. Desarme corpo a corpo no teto de chapa metálica.",
+        stage3: "A linha férrea está limpa de ponta a ponta. Os trilhos voltam a pertencer à calma da fronteira."
       },
       {
-        cap: 14, title: "O Cerco dos Sete Círculos", act: "Ato IV: A Cidadela",
-        stage1: "As ruas íngremes da cidade transformam-se em fortalezas escalonadas. O inimigo tenta penetrar pelos níveis inferiores.",
-        stage2: "Defesa implacável em cada degrau e sacada. O ferro de Gondor ceifa a vanguarda profana.",
-        stage3: "Os círculos superiores continuam intocados. A ordem militar de Gominsk reina na cidade."
+        cap: 14, title: "O Franco-Atirador da Caixa d'Água", act: "Ato IV: O Domínio do Território",
+        stage1: "No ponto mais alto do setor, um mercenário mantém o destacamento sob mira constante.",
+        stage2: "Escalada rápida pelas escadas de ferro laterais. Combate vertical sem margem para erro.",
+        stage3: "O fuzil foi arrancado e o operador imobilizado a 30 metros de altura. O perigo aéreo acabou."
       },
       {
-        cap: 15, title: "A Vigília no Pátio da Fonte", act: "Ato IV: A Cidadela",
-        stage1: "O vento gelado do Leste sopra sobre a Árvore ressequida. Sombras aladas circulam as nuvens.",
-        stage2: "A luz de Eärendil e a lâmina desembainhada dissipam o pavor lançado pelos espectros do céu.",
-        stage3: "A Besta Alada recua grasnando para a escuridão. O silêncio solene volta a reinar na Fonte."
+        cap: 15, title: "O Cerco à Mansão da Fronteira", act: "Ato IV: O Domínio do Território",
+        stage1: "Muralhas altas de concreto e câmeras blindadas. O refúgio blindado onde os mandantes se sentem seguros.",
+        stage2: "Portão de ferro colocado abaixo com força física e aríete improvisado. Varredura cômodo por cômodo.",
+        stage3: "A guarda de elite dos mandantes foi desmontada. O dinheiro sujo não comprou a fuga desta vez."
       },
       {
-        cap: 16, title: "O Resplendor de Ecthelion", act: "Ato IV: A Cidadela",
-        stage1: "No topo da Torre Branca, o sol da manhã rompe a névoa escura como uma lança dourada.",
-        stage2: "As trompas de Gondor soam em uníssono. A guarnição desce em contra-ataque devastador.",
-        stage3: "Pelennor está limpa! A patente de Capitão da Guarda é consagrada para todo o sempre."
+        cap: 16, title: "O Acerto de Contas no Asfalto Quente", act: "Ato IV: O Domínio do Território",
+        stage1: "A rodovia deserta na saída da cidade. A última linha de defesa armada dos cartéis fecha a pista.",
+        stage2: "Trocação visceral no mormaço que sobe do piche derretido. Cada overhand parte uma defesa inimiga.",
+        stage3: "A rodovia está desimpedida. A patente de Enforcer do Setor é reconhecida em toda a região."
       },
       {
-        cap: 17, title: "A Marcha dos Capitães do Oeste", act: "Ato V: O Fim da Sombra",
-        stage1: "O exército de homens livres marcha para o Leste. O objetivo não é vencer pela força, mas dar tempo ao Destino.",
-        stage2: "Travessias extenuantes por terras áridas e cinzentas onde a própria água tem gosto de veneno.",
-        stage3: "As hostes alcançam as encostas desoladas diante dos picos de cinza de Mordor."
+        cap: 17, title: "A Coluna de Caminhonetes Blindadas", act: "Ato V: A Lei da Linha Seca",
+        stage1: "Comboio pesado vindo do interior da fronteira tentando resgatar as lideranças presas.",
+        stage2: "Gominsk trava o veículo guia quebrando os vidros reforçados e arrancando o motorista no muque.",
+        stage3: "A coluna inteira bate em fuga desordenada pelas estradas vicinais. A autoridade não se curva."
       },
       {
-        cap: 18, title: "A Desolação diante do Portão Negro", act: "Ato V: O Fim da Sombra",
-        stage1: "As duas colinas de escória cercadas pelas hostes intermináveis saídas de Cirith Gorgor.",
-        stage2: "Círculos cerrados de lanças e escudos. Gominsk empunha a espada no olho do furacão.",
-        stage3: "A linha não se curva nem vacila diante da magnitude da Sombra."
+        cap: 18, title: "A Batalha da Usina Velha", act: "Ato V: A Lei da Linha Seca",
+        stage1: "Turbinas gigantes paradas e eco ensurdecedor. O líder militar das facções desafia a sentinela para o duelo.",
+        stage2: "Quinze minutos de porrada técnica, osso contra osso, sem luva e sem descanso no ferro fundido.",
+        stage3: "O comandante rival tomba apagado entre as engrenagens paradas. A honra do posto foi defendida."
       },
       {
-        cap: 19, title: "A Última Batalha no Morannon", act: "Ato V: O Fim da Sombra",
-        stage1: "O chão estremece! As montanhas rugem enquanto a Vontade de Barad-dûr estica os dedos sobre a terra.",
-        stage2: "O Sangue de Númenor queima com o brilho de cem reis. Cada golpe parte o ferro negro ao meio.",
-        stage3: "A Torre treme e rui em fumaça! A escuridão dissipa-se diante da luz eterna do Oeste!"
+        cap: 19, title: "A Noite da Tempestade Vermelha", act: "Ato V: A Lei da Linha Seca",
+        stage1: "Chuva torrencial de verão lavando a terra vermelha. O último bando tenta um ataque desesperado ao quartel.",
+        stage2: "Luta no barro puro até o pescoço. Gominsk parece esculpido em granito, inamovível perante a lama.",
+        stage3: "O último agressor deita rendido na enxurrada. A fronteira curva a cabeça diante da disciplina inabalável."
       },
       {
-        cap: 20, title: "O Renascer da Árvore Branca", act: "Ato V: O Retorno do Rei",
-        stage1: "A Primavera volta à Terra Média. Brotos brancos e perfumados despontam na madeira secular do Pátio.",
-        stage2: "A coroação diante de todos os povos livres. Gominsk é consagrado guardião supremo da paz dos homens.",
-        stage3: "A jornada está completa. De simples Sentinela ao trono dos Dúnedain: o Rei dos Homens governa com virtude!"
+        cap: 20, title: "A Lei da Fronteira Selada", act: "Ato V: O Dono da Fronteira",
+        stage1: "O sol nasce límpido sobre o Grande Rio. A poeira baixa e a cidade respira em segurança.",
+        stage2: "A comunidade e os homens de bem reconhecem a presença da sentinela que nunca fraquejou.",
+        stage3: "A jornada de ferro está consagrada. De simples vigilante a Dono da Fronteira: a lei aqui tem nome e punhos firmes!"
       }
     ];
 
+    // CATÁLOGO DE EQUIPAMENTO DE GARAGEM E COMBATE
     const ARSENAL_DB = {
-      adaga_oesternesse: { id: 'adaga_oesternesse', slot: 'weapon', rarity: 'DÚNEDAIN', icon: '🗡️', name: 'Adaga de Oesternesse', str: 2, agi: 1, con: 0, end: 0, desc: '+2 FORÇA • +1 DESTREZA', lore: 'Forjada em tempos antigos para os Dúnedain do Norte.' },
-      espada_guardiao: { id: 'espada_guardiao', slot: 'weapon', rarity: 'MILITAR', icon: '⚔️', name: 'Espada do Guardião', str: 4, agi: 0, con: 0, end: 0, desc: '+4 FORÇA', lore: 'Aço pesado temperado nas forjas de Minas Tirith.' },
-      arco_ithilien: { id: 'arco_ithilien', slot: 'weapon', rarity: 'DÚNEDAIN', icon: '🏹', name: 'Arco Longo de Ithilien', str: 0, agi: 4, con: 0, end: 0, desc: '+4 DESTREZA', lore: 'Madeira nobre dos bosques orientais do Anduin.' },
-      lanca_osgiliath: { id: 'lanca_osgiliath', slot: 'weapon', rarity: 'MILITAR', icon: '🔱', name: 'Lança de Osgiliath', str: 2, agi: 0, con: 0, end: 2, desc: '+2 FORÇA • +2 VIGOR', lore: 'Aço de contenção nas margens devastadas do grande rio.' },
-      lamina_elendil: { id: 'lamina_elendil', slot: 'weapon', rarity: 'ÉPICO', icon: '🗡️', name: 'Fragmento de Narsil', str: 5, agi: 2, con: 0, end: 1, desc: '+5 FORÇA • +2 DESTREZA • +1 VIGOR', lore: 'Um pedaço da lâmina sagrada que deserdou a Sombra.' },
-      arco_galadhrim: { id: 'arco_galadhrim', slot: 'weapon', rarity: 'ÉPICO', icon: '🏹', name: 'Arco dos Galadhrim', str: 1, agi: 6, con: 0, end: 2, desc: '+6 DESTREZA • +2 VIGOR • +1 FORÇA', lore: 'Trançado em ouro élfico e fios de Mallorn imortais.' },
-      anduril: { id: 'anduril', slot: 'weapon', rarity: 'LENDÁRIO', icon: '✨', name: 'Andúril, Chama do Oeste', str: 8, agi: 4, con: 2, end: 3, desc: '+8 FORÇA • +4 DESTREZA • +3 VIGOR', lore: 'A espada refeita. A luz do sol e da lua reluzem em seu fio.' },
+      // ARMAS
+      soqueira_bruta: { id: 'soqueira_bruta', slot: 'weapon', rarity: 'OPERACIONAL', icon: '🥊', name: 'Soqueira de Latão Fundido', str: 2, agi: 1, con: 0, end: 0, desc: '+2 FORÇA • +1 REFLEXO', lore: 'Feita de latão pesado em oficina clandestina. Assenta perfeita nos nós dos dedos.' },
+      bastao_ferro: { id: 'bastao_ferro', slot: 'weapon', rarity: 'PESADO', icon: '🏏', name: 'Bastão Tático Maciço', str: 4, agi: 0, con: 0, end: 0, desc: '+4 FORÇA', lore: 'Aço maciço usinado com empunhadura em fita isolante. Quebra bloqueios sem esforço.' },
+      canivete_tatica: { id: 'canivete_tatica', slot: 'weapon', rarity: 'OPERACIONAL', icon: '🔪', name: 'Canivete Automático Carbono', str: 0, agi: 4, con: 0, end: 0, desc: '+4 REFLEXO', lore: 'Aço D2 afiado no couro. Saque veloz em frações de segundo.' },
+      faca_trincheira: { id: 'faca_trincheira', slot: 'weapon', rarity: 'PESADO', icon: '🗡️', name: 'Faca de Trincheira Pesada', str: 2, agi: 0, con: 0, end: 2, desc: '+2 FORÇA • +2 FÔLEGO', lore: 'Lâmina larga de sobrevivência militar com anéis para os dedos no cabo.' },
+      pe_de_cabra: { id: 'pe_de_cabra', slot: 'weapon', rarity: 'TÁTICO', icon: '🔨', name: 'Pé de Cabra Forjado em Aço', str: 5, agi: 2, con: 0, end: 1, desc: '+5 FORÇA • +2 REFLEXO • +1 FÔLEGO', lore: 'Ferramenta de arrombamento adaptada para combate brutal de curta distância.' },
+      machete_fronteira: { id: 'machete_fronteira', slot: 'weapon', rarity: 'TÁTICO', icon: '🪓', name: 'Machete de Aço Carbono', str: 1, agi: 6, con: 0, end: 2, desc: '+6 REFLEXO • +2 FÔLEGO • +1 FORÇA', lore: 'Fio de navalha para abrir caminho no mato fechado e desarmar agressores.' },
+      soco_ingles_elite: { id: 'soco_ingles_elite', slot: 'weapon', rarity: 'LENDÁRIO', icon: '⚡', name: 'Soqueira Tática de Titânio', str: 8, agi: 4, con: 2, end: 3, desc: '+8 FORÇA • +4 REFLEXO • +3 FÔLEGO', lore: 'Peça militar customizada em titânio fosco. Nocaute garantido no primeiro impacto limpo.' },
 
-      manto_ithilien: { id: 'manto_ithilien', slot: 'armor', rarity: 'DÚNEDAIN', icon: '🧥', name: 'Manto dos Batedores', str: 0, agi: 2, con: 1, end: 0, desc: '+2 DESTREZA • +1 BLINDAGEM', lore: 'Tecido esverdeado que mimetiza sombras e folhagens.' },
-      armadura_torre: { id: 'armadura_torre', slot: 'armor', rarity: 'MILITAR', icon: '🛡️', name: 'Couraça da Guarda da Torre', str: 1, agi: 0, con: 3, end: 0, desc: '+3 BLINDAGEM • +1 FORÇA', lore: 'Placas negras ornamentadas com a Árvore Branca de Gondor.' },
-      cota_mithril: { id: 'cota_mithril', slot: 'armor', rarity: 'ÉPICO', icon: '⛓️', name: 'Cota de Malha de Mithril', str: 0, agi: 1, con: 6, end: 1, desc: '+6 BLINDAGEM • +1 DESTREZA', lore: 'Prata verdadeira forjada pelos anões de Khazad-dûm. Impenetrável.' },
-      manto_lorien: { id: 'manto_lorien', slot: 'armor', rarity: 'ÉPICO', icon: '🍃', name: 'Manto Élfico de Lórien', str: 0, agi: 5, con: 3, end: 2, desc: '+5 DESTREZA • +3 BLINDAGEM • +2 VIGOR', lore: 'Feito pela própria Senhora Galadriel. Torna o portador imperceptível.' },
-      armadura_numenor: { id: 'armadura_numenor', slot: 'armor', rarity: 'LENDÁRIO', icon: '👑', name: 'Arnês Real de Númenor', str: 3, agi: 2, con: 8, end: 4, desc: '+8 BLINDAGEM • +4 VIGOR • +3 FORÇA', lore: 'Forjada em Westernesse antes da queda das montanhas.' },
+      // PROTEÇÃO & COURAÇA
+      jaqueta_couro: { id: 'jaqueta_couro', slot: 'armor', rarity: 'OPERACIONAL', icon: '🧥', name: 'Jaqueta de Couro Batido', str: 0, agi: 2, con: 1, end: 0, desc: '+2 REFLEXO • +1 BLINDAGEM', lore: 'Couro grosso e surrado pelas tempestades de terra. Amortece navalhadas e raspões.' },
+      bandagens_boxe: { id: 'bandagens_boxe', slot: 'armor', rarity: 'PESADO', icon: '🩹', name: 'Bandagens Reforçadas de Luta', str: 1, agi: 0, con: 3, end: 0, desc: '+3 BLINDAGEM • +1 FORÇA', lore: 'Quatro metros de algodão elástico travando o pulso e protegendo as falanges.' },
+      colete_velado: { id: 'colete_velado', slot: 'armor', rarity: 'TÁTICO', icon: '🦺', name: 'Colete Balístico Velado III-A', str: 0, agi: 1, con: 6, end: 1, desc: '+6 BLINDAGEM • +1 REFLEXO', lore: 'Kevlar de alta densidade escondido sob a camisa. Suporta pancadas contundentes no tronco.' },
+      dolma_tatica: { id: 'dolma_tatica', slot: 'armor', rarity: 'TÁTICO', icon: '🪖', name: 'Jaqueta Tática Ripstop', str: 0, agi: 5, con: 3, end: 2, desc: '+5 REFLEXO • +3 BLINDAGEM • +2 FÔLEGO', lore: 'Tecido anti-rasgo militar com reforço nos cotovelos e bolsos velados.' },
+      traje_choque: { id: 'traje_choque', slot: 'armor', rarity: 'LENDÁRIO', icon: '🛡️', name: 'Armadura de Choque Completa', str: 3, agi: 2, con: 8, end: 4, desc: '+8 BLINDAGEM • +4 FÔLEGO • +3 FORÇA', lore: 'Placas de polímero balístico com caneleiras e protetores de tórax. Pronta para motim.' },
 
-      estrela_dunedain: { id: 'estrela_dunedain', slot: 'relic', rarity: 'DÚNEDAIN', icon: '⭐', name: 'Estrela dos Dúnedain', str: 1, agi: 1, con: 1, end: 1, desc: '+1 em todas as Virtudes', lore: 'Broche de prata em formato de raio concedido aos chefes do Norte.' },
-      frasco_galadriel: { id: 'frasco_galadriel', slot: 'relic', rarity: 'ÉPICO', icon: '🧪', name: 'Luz de Eärendil', str: 0, agi: 0, con: 3, end: 4, desc: '+4 VIGOR • +3 BLINDAGEM', lore: 'Uma luz para brilhar em lugares escuros quando todas as outras falharem.' },
-      pedra_elfica: { id: 'pedra_elfica', slot: 'relic', rarity: 'DÚNEDAIN', icon: '💎', name: 'Elessar (Pedra Élfica)', str: 0, agi: 0, con: 0, end: 5, desc: '+5 VIGOR', lore: 'Gema verde que revitaliza o ânimo mesmo nas marchas mais extenuantes.' },
-      anel_barahir: { id: 'anel_barahir', slot: 'relic', rarity: 'LENDÁRIO', icon: '💍', name: 'O Anel de Barahir', str: 3, agi: 3, con: 3, end: 3, desc: '+3 em TODAS as Virtudes', lore: 'Duas serpentes de esmeralda coroando flores de ouro. Relíquia dos Reis.' },
-      cetro_annuminas: { id: 'cetro_annuminas', slot: 'relic', rarity: 'LENDÁRIO', icon: '🪄', name: 'Cetro de Annúminas', str: 2, agi: 0, con: 6, end: 6, desc: '+6 BLINDAGEM • +6 VIGOR • +2 FORÇA', lore: 'A mais antiga relíquia dos Homens na Terra Média.' }
+      // UTILITÁRIOS & AMULETOS
+      zippo_arranhado: { id: 'zippo_arranhado', slot: 'relic', rarity: 'OPERACIONAL', icon: '🔥', name: 'Zippo de Latão Arranhado', str: 1, agi: 1, con: 1, end: 1, desc: '+1 em todas as Capacidades', lore: 'Isqueiro confiável que acende mesmo no vento mais violento da fronteira.' },
+      cantil_aco: { id: 'cantil_aco', slot: 'relic', rarity: 'TÁTICO', icon: '🍶', name: 'Cantil Militar de Aço', str: 0, agi: 0, con: 3, end: 4, desc: '+4 FÔLEGO • +3 BLINDAGEM', lore: 'Água gelada nas horas mais críticas de patrulha sob o asfalto derretendo.' },
+      relogio_choque: { id: 'relogio_choque', slot: 'relic', rarity: 'OPERACIONAL', icon: '⏱️', name: 'Relógio Tático Blindado', str: 0, agi: 0, con: 0, end: 5, desc: '+5 FÔLEGO', lore: 'Resistente a lama, pancadas e mergulho. Marca os segundos do descanso entre rounds.' },
+      cordao_sao_bento: { id: 'cordao_sao_bento', slot: 'relic', rarity: 'LENDÁRIO', icon: '✝️', name: 'Medalha de São Bento em Prata', str: 3, agi: 3, con: 3, end: 3, desc: '+3 em TODAS as Capacidades', lore: 'Amuleto de fé e oração que protege a mente da fraqueza, do medo e da hesitação.' },
+      bussola_antiga: { id: 'bussola_antiga', slot: 'relic', rarity: 'LENDÁRIO', icon: '🧭', name: 'Bússola de Patrulha em Bronze', str: 2, agi: 0, con: 6, end: 6, desc: '+6 BLINDAGEM • +6 FÔLEGO • +2 FORÇA', lore: 'Herança de família que nunca perdeu o Norte mesmo nas noites sem estrelas.' }
     };
 
+    // CONFIGURAÇÃO DAS 4 MANOBRAS TÁTICAS
     const MANEUVERS_CFG = {
-      AGI: { name: "Tiro de Ithilien", cost: 120, divisor: 20, critChance: 0.35, critMult: 2.0, stat: "agi", label: "DESTREZA", icon: "🏹" },
-      END: { name: "Cerco de Atrito", cost: 250, divisor: 22, critChance: 0, critMult: 1.0, stat: "end", label: "VIGOR", icon: "⚔️" },
-      CON: { name: "Impacto de Escudo", cost: 400, divisor: 22, critChance: 0, critMult: 1.0, stat: "con", label: "BLIND.", icon: "🛡️" },
-      STR: { name: "Golpe de Ruptura", cost: 600, divisor: 20, critChance: 0, critMult: 1.0, stat: "str", label: "FORÇA", icon: "🗡️" }
+      AGI: { name: "Jab de Encontro", cost: 120, divisor: 20, critChance: 0.35, critMult: 2.0, stat: "agi", label: "REFLEXO", icon: "🥊" },
+      END: { name: "Pressão de Grade", cost: 250, divisor: 22, critChance: 0, critMult: 1.0, stat: "end", label: "FÔLEGO", icon: "⛓️" },
+      CON: { name: "Guarda & Ombrada", cost: 400, divisor: 22, critChance: 0, critMult: 1.0, stat: "con", label: "BLIND.", icon: "🛡️" },
+      STR: { name: "Overhand de Direita", cost: 600, divisor: 20, critChance: 0, critMult: 1.0, stat: "str", label: "FORÇA", icon: "💥" }
     };
 
     let player = {
@@ -684,24 +691,25 @@
       enemyImage: null,
       battleState: { active: false, date: todayStr, multiplier: 1.5 },
       equipment: {
-        weapon: 'adaga_oesternesse',
-        armor: 'manto_ithilien',
-        relic: 'estrela_dunedain'
+        weapon: 'soqueira_bruta',
+        armor: 'jaqueta_couro',
+        relic: 'zippo_arranhado'
       },
       inventory: [
-        'adaga_oesternesse',
-        'manto_ithilien',
-        'estrela_dunedain'
+        'soqueira_bruta',
+        'jaqueta_couro',
+        'zippo_arranhado'
       ],
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
-      bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false, lootClaimed: false },
+      bossRaid: { weekId: currentWeekId, name: "O CAPATAZ DA DRAGA", maxHp: 85000, currentHp: 85000, defeated: false, lootClaimed: false },
       examBenchmark: { pushups: 20, pullups: 3, abs: 25, run10m: 1.5, runMax: 3.0 },
       sparksRoutine: { date: todayStr, slots: [false, false, false, false] },
       weightHistory: [{ date: new Date().toISOString(), weight: 96.0 }],
       history: []
     };
 
+    // RECUPERAÇÃO E MIGRAÇÃO INTELIGENTE DE SAVE
     try {
       let bestSave = null;
       for (let i = 0; i < localStorage.length; i++) {
@@ -717,8 +725,18 @@
           } catch(e){}
         }
       }
-      if (bestSave) player = Object.assign(player, bestSave);
+      if (bestSave) {
+        player = Object.assign(player, bestSave);
+      }
     } catch (e) {}
+
+    // Migração de equipamentos antigos caso venha de versão medieval
+    if (!player.equipment || !ARSENAL_DB[player.equipment.weapon]) {
+      player.equipment = { weapon: 'soqueira_bruta', armor: 'jaqueta_couro', relic: 'zippo_arranhado' };
+    }
+    if (!Array.isArray(player.inventory) || !player.inventory.some(id => ARSENAL_DB[id])) {
+      player.inventory = ['soqueira_bruta', 'jaqueta_couro', 'zippo_arranhado'];
+    }
 
     const savedAvatar = localStorage.getItem('hero_custom_avatar');
     if (savedAvatar) player.avatarImage = savedAvatar;
@@ -729,18 +747,11 @@
     player.maxXp = Math.max(800, (player.level || 1) * 800);
     if (player.impeto === undefined || player.impeto === null) player.impeto = 600;
 
-    if (!player.equipment) {
-      player.equipment = { weapon: 'adaga_oesternesse', armor: 'manto_ithilien', relic: 'estrela_dunedain' };
-    }
-    if (!Array.isArray(player.inventory) || !player.inventory.length) {
-      player.inventory = ['adaga_oesternesse', 'manto_ithilien', 'estrela_dunedain'];
-    }
-
     const bossHpScale = 85000 + Math.max(0, ((player.level || 1) - 1) * 6000);
-    if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
+    if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000 || player.bossRaid.name.includes("TROLL")) {
       player.bossRaid = {
         weekId: currentWeekId,
-        name: "TROLL DE COMBATE DE GORGOROTH",
+        name: "O CAPATAZ DA DRAGA",
         maxHp: bossHpScale,
         currentHp: bossHpScale,
         defeated: false,
@@ -796,22 +807,23 @@
     }
 
     function resetCampaignProgress() {
-      const confirmFirst = confirm("Atenção, Guardião: tem a certeza de que deseja apagar todo o progresso da campanha, equipamentos e histórico?");
+      const confirmFirst = confirm("Atenção, Operador: tem a certeza de que deseja apagar todo o histórico, equipamentos e registros da fronteira?");
       if (!confirmFirst) return;
 
-      const confirmSecond = confirm("Esta ação é irreversível. Deseja restaurar Gominsk ao início da sua jornada militar?");
+      const confirmSecond = confirm("Esta ação é irreversível. Deseja reiniciar a contagem de Gominsk do zero?");
       if (confirmSecond) {
         localStorage.clear();
         location.reload();
       }
     }
 
+    // ESPÓLIOS DE VITÓRIA
     let pendingLootItem = null;
 
     function triggerLootDropCeremony() {
       if (!player.bossRaid || !player.bossRaid.defeated) return;
       if (player.bossRaid.lootClaimed) {
-        showToast("Os espólios desta vitória já foram recolhidos com honra!");
+        showToast("Os espólios deste confronto já foram recolhidos!");
         return;
       }
 
@@ -819,9 +831,9 @@
 
       if (unownedIds.length > 0) {
         const roll = Math.random();
-        let targetRarity = 'ÉPICO';
-        if (roll < 0.40) targetRarity = 'DÚNEDAIN';
-        else if (roll < 0.75) targetRarity = 'ÉPICO';
+        let targetRarity = 'TÁTICO';
+        if (roll < 0.40) targetRarity = 'OPERACIONAL';
+        else if (roll < 0.75) targetRarity = 'TÁTICO';
         else targetRarity = 'LENDÁRIO';
 
         const filtered = unownedIds.filter(id => ARSENAL_DB[id].rarity === targetRarity);
@@ -830,19 +842,19 @@
         pendingLootItem = ARSENAL_DB[selectedId];
       } else {
         pendingLootItem = {
-          id: 'lingote_mithril_' + Date.now(),
+          id: 'suprimento_militar_' + Date.now(),
           slot: 'special',
-          rarity: 'MITHRIL',
-          icon: '💎',
-          name: 'Lingote de Mithril Puro',
-          desc: '+500 Ímpeto Marcial • +50 Bravura Fixa',
-          lore: 'Metal precioso forjado nas profundezas de Khazad-dûm, símbolo da soberania e triunfo dos Reis.'
+          rarity: 'OFICIAL',
+          icon: '📦',
+          name: 'Caixa de Suprimentos Militares',
+          desc: '+500 Fôlego de Luta • +50 Reputação Fixa',
+          lore: 'Kit de primeiro socorros, fita tática e ração de combate apreendidos em campo.'
         };
       }
 
       const modal = document.getElementById('loot-modal');
-      document.getElementById('loot-item-icon').textContent = pendingLootItem.icon || '⚔️';
-      document.getElementById('loot-item-rarity').textContent = pendingLootItem.rarity || 'RELÍQUIA';
+      document.getElementById('loot-item-icon').textContent = pendingLootItem.icon || '🥊';
+      document.getElementById('loot-item-rarity').textContent = pendingLootItem.rarity || 'EQUIPAMENTO';
       document.getElementById('loot-item-name').textContent = pendingLootItem.name;
       document.getElementById('loot-item-bonus').textContent = pendingLootItem.desc;
       document.getElementById('loot-item-lore').textContent = pendingLootItem.lore;
@@ -857,9 +869,9 @@
           player.inventory.push(pendingLootItem.id);
         }
         player.equipment[pendingLootItem.slot] = pendingLootItem.id;
-        showToast(`${pendingLootItem.name} foi forjado e equipado com honra!`);
+        showToast(`${pendingLootItem.name} equipado para a próxima ronda!`);
       } else {
-        addImpeto(500, "Mithril");
+        addImpeto(500, "Suprimentos");
       }
       finalizeLootClaim();
     }
@@ -870,9 +882,9 @@
         if (!player.inventory.includes(pendingLootItem.id)) {
           player.inventory.push(pendingLootItem.id);
         }
-        showToast(`${pendingLootItem.name} guardado no Arsenal de Gondor!`);
+        showToast(`${pendingLootItem.name} guardado no armário!`);
       } else {
-        addImpeto(500, "Mithril");
+        addImpeto(500, "Suprimentos");
       }
       finalizeLootClaim();
     }
@@ -882,8 +894,8 @@
       document.getElementById('loot-modal').classList.add('hidden');
       
       player.history.unshift({
-        nome: "ESPÓLIO DE GUERRA CONQUISTADO",
-        detalhes: `${pendingLootItem.name} saqueado do Troll de Gorgoroth`,
+        nome: "ESPÓLIO APREENDIDO EM CONFRONTO",
+        detalhes: `${pendingLootItem.name} recolhido do ${player.bossRaid.name}`,
         tipo: "forca",
         data: new Date().toISOString(),
         xp: 150
@@ -894,6 +906,7 @@
       updateUI();
     }
 
+    // MODAL DO ARMÁRIO TÁTICO
     let currentArsenalSlot = 'weapon';
 
     function openArsenalModal(slot) {
@@ -903,8 +916,8 @@
       const list = document.getElementById('arsenal-modal-list');
       if (!modal || !title || !list) return;
 
-      const slotLabels = { weapon: 'ARMAS DE GONDOR', armor: 'COURANÇAS & MANTOS', relic: 'RELÍQUIAS DE NÚMENOR' };
-      title.textContent = slotLabels[slot] || 'FORJA DE GONDOR';
+      const slotLabels = { weapon: 'ARMAS DE COMBATE', armor: 'PROTEÇÃO & COURAÇA', relic: 'UTILITÁRIOS & AMULETOS' };
+      title.textContent = slotLabels[slot] || 'ARMÁRIO TÁTICO';
 
       const availableItems = (player.inventory || []).filter(id => ARSENAL_DB[id] && ARSENAL_DB[id].slot === slot);
       const currentlyEquipped = player.equipment && player.equipment[slot];
@@ -919,9 +932,9 @@
             <div class="bg-slate-950 border ${isEquipped ? 'border-amber-400 bg-amber-950/40' : 'border-slate-800'} p-2.5 rounded-xl flex items-center justify-between text-xs">
               <div class="pr-2">
                 <div class="flex items-center gap-1.5">
-                  <span class="text-sm">${item.icon || '⚔️'}</span>
+                  <span class="text-sm">${item.icon || '🥊'}</span>
                   <span class="font-epic font-bold text-amber-200 text-[11px]">${item.name}</span>
-                  ${isEquipped ? '<span class="text-[8px] bg-amber-950 border border-amber-500 text-amber-300 px-1 rounded font-bold">EQUIPADO</span>' : ''}
+                  ${isEquipped ? '<span class="text-[8px] bg-amber-950 border border-amber-500 text-amber-300 px-1 rounded font-bold">EM USO</span>' : ''}
                 </div>
                 <span class="text-[10px] text-amber-400 font-sans block mt-0.5">${item.desc}</span>
                 <span class="text-[9px] text-slate-400 font-sans block italic">${item.lore}</span>
@@ -949,7 +962,7 @@
         showToast("Equipamento desequipado.");
       } else {
         player.equipment[slot] = itemId;
-        showToast(`${ARSENAL_DB[itemId].name} equipado com honra!`);
+        showToast(`${ARSENAL_DB[itemId].name} equipado para o serviço!`);
       }
       closeArsenalModal();
       updateUI();
@@ -973,13 +986,13 @@
 
     function addImpeto(amount, source) {
       player.impeto = Math.min(10000, (player.impeto || 0) + amount);
-      showToast(`+${amount} ÍMPETO MARCIAL (${source})!`, true);
+      showToast(`+${amount} FÔLEGO DE COMBATE (${source})!`, true);
       updateCombatManeuversUI();
     }
 
     function executeManeuver(statType) {
       if (!player.bossRaid || player.bossRaid.defeated) {
-        showToast("O Troll já foi derrotado! Reivindique os espólios.");
+        showToast("O alvo já foi neutralizado! Recolha os espólios.");
         return;
       }
 
@@ -987,7 +1000,7 @@
       if (!cfg) return;
 
       if ((player.impeto || 0) < cfg.cost) {
-        showToast(`Ímpeto insuficiente para ${cfg.name}! Necessário ${cfg.cost} pts. Realize treinos para acumular.`, false);
+        showToast(`Fôlego insuficiente para ${cfg.name}! Necessário ${cfg.cost} pts. Realize treinos para recuperar.`, false);
         return;
       }
 
@@ -1016,27 +1029,27 @@
         player.bossRaid.lootClaimed = false;
         addXP(400, statType);
         player.history.unshift({
-          nome: "🏆 VITÓRIA NO CERCO DE MINAS TIRITH",
+          nome: "🏆 ALVO NEUTRALIZADO NO PORTO",
           detalhes: `${player.bossRaid.name} derrotado com ${cfg.name} (+400 XP)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 400
         });
-        showToast(`GOLPE FATAL! O TROLL FOI DERRUBADO! (+400 XP)`);
+        showToast(`NOCAUTE! O CAPATAZ TOMBOU NO CASCALHO! (+400 XP)`);
       } else {
         const critText = isCrit ? ` [CRÍTICO ${cfg.critMult}x!]` : "";
-        const numenorText = isBattleActive ? " [NÚMENOR 1.5x]" : "";
-        showToast(`💥 ${cfg.name.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} HP${critText}${numenorText}!`);
+        const rageText = isBattleActive ? " [SANGUE NOS OLHOS 1.5x]" : "";
+        showToast(`💥 ${cfg.name.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} RES${critText}${rageText}!`);
         
         const log = document.getElementById('boss-story-log');
         if (log) {
-          log.textContent = `Gominsk desferiu ${cfg.name}! O golpe consumiu ${cfg.cost} de Ímpeto amplificado pela virtude (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
+          log.textContent = `Gominsk desferiu ${cfg.name}! O golpe consumiu ${cfg.cost} de Fôlego potencializado pela capacidade (${statVal}) quebrando ${finalDamage.toLocaleString('pt-BR')} da resistência do alvo!`;
         }
       }
 
       renderBossRaid();
       updateCombatManeuversUI();
-      localStorage.setItem('hero_player_v31', JSON.stringify(player));
+      localStorage.setItem('hero_player_v32', JSON.stringify(player));
 
       const bossContainer = document.getElementById('boss-avatar-container');
       if (bossContainer && !player.bossRaid.defeated) {
@@ -1071,10 +1084,10 @@
       const dCon = document.getElementById('maneuver-desc-con');
       const dStr = document.getElementById('maneuver-desc-str');
 
-      if (dAgi) dAgi.textContent = `Dano est.: ${dmgAgi} HP (35% Crítico)`;
-      if (dEnd) dEnd.textContent = `Dano est.: ${dmgEnd} HP`;
-      if (dCon) dCon.textContent = `Dano est.: ${dmgCon} HP`;
-      if (dStr) dStr.textContent = `Dano est.: ${dmgStr} HP`;
+      if (dAgi) dAgi.textContent = `Dano est.: ${dmgAgi} (35% Crítico)`;
+      if (dEnd) dEnd.textContent = `Dano est.: ${dmgEnd}`;
+      if (dCon) dCon.textContent = `Dano est.: ${dmgCon}`;
+      if (dStr) dStr.textContent = `Dano est.: ${dmgStr}`;
     }
 
     function handleAvatarUpload(event) {
@@ -1093,7 +1106,7 @@
           player.avatarImage = compressed;
           try { localStorage.setItem('hero_custom_avatar', compressed); } catch(err){}
           renderToriyamaAvatar();
-          showToast("Retrato de Gominsk consagrado!");
+          showToast("Foto de Gominsk registrada no sistema!");
         };
         img.src = e.target.result;
       };
@@ -1112,14 +1125,14 @@
       const imc = (player.weight || 96) / (heightM * heightM);
       const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
 
-      document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ESGUIO' : (imc < 30 ? 'ATLÉTICO' : 'COLOSSO')}`;
+      document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ESGUIO' : (imc < 30 ? 'ATLÉTICO' : 'CARCAÇA PESADA')}`;
       document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
-      document.getElementById('combat-power-badge').textContent = `⚡ BRAVURA: ${calculateCombatPower().toLocaleString('pt-BR')}`;
+      document.getElementById('combat-power-badge').textContent = `⚡ REPUTAÇÃO: ${calculateCombatPower().toLocaleString('pt-BR')}`;
 
       if (battleBadge) battleBadge.classList.toggle('hidden', !isBattleActive);
 
       if (isBattleActive) {
-        container.className = "relative w-24 h-24 bg-slate-950 border-2 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-2xl aura-numenor";
+        container.className = "relative w-24 h-24 bg-slate-950 border-2 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-2xl aura-blood";
       } else {
         container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400' : (lvl >= 13 ? 'border-amber-400' : 'border-amber-600/60')} rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner`;
       }
@@ -1151,7 +1164,7 @@
           player.enemyImage = compressed;
           try { localStorage.setItem('hero_custom_enemy', compressed); } catch(err){}
           renderBossRaid();
-          showToast("A Besta de Gorgoroth foi revelada!");
+          showToast("Foto do alvo atualizada!");
         };
         img.src = e.target.result;
       };
@@ -1164,7 +1177,7 @@
 
       const percent = Math.max(0, Math.round((raid.currentHp / raid.maxHp) * 100));
       document.getElementById('boss-hp-bar').style.width = `${percent}%`;
-      document.getElementById('boss-hp-text').textContent = `${raid.currentHp.toLocaleString('pt-BR')} / ${raid.maxHp.toLocaleString('pt-BR')} HP`;
+      document.getElementById('boss-hp-text').textContent = `${raid.currentHp.toLocaleString('pt-BR')} / ${raid.maxHp.toLocaleString('pt-BR')} RES`;
       document.getElementById('boss-hp-percent').textContent = `${percent}%`;
 
       const badge = document.getElementById('boss-status-badge');
@@ -1177,7 +1190,7 @@
       const storyLog = document.getElementById('boss-story-log');
 
       const chapter = getCurrentChapter();
-      if (chapterLabel) chapterLabel.textContent = `CAPÍTULO ${chapter.cap}: ${chapter.title.toUpperCase()}`;
+      if (chapterLabel) chapterLabel.textContent = `OPERAÇÃO 0${chapter.cap}: ${chapter.title.toUpperCase()}`;
 
       const enemyImgSrc = player.enemyImage || localStorage.getItem('hero_custom_enemy');
       if (enemyImgSrc) {
@@ -1190,27 +1203,27 @@
       }
 
       if (raid.defeated) {
-        badge.textContent = "ABATIDO";
+        badge.textContent = "NOCAUTEADO";
         badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-emerald-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group filter grayscale contrast-125 opacity-70";
         
-        if (storyStage) storyStage.textContent = "O TRIUNFO DA LINHAGEM:";
+        if (storyStage) storyStage.textContent = "SETOR PACIFICADO:";
         if (storyLog) storyLog.textContent = chapter.stage3;
 
         if (lootClaimContainer) {
           lootClaimContainer.classList.toggle('hidden', !!raid.lootClaimed);
         }
       } else {
-        badge.textContent = "EM COMBATE";
+        badge.textContent = "EM CONFRONTO";
         badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group";
         if (lootClaimContainer) lootClaimContainer.classList.add('hidden');
 
         if (percent > 50) {
-          if (storyStage) storyStage.textContent = "ORDEM DE MARCHA:";
+          if (storyStage) storyStage.textContent = "ORDEM DA RONDA:";
           if (storyLog) storyLog.textContent = chapter.stage1;
         } else {
-          if (storyStage) storyStage.textContent = "O PONTO DE VIRAGEM:";
+          if (storyStage) storyStage.textContent = "PONTO DE IMPACTO:";
           if (storyLog) storyLog.textContent = chapter.stage2;
         }
       }
@@ -1220,7 +1233,7 @@
       const sparksDone = player.sparksRoutine && player.sparksRoutine.slots.every(Boolean);
       if (sparksDone && (!player.battleState.active || player.battleState.date !== todayStr)) {
         player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
-        showToast("🔥 O SANGUE DE NÚMENOR DESPERTOU! 1.5x DANO NO CERCO!", true);
+        showToast("🔥 SANGUE NOS OLHOS ATIVADO! 1.5x DANO NOS CONFRONTOS!", true);
         renderToriyamaAvatar();
         updateCombatManeuversUI();
       }
@@ -1260,8 +1273,8 @@
         addXP(25, statGain);
         addImpeto(350, `Posto 0${index + 1}`);
         player.history.unshift({
-          nome: `Vigília: Posto 0${index + 1}`,
-          detalhes: `Treino de calistenia (+1 ${statGain} • +350 Ímpeto)`,
+          nome: `Posto Operacional 0${index + 1}`,
+          detalhes: `Treino de calistenia (+1 ${statGain} • +350 Fôlego)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 25
@@ -1269,10 +1282,10 @@
 
         if (player.sparksRoutine.slots.every(Boolean)) {
           addXP(50, 'CON');
-          addImpeto(600, "Vigília Plena 4/4");
+          addImpeto(600, "Turno Completo 4/4");
           checkBattleStateActivation();
         } else {
-          showToast(`Posto 0${index + 1} Consagrado! (+25 XP e +1 ${statGain})`);
+          showToast(`Posto 0${index + 1} Concluído! (+25 XP e +1 ${statGain})`);
         }
       } else {
         showToast(`Posto 0${index + 1} desmarcado.`, false);
@@ -1286,7 +1299,7 @@
       const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
 
       if (sleepInput <= 0 && stepsInput <= 0) {
-        showToast("Insira ao menos os pontos de vigília ou passos.", false);
+        showToast("Insira ao menos a pontuação de sono ou passos.", false);
         return;
       }
 
@@ -1310,18 +1323,18 @@
       }
 
       addXP(bonusXp, 'END');
-      addImpeto(impetoGanho, "Vigília Matinal");
+      addImpeto(impetoGanho, "Alvorada");
 
       player.history.unshift({
-        nome: "DESPERTAR DA VIGÍLIA",
-        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos (+${impetoGanho} Ímpeto)`,
+        nome: "ALVORADA & RONDA",
+        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos (+${impetoGanho} Fôlego)`,
         tipo: "aero", data: new Date().toISOString(), xp: bonusXp
       });
 
       document.getElementById('input-manual-sleep').value = '';
       document.getElementById('input-manual-steps').value = '';
       updateUI();
-      showToast(`Vigília Registada com Glória! (+${impetoGanho} Ímpeto)`);
+      showToast(`Alvorada Registrada com Sucesso! (+${impetoGanho} Fôlego)`);
     }
 
     function addWater(ml) {
@@ -1329,17 +1342,17 @@
       if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
         player.hydration.completed = true;
         addXP(30, 'CON');
-        addImpeto(250, "Hidratação Plena");
+        addImpeto(250, "Fornalha Quebrada");
         player.history.unshift({
-          nome: "FONTES DA CIDADELA SACIADAS",
-          detalhes: "Meta diária de águas puras (+250 Ímpeto)",
+          nome: "FORNALHA QUEBRADA",
+          detalhes: "Meta diária de hidratação batida (+250 Fôlego)",
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 30
         });
-        showToast("ÁGUAS DA CIDADELA COMPLETAS! (+30 XP e +250 Ímpeto)");
+        showToast("FORNALHA QUEBRADA! (+30 XP e +250 Fôlego)");
       } else {
-        showToast(`+${ml} ml de águas puras consumidas!`);
+        showToast(`+${ml} ml de hidratação consumidos!`);
       }
       updateUI();
     }
@@ -1347,7 +1360,7 @@
     function resetWater() {
       player.hydration.currentMl = 0; player.hydration.completed = false;
       updateUI();
-      showToast("Fontes reiniciadas.", false);
+      showToast("Contador de água reiniciado.", false);
     }
 
     function addXP(amount, type) {
@@ -1373,14 +1386,14 @@
       addImpeto(impetoGain, nome);
       player.history.unshift({
         nome: nome,
-        detalhes: `${reps} repetições (+1 ${stat} • +${impetoGain} Ímpeto)`,
+        detalhes: `${reps} repetições (+1 ${stat} • +${impetoGain} Fôlego)`,
         tipo: 'forca',
         data: new Date().toISOString(),
         xp: xp
       });
       if (player.history.length > 50) player.history.pop();
       updateUI();
-      showToast(`+${reps} manobras de ${nome}! (+${impetoGain} Ímpeto)`);
+      showToast(`+${reps} repetições de ${nome}! (+${impetoGain} Fôlego)`);
     }
 
     function handleBiometricsSubmit() {
@@ -1392,13 +1405,13 @@
         addXP(20, 'END');
         addImpeto(200, "Pesagem");
         player.history.unshift({
-          nome: "REGISTO DE MASSA",
-          detalhes: `${w.toFixed(1)} kg • ${h} cm (+200 Ímpeto)`,
+          nome: "PESAGEM DA CARCAÇA",
+          detalhes: `${w.toFixed(1)} kg • ${h} cm (+200 Fôlego)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 20
         });
-        showToast(`Massa consagrada: ${w.toFixed(1)} kg (+20 XP)`);
+        showToast(`Massa registrada: ${w.toFixed(1)} kg (+20 XP)`);
         updateUI();
       }
     }
@@ -1428,16 +1441,16 @@
       player.end = Math.max(10, Math.round(rmax * 4.5));
 
       addXP(50, null);
-      addImpeto(1000, "Provação Física");
+      addImpeto(1000, "Teste Físico");
       player.history.unshift({
-        nome: "PROVAÇÃO MARCIAL CONCLUÍDA",
-        detalhes: `FOR ${player.str} • BLIND ${player.con} • DEST ${player.agi} • VIG ${player.end} (+1.000 Ímpeto)`,
+        nome: "TESTE FÍSICO OPERACIONAL CONCLUÍDO",
+        detalhes: `FOR ${player.str} • BLIND ${player.con} • REF ${player.agi} • FÔL ${player.end} (+1.000 Fôlego)`,
         tipo: "forca",
         data: new Date().toISOString(),
         xp: 50
       });
       closeExamModal();
-      showToast(`PROVAÇÃO CONSAGRADA! BRAVURA: ${calculateCombatPower()}`);
+      showToast(`TESTE REGISTRADO! REPUTAÇÃO: ${calculateCombatPower()}`);
       updateUI();
     }
 
@@ -1446,7 +1459,7 @@
       const a = document.createElement('a'); a.href = dataStr;
       a.download = `cronicas_gominsk_${new Date().toISOString().slice(0,10)}.json`;
       a.click(); a.remove();
-      showToast("Crônicas de Gominsk arquivadas!");
+      showToast("Histórico da Fronteira arquivado!");
     }
 
     function importBackupData(event) {
@@ -1459,9 +1472,9 @@
           if (imported && typeof imported.level === 'number') {
             player = Object.assign(player, imported);
             updateUI();
-            showToast("História de Gominsk Restaurada!");
+            showToast("Histórico Restaurado!");
           }
-        } catch(err) { showToast("Ficheiro ilegível.", false); }
+        } catch(err) { showToast("Arquivo ilegível.", false); }
       };
       reader.readAsText(file);
     }
@@ -1479,7 +1492,7 @@
           if (laps && laps.length > 0) {
             const lap = laps[0];
             const notesElem = xml.getElementsByTagName("Notes")[0];
-            const rawName = (notesElem && notesElem.textContent.trim()) || "Treino Marcial";
+            const rawName = (notesElem && notesElem.textContent.trim()) || "Incursão Operacional";
             const meters = Number(lap.getElementsByTagName("DistanceMeters")[0]?.textContent || 0);
             const totalSec = Number(lap.getElementsByTagName("TotalTimeSeconds")[0]?.textContent || 0);
             const km = Number((meters / 1000).toFixed(2));
@@ -1490,7 +1503,7 @@
 
             if (km >= 4.0) {
               player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
-              showToast("🔥 MARCHA HERÓICA! O SANGUE DE NÚMENOR DESPERTOU!");
+              showToast("🔥 INCURSÃO PESADA! SANGUE NOS OLHOS ATIVADO!");
             }
 
             addXP(xpTotal, km > 0 ? 'END' : 'CON');
@@ -1498,16 +1511,16 @@
 
             player.history.unshift({
               nome: rawName.toUpperCase(),
-              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min (+${impetoGain} Ímpeto)`,
+              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min (+${impetoGain} Fôlego)`,
               tipo: km > 0 ? 'aero' : 'forca',
               data: new Date().toISOString(),
               xp: xpTotal
             });
-            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP e +${impetoGain} Ímpeto)`;
-            showToast(`${rawName} Concluído com Glória!`);
+            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP e +${impetoGain} Fôlego)`;
+            showToast(`${rawName} Concluído com Sucesso!`);
             updateUI();
           }
-        } catch(err) { statusMsg.textContent = "Erro na leitura do papiro TCX."; }
+        } catch(err) { statusMsg.textContent = "Erro na leitura do arquivo TCX."; }
       };
       reader.readAsText(file);
     });
@@ -1520,7 +1533,7 @@
       if (!carousel) return;
 
       const playerCap = Math.min(20, Math.max(1, player.level || 1));
-      if (badge) badge.textContent = `CAP. ${playerCap} / 20`;
+      if (badge) badge.textContent = `OP. ${playerCap} / 20`;
 
       carousel.innerHTML = CAMPAIGN_CHAPTERS.map(ch => {
         const isUnlocked = ch.cap <= playerCap;
@@ -1531,7 +1544,7 @@
               isSelected ? 'border-amber-400 bg-amber-950/70 text-amber-200 font-bold shadow-md' : 'border-slate-700 bg-slate-900/60 text-slate-300 hover:border-amber-500/50'
             )
           }">
-            <span class="text-[8px] block ${isUnlocked ? 'text-amber-400' : 'text-slate-600'}">${isUnlocked ? 'CAP. 0' + ch.cap : 'BLOQUEADO'}</span>
+            <span class="text-[8px] block ${isUnlocked ? 'text-amber-400' : 'text-slate-600'}">${isUnlocked ? 'OP. 0' + ch.cap : 'BLOQUEADA'}</span>
             <span class="text-[10px] block truncate max-w-[85px]">${isUnlocked ? ch.title.split(' ')[0] : '???'}</span>
           </button>
         `;
@@ -1543,7 +1556,7 @@
     function selectCodiceChapter(capNum) {
       const playerCap = Math.min(20, Math.max(1, player.level || 1));
       if (capNum > playerCap) {
-        showToast(`Capítulo selado! Alcance a Patente correspondente para ler.`, false);
+        showToast(`Operação arquivada! Alcance a Patente correspondente para ler.`, false);
         return;
       }
       selectedCodiceCap = capNum;
@@ -1557,10 +1570,9 @@
 
       const ch = CAMPAIGN_CHAPTERS[capNum - 1];
       const playerCap = Math.min(20, Math.max(1, player.level || 1));
-      const isCurrent = capNum === playerCap;
       const isPast = capNum < playerCap;
 
-      titleEl.textContent = `CAPÍTULO ${ch.cap}: ${ch.title.toUpperCase()} (${ch.act.toUpperCase()})`;
+      titleEl.textContent = `OPERAÇÃO 0${ch.cap}: ${ch.title.toUpperCase()} (${ch.act.toUpperCase()})`;
 
       if (isPast) {
         bodyEl.innerHTML = `
@@ -1577,7 +1589,7 @@
         if (player.bossRaid && player.bossRaid.defeated) {
           narrativeText += `<p class="text-emerald-300 font-bold">${ch.stage3}</p>`;
         } else {
-          narrativeText += `<p class="text-[10px] text-slate-500 font-sans mt-2">⚔️ Desfira mais manobras no Cerco para revelar o desenrolar desta crônica.</p>`;
+          narrativeText += `<p class="text-[10px] text-slate-500 font-sans mt-2">🥊 Desfira manobras na ronda para avançar esta ocorrência.</p>`;
         }
         bodyEl.innerHTML = narrativeText;
       }
@@ -1660,10 +1672,10 @@
       const list = document.getElementById('selected-day-list');
       if (!label || !list) return;
 
-      label.textContent = `CRÔNICAS DE ${day} DE ${monthName.toUpperCase()}`;
+      label.textContent = `OCORRÊNCIAS DE ${day} DE ${monthName.toUpperCase()}`;
 
       if (!events || !events.length) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum feito marcial registado nesta data.</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum evento registrado nesta data.</p>`;
         return;
       }
 
@@ -1714,12 +1726,12 @@
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
           .then(stream => {
             document.getElementById('webcam').srcObject = stream;
-            camRunning = true; btn.textContent = "OCULTAR PALANTÍR";
-          }).catch(() => showToast("Visão do Palantír bloqueada.", false));
+            camRunning = true; btn.textContent = "OCULTAR VIGIA";
+          }).catch(() => showToast("Visão da câmera bloqueada.", false));
       } else {
         const v = document.getElementById('webcam');
         if (v.srcObject) v.srcObject.getTracks().forEach(t => t.stop());
-        camRunning = false; btn.textContent = "INVOCAR SENSOR ÓPTICO";
+        camRunning = false; btn.textContent = "ATIVAR SENSOR ÓPTICO";
       }
     }
 
@@ -1735,7 +1747,7 @@
       document.getElementById('stat-agi').innerHTML = `${effective.total.agi} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.agi})</span>`;
       document.getElementById('stat-end').innerHTML = `${effective.total.end} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.end})</span>`;
 
-      document.getElementById('streak-text').textContent = `🔥 ${player.streak} ${player.streak > 1 ? 'DIAS DE GLÓRIA' : 'DIA DE GLÓRIA'}`;
+      document.getElementById('streak-text').textContent = `🔥 ${player.streak} ${player.streak > 1 ? 'DIAS NA LINHA' : 'DIA NA LINHA'}`;
       document.getElementById('input-height').value = player.heightCm;
       document.getElementById('input-weight').value = player.weight;
 
@@ -1745,7 +1757,7 @@
 
       const sleepBadge = document.getElementById('sleep-buff-badge');
       if (player.morningReport && player.morningReport.completed) {
-        sleepBadge.textContent = `VIGÍLIA: ${player.morningReport.sleepScore} PTS`;
+        sleepBadge.textContent = `ALVORADA: ${player.morningReport.sleepScore} PTS`;
         sleepBadge.className = "text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded font-bold";
       }
 
@@ -1755,15 +1767,14 @@
       renderArsenalHUD();
       updateCombatManeuversUI();
 
-      localStorage.setItem('hero_player_v31', JSON.stringify(player));
+      localStorage.setItem('hero_player_v32', JSON.stringify(player));
     }
 
-    // REGISTO DE SERVICE WORKER (PWA)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then(() => console.log('Vigília Offline ativada (SW registado).'))
-          .catch((err) => console.log('Falha ao registar SW:', err));
+          .then(() => console.log('Vigia Offline ativada (SW registrado).'))
+          .catch((err) => console.log('Falha ao registrar SW:', err));
       });
     }
 
