@@ -58,7 +58,6 @@
       <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest block mb-1">VITÓRIA NAS MURALHAS</span>
       <h2 class="text-base font-black text-white mb-3">ESPÓLIOS DE GORGOROTH</h2>
 
-      <!-- Card do Item Conquistado -->
       <div id="loot-card-display" class="bg-slate-950 border-2 border-amber-500/80 rounded-2xl p-4 mb-4 shadow-xl loot-card-anim">
         <span id="loot-item-icon" class="text-4xl block mb-1">⚔️</span>
         <span id="loot-item-rarity" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block mb-1">HERANÇA DE NÚMENOR</span>
@@ -68,10 +67,10 @@
       </div>
 
       <div class="flex flex-col gap-2">
-        <button type="button" id="loot-btn-equip" onclick="claimAndEquipLoot()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition active:scale-95 shadow">
+        <button type="button" id="loot-btn-equip" onclick="claimAndEquipLoot()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition active:scale-95 shadow cursor-pointer">
           EQUIPAR IMEDIATAMENTE
         </button>
-        <button type="button" onclick="claimAndStoreLoot()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-2 rounded-xl text-xs border border-amber-500/40 transition">
+        <button type="button" onclick="claimAndStoreLoot()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-2 rounded-xl text-xs border border-amber-500/40 transition cursor-pointer">
           GUARDAR NO ARSENAL
         </button>
       </div>
@@ -86,22 +85,22 @@
           <h2 id="arsenal-modal-title" class="font-bold text-amber-300 text-sm">FORJA DE GONDOR</h2>
           <span class="text-[10px] text-slate-400 font-sans">Selecione o equipamento para consagrar</span>
         </div>
-        <button type="button" onclick="closeArsenalModal()" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
+        <button type="button" onclick="closeArsenalModal()" class="text-slate-400 hover:text-white text-lg px-2 cursor-pointer">✕</button>
       </div>
       <div id="arsenal-modal-list" class="flex flex-col gap-2 overflow-y-auto custom-scroll my-2 flex-1 pr-1"></div>
-      <button type="button" onclick="closeArsenalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl text-xs font-bold border border-amber-500/30">FECHAR FORJA</button>
+      <button type="button" onclick="closeArsenalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl text-xs font-bold border border-amber-500/30 cursor-pointer">FECHAR FORJA</button>
     </div>
   </div>
 
-  <!-- MODAL DE PROVAÇÃO MARCIAL (EXAME FÍSICO) -->
+  <!-- MODAL DE PROVAÇÃO MARCIAL -->
   <div id="exam-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 w-full max-w-sm font-epic text-xs shadow-2xl">
       <div class="flex justify-between items-center mb-3">
         <h2 class="font-bold text-amber-400">PROVAÇÃO DOS DÚNEDAIN</h2>
-        <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
+        <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white text-lg px-2 cursor-pointer">✕</button>
       </div>
       <p class="text-[11px] font-sans text-slate-300 mb-3 leading-relaxed">
-        Preencha com os seus limites marciais para consagrar seus atributos e o Poderio da Linhagem.
+        Preencha com os seus limites marciais para consagrar os seus atributos e o Poderio da Linhagem.
       </p>
       <div class="flex flex-col gap-2 font-epic">
         <div class="grid grid-cols-2 gap-2">
@@ -111,7 +110,7 @@
         <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS EM 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="40" /></div>
         <div><label class="text-[9px] text-slate-400 block">MARCHA RÁPIDA 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="1.8" /></div>
         <div><label class="text-[9px] text-slate-400 block">MAIOR TRAVESSIA CONTÍNUA (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white font-bold" placeholder="5.0" /></div>
-        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-bold py-2.5 rounded-xl text-white mt-1 shadow transition active:scale-95">CONSAGRAR PODERIO</button>
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-bold py-2.5 rounded-xl text-white mt-1 shadow transition active:scale-95 cursor-pointer">CONSAGRAR PODERIO</button>
       </div>
     </div>
   </div>
@@ -119,7 +118,6 @@
   <!-- CABEÇALHO DO GUERREIRO GOMINSK -->
   <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <!-- Retrato de Gominsk -->
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
         <img id="avatar-img" src="" alt="Avatar Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
@@ -163,14 +161,14 @@
   <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-epic gap-2">
     <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">ESTATURA:</span><input type="number" id="input-height" value="175" class="w-14 bg-slate-950 border border-amber-500/40 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-amber-400" /><span class="text-slate-400 text-[10px]">cm</span></div>
     <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">MASSA:</span><input type="number" id="input-weight" value="96.0" step="0.5" class="w-14 bg-slate-950 border border-amber-500/40 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-amber-400" /><span class="text-slate-400 text-[10px]">kg</span></div>
-    <button type="button" onclick="handleBiometricsSubmit()" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-300 px-3 py-1 rounded text-[10px] font-bold transition active:scale-95">REGISTRAR</button>
+    <button type="button" onclick="handleBiometricsSubmit()" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-300 px-3 py-1 rounded text-[10px] font-bold transition active:scale-95 cursor-pointer">REGISTAR</button>
   </section>
 
   <!-- ATRIBUTOS MARCIAIS -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
     <div class="flex justify-between items-center mb-2 px-1 font-epic text-[10px]">
       <span class="text-slate-400 tracking-wider">VIRTUDES EFETIVAS (BASE + ARSENAL)</span>
-      <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900">⚔️ PROVAÇÃO FÍSICA</button>
+      <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900 cursor-pointer">⚔️ PROVAÇÃO FÍSICA</button>
     </div>
     <div class="grid grid-cols-4 gap-1.5 font-epic text-center">
       <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
@@ -192,28 +190,25 @@
     </div>
   </section>
 
-  <!-- O ARSENAL DE GONDOR (SLOTS DE EQUIPAMENTO) -->
+  <!-- O ARSENAL DE GONDOR -->
   <section class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3 mb-3 shadow-lg font-epic">
     <div class="flex justify-between items-center mb-2 px-0.5">
       <span class="text-xs font-bold text-amber-300 tracking-wider">O ARSENAL DE GONDOR</span>
       <span class="text-[9px] text-slate-400 font-sans">Toque para forjar / alterar</span>
     </div>
     <div class="grid grid-cols-3 gap-2">
-      <!-- Slot Arma -->
       <button type="button" onclick="openArsenalModal('weapon')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
         <span class="text-[8px] text-slate-400 block mb-0.5">ARMA ATIVA</span>
         <span id="slot-name-weapon" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Adaga Oesternesse</span>
         <span id="slot-bonus-weapon" class="text-[9px] text-rose-400 font-sans block mt-0.5">+2 FOR • +1 DEST</span>
       </button>
 
-      <!-- Slot Armadura -->
       <button type="button" onclick="openArsenalModal('armor')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
         <span class="text-[8px] text-slate-400 block mb-0.5">COURAÇA</span>
         <span id="slot-name-armor" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Manto Batedor</span>
         <span id="slot-bonus-armor" class="text-[9px] text-amber-400 font-sans block mt-0.5">+2 DEST • +1 BLIND</span>
       </button>
 
-      <!-- Slot Relíquia -->
       <button type="button" onclick="openArsenalModal('relic')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
         <span class="text-[8px] text-slate-400 block mb-0.5">RELÍQUIA</span>
         <span id="slot-name-relic" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Estrela Dúnedain</span>
@@ -228,7 +223,7 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL (COM PERGAMINHO NARRATIVO REATIVO) -->
+      <!-- CERCO SEMANAL -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
         <div class="flex items-center gap-3 mb-2.5">
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
@@ -265,9 +260,9 @@
           </div>
         </div>
 
-        <!-- BANNER DE ESPÓLIOS (EXIBIDO QUANDO O TROLL FOR DERRUBADO) -->
+        <!-- BANNER DE ESPÓLIOS -->
         <div id="loot-claim-container" class="hidden mb-2.5">
-          <button type="button" onclick="triggerLootDropCeremony()" class="w-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-xl border border-yellow-300 transition active:scale-95 animate-bounce">
+          <button type="button" onclick="triggerLootDropCeremony()" class="w-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-xl border border-yellow-300 transition active:scale-95 animate-bounce cursor-pointer">
             <span class="text-base">🏆</span> REIVINDICAR ESPÓLIOS DE GUERRA
           </button>
         </div>
@@ -281,50 +276,54 @@
           <div class="w-full bg-slate-900 rounded-full h-2 border border-amber-950 overflow-hidden">
             <div id="impeto-bar" class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-0 transition-all duration-300"></div>
           </div>
-          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e descarregue manobras contra as hostes:</span>
+          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e desfira manobras balanceadas por custo:</span>
         </div>
 
-        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
+        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS COM CUSTOS DIFERENCIADOS -->
         <div class="grid grid-cols-2 gap-1.5 mb-2 text-left">
-          <button type="button" onclick="executeManeuver('STR')" class="bg-slate-950 border border-rose-600/50 hover:border-rose-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
-            <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-rose-300">🗡️ GOLPE DE RUPTURA</span>
-              <span class="text-[8px] bg-rose-950 text-rose-400 border border-rose-800 px-1 rounded font-bold">FORÇA</span>
-            </div>
-            <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
-          </button>
-
-          <button type="button" onclick="executeManeuver('CON')" class="bg-slate-950 border border-amber-600/50 hover:border-amber-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
-            <div class="flex justify-between items-center mb-0.5">
-              <span class="font-bold text-[10px] text-amber-300">🛡️ IMPACTO DE ESCUDO</span>
-              <span class="text-[8px] bg-amber-950 text-amber-400 border border-amber-800 px-1 rounded font-bold">BLIND.</span>
-            </div>
-            <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
-          </button>
-
+          <!-- 1. Tiro de Ithilien (AGI - Custo Baixo 120 Ímpeto) -->
           <button type="button" onclick="executeManeuver('AGI')" class="bg-slate-950 border border-cyan-600/50 hover:border-cyan-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-cyan-300">🏹 TIRO DE ITHILIEN</span>
-              <span class="text-[8px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-1 rounded font-bold">DESTREZA</span>
+              <span class="text-[8px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-1 rounded font-bold">120 ÍMPETO</span>
             </div>
-            <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Chance Crítico</span>
+            <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 190 HP (35% Crítico)</span>
           </button>
 
+          <!-- 2. Cerco de Atrito (END - Custo Médio 250 Ímpeto) -->
           <button type="button" onclick="executeManeuver('END')" class="bg-slate-950 border border-emerald-600/50 hover:border-emerald-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-emerald-300">⚔️ CERCO DE ATRITO</span>
-              <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded font-bold">VIGOR</span>
+              <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded font-bold">250 ÍMPETO</span>
             </div>
-            <span id="maneuver-desc-end" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
+            <span id="maneuver-desc-end" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 360 HP</span>
+          </button>
+
+          <!-- 3. Impacto de Escudo (CON - Custo Pesado 400 Ímpeto) -->
+          <button type="button" onclick="executeManeuver('CON')" class="bg-slate-950 border border-amber-600/50 hover:border-amber-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-amber-300">🛡️ IMPACTO DE ESCUDO</span>
+              <span class="text-[8px] bg-amber-950 text-amber-400 border border-amber-800 px-1 rounded font-bold">400 ÍMPETO</span>
+            </div>
+            <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 620 HP</span>
+          </button>
+
+          <!-- 4. Golpe de Ruptura (STR - Custo Supremo 600 Ímpeto) -->
+          <button type="button" onclick="executeManeuver('STR')" class="bg-slate-950 border border-rose-600/50 hover:border-rose-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-[10px] text-rose-300">🗡️ GOLPE DE RUPTURA</span>
+              <span class="text-[8px] bg-rose-950 text-rose-400 border border-rose-800 px-1 rounded font-bold">600 ÍMPETO</span>
+            </div>
+            <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Dano est.: 980 HP</span>
           </button>
         </div>
 
-        <!-- PERGAMINHO NARRATIVO DO CAPÍTULO ATUAL -->
+        <!-- PERGAMINHO NARRATIVO -->
         <div class="bg-slate-950/80 border border-amber-600/30 p-2.5 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2 shadow-inner">
           <span class="text-base text-amber-400">📜</span>
           <div class="flex-1">
             <span id="boss-story-stage" class="text-[9px] font-epic text-amber-400 font-bold block uppercase mb-0.5">ORDEM DE MARCHA:</span>
-            <span id="boss-story-log" class="leading-relaxed block">As águas do Anduin descem escuras. Pegadas pesadas foram avistadas nos vaus. Gominsk prepara suas armas para interceptar a vanguarda da Sombra.</span>
+            <span id="boss-story-log" class="leading-relaxed block">As águas do Anduin descem escuras. Pegadas pesadas foram avistadas nos vaus. Gominsk prepara as suas armas para conter a vanguarda.</span>
           </div>
         </div>
       </div>
@@ -342,10 +341,10 @@
           <div><label class="text-[9px] text-slate-400 block">PONTOS DE VIGÍLIA (SONO):</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
           <div><label class="text-[9px] text-slate-400 block">PASSOS DA PATRULHA:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-indigo-400" /></div>
         </div>
-        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition">CONSAGRAR VIGÍLIA & PASSOS</button>
+        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition cursor-pointer">CONSAGRAR VIGÍLIA & PASSOS</button>
       </div>
 
-      <!-- FONTES DA CIDADELA (HIDRATAÇÃO) -->
+      <!-- FONTES DA CIDADELA -->
       <div class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-1.5 font-epic">
           <div><span class="text-xs font-bold text-cyan-300 block">FONTES DA CIDADELA (BLINDAGEM)</span><span class="text-[10px] text-slate-400 font-sans">Quota diária de águas puras: 3.000 ml</span></div>
@@ -355,14 +354,14 @@
           <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-700 to-cyan-400 h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="grid grid-cols-4 gap-1.5 font-epic text-[10px]">
-          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+250 ml</button>
-          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+500 ml</button>
-          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95">+1.000 ml</button>
-          <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg transition">ZERAR</button>
+          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95 cursor-pointer">+250 ml</button>
+          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95 cursor-pointer">+500 ml</button>
+          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition active:scale-95 cursor-pointer">+1.000 ml</button>
+          <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg transition cursor-pointer">ZERAR</button>
         </div>
       </div>
 
-      <!-- VIGÍLIA DOS GUARDIÕES (CALISTENIA / SPARKS) -->
+      <!-- VIGÍLIA DOS GUARDIÕES -->
       <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
           <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">+350 Ímpeto por posto • Desperta Sangue de Númenor em 4/4</span></div>
@@ -392,25 +391,26 @@
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
         <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS (GERA ÍMPETO)</span>
         <div class="grid grid-cols-3 gap-1.5 font-epic">
-          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(+200 ÍMPETO)</span></button>
-          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95">+5 BARRAS<br><span class="text-[8px] text-slate-400">(+150 ÍMPETO)</span></button>
-          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(+250 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Flexões de Guarda', 20, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(+200 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras de Escalada', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition active:scale-95 cursor-pointer">+5 BARRAS<br><span class="text-[8px] text-slate-400">(+150 ÍMPETO)</span></button>
+          <button type="button" onclick="handleQuickRep('Sustentação do Core', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition active:scale-95 cursor-pointer">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(+250 ÍMPETO)</span></button>
         </div>
       </div>
 
       <!-- INTEGRAÇÃO TCX / GPX -->
       <div class="border-2 border-dashed border-amber-500/30 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition">
         <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" />
-        <p class="font-epic font-bold text-xs text-amber-300 tracking-wider">IMPORTAR MARCHA REGISTRADA (.TCX OU .GPX)</p>
+        <p class="font-epic font-bold text-xs text-amber-300 tracking-wider">IMPORTAR MARCHA REGISTADA (.TCX OU .GPX)</p>
         <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5 font-sans">Marcha dos Vaus, Travessia, Pilates ou Treino de Lança</p>
       </div>
 
-      <!-- SALVAGUARDA DE DADOS -->
+      <!-- SALVAGUARDA DE DADOS & BOTÃO REINICIAR -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-epic">
-        <div><span class="text-xs font-bold text-white block">ARQUIVO DE NÚMENOR</span><span class="text-[10px] text-slate-400 font-sans">Guarde a história da sua linhagem</span></div>
-        <div class="flex gap-2 text-[10px]">
-          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-amber-300 border border-amber-500/40 px-2.5 py-1.5 rounded-lg transition hover:bg-slate-700">EXPORTAR</button>
+        <div><span class="text-xs font-bold text-white block">ARQUIVO DE NÚMENOR</span><span class="text-[10px] text-slate-400 font-sans">Guarde ou reinicie a campanha</span></div>
+        <div class="flex gap-1.5 text-[10px]">
+          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-amber-300 border border-amber-500/40 px-2.5 py-1.5 rounded-lg transition hover:bg-slate-700 cursor-pointer">EXPORTAR</button>
           <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center transition hover:bg-slate-700">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
+          <button type="button" onclick="resetCampaignProgress()" class="bg-red-950/80 text-red-300 border border-red-700/60 hover:bg-red-900 px-2 py-1.5 rounded-lg transition cursor-pointer">REINICIAR</button>
         </div>
       </div>
     </div>
@@ -423,10 +423,8 @@
       </div>
     </div>
 
-    <!-- ABA 3: DIÁRIO DA CAMPANHA (CALENDÁRIO & CÓDICE DE CAMPANHA) -->
+    <!-- ABA 3: DIÁRIO DA CAMPANHA -->
     <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-epic">
-      
-      <!-- CÓDICE DE NÚMENOR (LIVRO DA CAMPANHA DE 20 CAPÍTULOS) -->
       <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3.5 shadow-lg">
         <div class="flex justify-between items-center mb-2">
           <div>
@@ -444,7 +442,6 @@
         </div>
       </div>
 
-      <!-- CALENDÁRIO DA VIGÍLIA -->
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-lg">
         <div class="flex justify-between items-center mb-3">
           <span id="calendar-month-year" class="text-sm font-bold text-amber-300 uppercase tracking-widest">SETEMBRO 2026</span>
@@ -467,7 +464,7 @@
       </div>
     </div>
 
-    <!-- ABA 4: OLHO DE PALANTÍR (CÂMERA IA) -->
+    <!-- ABA 4: OLHO DE PALANTÍR -->
     <div id="tab-camera" class="tab-content hidden flex flex-col gap-2">
       <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-amber-500/40 flex items-center justify-center">
         <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
@@ -475,7 +472,7 @@
           <span class="text-[9px] text-slate-400 block">VISÃO</span><span class="text-base font-bold text-amber-300">ATIVA</span>
         </div>
       </div>
-      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-slate-800 border border-amber-500/50 hover:bg-slate-700 text-amber-300 font-epic text-xs py-3 rounded-xl transition">INVOCAR SENSOR ÓPTICO</button>
+      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-slate-800 border border-amber-500/50 hover:bg-slate-700 text-amber-300 font-epic text-xs py-3 rounded-xl transition cursor-pointer">INVOCAR SENSOR ÓPTICO</button>
     </div>
   </main>
 
@@ -517,7 +514,6 @@
       "REI DOS HOMENS (RANK S)"
     ];
 
-    // O CÓDICE DA CAMPANHA (20 CAPÍTULOS DE ARDA)
     const CAMPAIGN_CHAPTERS = [
       {
         cap: 1, title: "A Sombra sobre os Vaus de Anduin", act: "Ato I: As Sentinelas",
@@ -641,7 +637,6 @@
       }
     ];
 
-    // CATÁLOGO EXPANDIDO DE ITENS COM RARIDADE
     const ARSENAL_DB = {
       adaga_oesternesse: { id: 'adaga_oesternesse', slot: 'weapon', rarity: 'DÚNEDAIN', icon: '🗡️', name: 'Adaga de Oesternesse', str: 2, agi: 1, con: 0, end: 0, desc: '+2 FORÇA • +1 DESTREZA', lore: 'Forjada em tempos antigos para os Dúnedain do Norte.' },
       espada_guardiao: { id: 'espada_guardiao', slot: 'weapon', rarity: 'MILITAR', icon: '⚔️', name: 'Espada do Guardião', str: 4, agi: 0, con: 0, end: 0, desc: '+4 FORÇA', lore: 'Aço pesado temperado nas forjas de Minas Tirith.' },
@@ -662,6 +657,14 @@
       pedra_elfica: { id: 'pedra_elfica', slot: 'relic', rarity: 'DÚNEDAIN', icon: '💎', name: 'Elessar (Pedra Élfica)', str: 0, agi: 0, con: 0, end: 5, desc: '+5 VIGOR', lore: 'Gema verde que revitaliza o ânimo mesmo nas marchas mais extenuantes.' },
       anel_barahir: { id: 'anel_barahir', slot: 'relic', rarity: 'LENDÁRIO', icon: '💍', name: 'O Anel de Barahir', str: 3, agi: 3, con: 3, end: 3, desc: '+3 em TODAS as Virtudes', lore: 'Duas serpentes de esmeralda coroando flores de ouro. Relíquia dos Reis.' },
       cetro_annuminas: { id: 'cetro_annuminas', slot: 'relic', rarity: 'LENDÁRIO', icon: '🪄', name: 'Cetro de Annúminas', str: 2, agi: 0, con: 6, end: 6, desc: '+6 BLINDAGEM • +6 VIGOR • +2 FORÇA', lore: 'A mais antiga relíquia dos Homens na Terra Média.' }
+    };
+
+    // CONFIGURAÇÃO TÁTICA DAS 4 MANOBRAS (CUSTOS E PERFIS DIFERENCIADOS)
+    const MANEUVERS_CFG = {
+      AGI: { name: "Tiro de Ithilien", cost: 120, divisor: 20, critChance: 0.35, critMult: 2.0, stat: "agi", label: "DESTREZA", icon: "🏹" },
+      END: { name: "Cerco de Atrito", cost: 250, divisor: 22, critChance: 0, critMult: 1.0, stat: "end", label: "VIGOR", icon: "⚔️" },
+      CON: { name: "Impacto de Escudo", cost: 400, divisor: 22, critChance: 0, critMult: 1.0, stat: "con", label: "BLIND.", icon: "🛡️" },
+      STR: { name: "Golpe de Ruptura", cost: 600, divisor: 20, critChance: 0, critMult: 1.0, stat: "str", label: "FORÇA", icon: "🗡️" }
     };
 
     let player = {
@@ -691,7 +694,6 @@
       history: []
     };
 
-    // Recuperação Inteligente de Progresso
     try {
       let bestSave = null;
       for (let i = 0; i < localStorage.length; i++) {
@@ -752,13 +754,8 @@
       player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight || 96.0 }];
     }
 
-    // CÁLCULO DE VIRTUDES EFETIVAS (BASE + EQUIPAMENTO)
     function getEffectiveStats() {
-      let bStr = player.str || 10;
-      let bCon = player.con || 10;
-      let bAgi = player.agi || 10;
-      let bEnd = player.end || 10;
-
+      let bStr = player.str || 10, bCon = player.con || 10, bAgi = player.agi || 10, bEnd = player.end || 10;
       let eStr = 0, eCon = 0, eAgi = 0, eEnd = 0;
 
       ['weapon', 'armor', 'relic'].forEach(slot => {
@@ -775,12 +772,7 @@
       return {
         base: { str: bStr, con: bCon, agi: bAgi, end: bEnd },
         equipBonus: { str: eStr, con: eCon, agi: eAgi, end: eEnd },
-        total: {
-          str: bStr + eStr,
-          con: bCon + eCon,
-          agi: bAgi + eAgi,
-          end: bEnd + eEnd
-        }
+        total: { str: bStr + eStr, con: bCon + eCon, agi: bAgi + eAgi, end: bEnd + eEnd }
       };
     }
 
@@ -790,13 +782,24 @@
       return Math.round((stats.str * 22) + (stats.con * 22) + (stats.agi * 26) + (stats.end * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
     }
 
-    // NARRATIVA: OBTÉM O CAPÍTULO ATUAL DE ACORDO COM O RANK
     function getCurrentChapter() {
       const idx = Math.min(19, Math.max(0, (player.level || 1) - 1));
       return CAMPAIGN_CHAPTERS[idx];
     }
 
-    // SISTEMA DE ESPÓLIOS DE GUERRA
+    // REINÍCIO DA CAMPANHA
+    function resetCampaignProgress() {
+      const confirmFirst = confirm("Atenção, Guardião: tem a certeza de que deseja apagar todo o progresso da campanha, equipamentos e histórico?");
+      if (!confirmFirst) return;
+
+      const confirmSecond = confirm("Esta ação é irreversível. Deseja restaurar Gominsk ao início da sua jornada militar?");
+      if (confirmSecond) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    // SISTEMA DE ESPÓLIOS
     let pendingLootItem = null;
 
     function triggerLootDropCeremony() {
@@ -970,49 +973,39 @@
       updateCombatManeuversUI();
     }
 
-    // MANOBRAS TÁTICAS
+    // EXECUÇÃO DE MANOBRAS COM CUSTOS DIFERENCIADOS
     function executeManeuver(statType) {
       if (!player.bossRaid || player.bossRaid.defeated) {
         showToast("O Troll já foi derrotado! Reivindique os espólios.");
         return;
       }
 
-      const cost = 250;
-      if ((player.impeto || 0) < cost) {
-        showToast(`Ímpeto insuficiente! Necessário ${cost} pts. Realize treinos para acumular.`, false);
+      const cfg = MANEUVERS_CFG[statType];
+      if (!cfg) return;
+
+      if ((player.impeto || 0) < cfg.cost) {
+        showToast(`Ímpeto insuficiente para ${cfg.name}! Necessário ${cfg.cost} pts. Realize treinos para acumular.`, false);
         return;
       }
 
-      player.impeto -= cost;
+      player.impeto -= cfg.cost;
 
       const effective = getEffectiveStats().total;
-      let baseDmg = cost;
-      let statVal = 10;
-      let maneuverName = "";
+      const statVal = effective[cfg.stat] || 10;
       let isCrit = false;
 
-      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
+      let baseDmg = Math.round(cfg.cost * (1 + (statVal / cfg.divisor)));
 
-      if (statType === 'STR') {
-        statVal = effective.str;
-        maneuverName = "Golpe de Ruptura";
-        baseDmg = Math.round(cost * (1 + (statVal / 25)));
-      } else if (statType === 'CON') {
-        statVal = effective.con;
-        maneuverName = "Impacto de Escudo";
-        baseDmg = Math.round(cost * (1 + (statVal / 25)));
-      } else if (statType === 'AGI') {
-        statVal = effective.agi;
-        maneuverName = "Tiro de Ithilien";
-        isCrit = Math.random() < 0.25;
-        baseDmg = Math.round(cost * (1 + (statVal / 22)) * (isCrit ? 1.75 : 1.0));
-      } else if (statType === 'END') {
-        statVal = effective.end;
-        maneuverName = "Cerco de Atrito";
-        baseDmg = Math.round(cost * (1 + (statVal / 25)));
+      if (cfg.critChance > 0) {
+        isCrit = Math.random() < cfg.critChance;
+        if (isCrit) {
+          baseDmg = Math.round(baseDmg * cfg.critMult);
+        }
       }
 
+      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
       const finalDamage = isBattleActive ? Math.round(baseDmg * (player.battleState.multiplier || 1.5)) : baseDmg;
+
       player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - finalDamage);
 
       if (player.bossRaid.currentHp <= 0) {
@@ -1021,21 +1014,26 @@
         addXP(400, statType);
         player.history.unshift({
           nome: "🏆 VITÓRIA NO CERCO DE MINAS TIRITH",
-          detalhes: `${player.bossRaid.name} derrotado com ${maneuverName} (+400 XP)`,
+          detalhes: `${player.bossRaid.name} derrotado com ${cfg.name} (+400 XP)`,
           tipo: "forca",
           data: new Date().toISOString(),
           xp: 400
         });
         showToast(`GOLPE FATAL! O TROLL FOI DERRUBADO! (+400 XP)`);
       } else {
-        const critText = isCrit ? " [CRÍTICO 1.75x!]" : "";
+        const critText = isCrit ? ` [CRÍTICO ${cfg.critMult}x!]` : "";
         const numenorText = isBattleActive ? " [NÚMENOR 1.5x]" : "";
-        showToast(`💥 ${maneuverName.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} HP${critText}${numenorText}!`);
+        showToast(`💥 ${cfg.name.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} HP${critText}${numenorText}!`);
+        
+        const log = document.getElementById('boss-story-log');
+        if (log) {
+          log.textContent = `Gominsk desferiu ${cfg.name}! O golpe consumiu ${cfg.cost} de Ímpeto amplificado pela virtude (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
+        }
       }
 
       renderBossRaid();
       updateCombatManeuversUI();
-      localStorage.setItem('hero_player_v30', JSON.stringify(player));
+      localStorage.setItem('hero_player_v31', JSON.stringify(player));
 
       const bossContainer = document.getElementById('boss-avatar-container');
       if (bossContainer && !player.bossRaid.defeated) {
@@ -1060,20 +1058,20 @@
       const isBattle = player.battleState && player.battleState.active && player.battleState.date === todayStr;
       const mult = isBattle ? (player.battleState.multiplier || 1.5) : 1.0;
 
-      const dmgStr = Math.round(250 * (1 + (effective.str / 25)) * mult);
-      const dmgCon = Math.round(250 * (1 + (effective.con / 25)) * mult);
-      const dmgAgi = Math.round(250 * (1 + (effective.agi / 22)) * mult);
-      const dmgEnd = Math.round(250 * (1 + (effective.end / 25)) * mult);
+      const dmgAgi = Math.round(MANEUVERS_CFG.AGI.cost * (1 + (effective.agi / MANEUVERS_CFG.AGI.divisor)) * mult);
+      const dmgEnd = Math.round(MANEUVERS_CFG.END.cost * (1 + (effective.end / MANEUVERS_CFG.END.divisor)) * mult);
+      const dmgCon = Math.round(MANEUVERS_CFG.CON.cost * (1 + (effective.con / MANEUVERS_CFG.CON.divisor)) * mult);
+      const dmgStr = Math.round(MANEUVERS_CFG.STR.cost * (1 + (effective.str / MANEUVERS_CFG.STR.divisor)) * mult);
 
-      const dStr = document.getElementById('maneuver-desc-str');
-      const dCon = document.getElementById('maneuver-desc-con');
       const dAgi = document.getElementById('maneuver-desc-agi');
       const dEnd = document.getElementById('maneuver-desc-end');
+      const dCon = document.getElementById('maneuver-desc-con');
+      const dStr = document.getElementById('maneuver-desc-str');
 
-      if (dStr) dStr.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgStr} HP`;
-      if (dCon) dCon.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgCon} HP`;
-      if (dAgi) dAgi.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgAgi} HP (Crítico)`;
-      if (dEnd) dEnd.textContent = `Gasta 250 Ímpeto • Dano est.: ${dmgEnd} HP`;
+      if (dAgi) dAgi.textContent = `Dano est.: ${dmgAgi} HP (35% Crítico)`;
+      if (dEnd) dEnd.textContent = `Dano est.: ${dmgEnd} HP`;
+      if (dCon) dCon.textContent = `Dano est.: ${dmgCon} HP`;
+      if (dStr) dStr.textContent = `Dano est.: ${dmgStr} HP`;
     }
 
     // RETRATOS
@@ -1158,7 +1156,6 @@
       reader.readAsDataURL(file);
     }
 
-    // RENDERIZAÇÃO DO CERCO & NARRATIVA REATIVA
     function renderBossRaid() {
       const raid = player.bossRaid;
       if (!raid) return;
@@ -1227,7 +1224,6 @@
       }
     }
 
-    // SPARKS (CALISTENIA)
     function renderSparksRoutine() {
       let completedCount = 0;
       for (let i = 0; i < 4; i++) {
@@ -1283,7 +1279,6 @@
       updateUI();
     }
 
-    // REGISTO ZEPP
     function handleManualZeppSubmit() {
       const sleepInput = parseInt(document.getElementById('input-manual-sleep').value) || 0;
       const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
@@ -1324,10 +1319,9 @@
       document.getElementById('input-manual-sleep').value = '';
       document.getElementById('input-manual-steps').value = '';
       updateUI();
-      showToast(`Vigília Registrada com Glória! (+${impetoGanho} Ímpeto)`);
+      showToast(`Vigília Registada com Glória! (+${impetoGanho} Ímpeto)`);
     }
 
-    // FONTES DA CIDADELA
     function addWater(ml) {
       player.hydration.currentMl = Math.min(6000, player.hydration.currentMl + ml);
       if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
@@ -1465,7 +1459,7 @@
             updateUI();
             showToast("História de Gominsk Restaurada!");
           }
-        } catch(err) { showToast("Arquivo ilegível.", false); }
+        } catch(err) { showToast("Ficheiro ilegível.", false); }
       };
       reader.readAsText(file);
     }
@@ -1517,7 +1511,7 @@
       reader.readAsText(file);
     });
 
-    // MÓDULO DO CÓDICE DA CAMPANHA (LEITOR DE CAPÍTULOS)
+    // CÓDICE DA CAMPANHA
     let selectedCodiceCap = 1;
 
     function renderCodiceModule() {
@@ -1670,7 +1664,7 @@
       label.textContent = `CRÔNICAS DE ${day} DE ${monthName.toUpperCase()}`;
 
       if (!events || !events.length) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum feito marcial registrado nesta data.</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum feito marcial registado nesta data.</p>`;
         return;
       }
 
@@ -1737,7 +1731,6 @@
       document.getElementById('xp-bar').style.width = `${Math.min(100, (player.xp / player.maxXp) * 100)}%`;
       document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
 
-      // Virtudes Efetivas no HUD
       document.getElementById('stat-str').innerHTML = `${effective.total.str} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.str})</span>`;
       document.getElementById('stat-con').innerHTML = `${effective.total.con} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.con})</span>`;
       document.getElementById('stat-agi').innerHTML = `${effective.total.agi} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.agi})</span>`;
@@ -1763,7 +1756,7 @@
       renderArsenalHUD();
       updateCombatManeuversUI();
 
-      localStorage.setItem('hero_player_v30', JSON.stringify(player));
+      localStorage.setItem('hero_player_v31', JSON.stringify(player));
     }
 
     updateUI();
