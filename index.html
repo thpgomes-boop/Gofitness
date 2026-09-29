@@ -11,14 +11,18 @@
     .font-hud { font-family: 'Orbitron', monospace; }
     .aura-s { animation: pulseAura 2s infinite alternate; }
     @keyframes pulseAura { 0% { filter: drop-shadow(0 0 8px #06b6d4); } 100% { filter: drop-shadow(0 0 30px #f59e0b); } }
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24">
+<body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24 select-none">
 
   <!-- NOTIFICAÇÃO TOAST -->
-  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none">NOTIFICAÇÃO</div>
+  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none">
+    NOTIFICAÇÃO
+  </div>
 
-  <!-- MODAL EXAME -->
+  <!-- MODAL EXAME DE APTIDÃO -->
   <div id="exam-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl p-4 w-full max-w-sm font-hud text-xs">
       <div class="flex justify-between items-center mb-3">
@@ -33,7 +37,7 @@
         <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="40" /></div>
         <div><label class="text-[9px] text-slate-400 block">TIRO 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="1.8" /></div>
         <div><label class="text-[9px] text-slate-400 block">CORRIDA MÁX (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="5.0" /></div>
-        <button type="button" onclick="saveExamTrial()" class="w-full bg-cyan-600 hover:bg-cyan-500 font-bold py-2.5 rounded-xl text-white mt-1">CALCULAR PODER</button>
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-cyan-600 hover:bg-cyan-500 font-bold py-2.5 rounded-xl text-white mt-1 transition">CALCULAR PODER</button>
       </div>
     </div>
   </div>
@@ -79,14 +83,14 @@
   <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-hud gap-2">
     <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">ALTURA:</span><input type="number" id="input-height" value="175" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">cm</span></div>
     <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">PESO:</span><input type="number" id="input-weight" value="96.0" step="0.5" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">kg</span></div>
-    <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1 rounded text-[10px] font-bold">REGISTRAR</button>
+    <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1 rounded text-[10px] font-bold transition">REGISTRAR</button>
   </section>
 
   <!-- ATRIBUTOS TÁTICOS -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
     <div class="flex justify-between items-center mb-2 px-1 font-hud text-[10px]">
       <span class="text-slate-400">ATRIBUTOS DE COMBATE</span>
-      <button type="button" onclick="openExamModal()" class="bg-cyan-950 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg">⚙️ EXAME FÍSICO</button>
+      <button type="button" onclick="openExamModal()" class="bg-cyan-950 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg transition">⚙️ EXAME FÍSICO</button>
     </div>
     <div class="grid grid-cols-4 gap-1.5 font-hud text-center">
       <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FORÇA</span><span id="stat-str" class="text-base font-bold text-rose-400">10</span></div>
@@ -96,9 +100,11 @@
     </div>
   </section>
 
-  <!-- CORPO PRINCIPAL -->
+  <!-- CORPO PRINCIPAL COM ABAS -->
   <main class="flex-1 flex flex-col gap-3">
-    <div id="tab-missions" class="flex flex-col gap-3">
+
+    <!-- ABA 1: MISSÕES -->
+    <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
       <!-- RELATÓRIO MATINAL ZEPP -->
       <div class="bg-gradient-to-r from-indigo-950/70 to-slate-900 border border-indigo-500/50 rounded-2xl p-3 shadow-lg font-hud">
@@ -116,7 +122,7 @@
         <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-2 rounded-xl text-xs font-bold transition">REGISTRAR SONO & PASSOS</button>
       </div>
 
-      <!-- HIDRATAÇÃO -->
+      <!-- HIDRATAÇÃO TÁTICA -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-1.5 font-hud">
           <div><span class="text-xs font-bold text-cyan-400 block">HIDRATAÇÃO TÁTICA (CON)</span><span class="text-[10px] text-slate-400 font-sans">Meta diária: 3.000 ml</span></div>
@@ -126,14 +132,14 @@
           <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-600 to-cyan-300 h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="grid grid-cols-4 gap-1.5 font-hud text-[10px]">
-          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+250 ml</button>
-          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+500 ml</button>
-          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+1.000 ml</button>
-          <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg">ZERAR</button>
+          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+250 ml</button>
+          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+500 ml</button>
+          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition">+1.000 ml</button>
+          <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg transition">ZERAR</button>
         </div>
       </div>
 
-      <!-- INCURSÃO SEMANAL -->
+      <!-- INCURSÃO SEMANAL (BOSS RAID) -->
       <div class="bg-slate-900/90 border border-rose-500/50 rounded-2xl p-3.5 shadow-xl font-hud">
         <div class="flex justify-between items-start mb-2">
           <div>
@@ -153,26 +159,26 @@
         </div>
       </div>
 
-      <!-- PROTOCOLO SPARKS -->
+      <!-- PROTOCOLO SPARKS (CALISTENIA) -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg font-hud">
         <div class="flex justify-between items-center mb-2">
           <div><span class="text-xs font-bold text-cyan-400 block">PROTOCOLO SPARKS (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 micro-sessões diárias</span></div>
           <span id="sparks-counter" class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">0/4 CUMPRIDAS</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-2">
-          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
             <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 01</span><span id="sparks-status-0" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-0" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
             <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 02</span><span id="sparks-status-1" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-1" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
             <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 03</span><span id="sparks-status-2" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-2" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-          <button type="button" id="sparks-btn-3" onclick="toggleSparksSlot(3)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+          <button type="button" id="sparks-btn-3" onclick="toggleSparksSlot(3)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500 transition">
             <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 04</span><span id="sparks-status-3" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-3" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
@@ -183,9 +189,9 @@
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
         <span class="text-xs font-hud text-slate-400 block mb-2">MICRO-TREINO TÁTICO RÁPIDO</span>
         <div class="grid grid-cols-3 gap-1.5 font-hud">
-          <button type="button" onclick="handleQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
-          <button type="button" onclick="handleQuickRep('Barras', 5, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
-          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span></button>
+          <button type="button" onclick="handleQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras', 5, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300 transition">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
+          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300 transition">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span></button>
         </div>
       </div>
 
@@ -196,50 +202,71 @@
         <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5">Corrida, Caminhada, Pilates ou HIIT</p>
       </div>
 
-      <!-- SALVAGUARDA -->
+      <!-- SALVAGUARDA DE DADOS -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-hud">
         <div><span class="text-xs font-bold text-white block">SALVAGUARDA DE DADOS</span><span class="text-[10px] text-slate-400 font-sans">Proteja o seu progresso</span></div>
         <div class="flex gap-2 text-[10px]">
-          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-cyan-400 border border-cyan-500/40 px-2.5 py-1.5 rounded-lg">EXPORTAR</button>
-          <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
+          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-cyan-400 border border-cyan-500/40 px-2.5 py-1.5 rounded-lg transition">EXPORTAR</button>
+          <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center transition">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
         </div>
       </div>
     </div>
 
-    <!-- ABA PESO -->
-    <div id="tab-weight" class="hidden flex flex-col gap-3">
+    <!-- ABA 2: PESO -->
+    <div id="tab-weight" class="tab-content hidden flex flex-col gap-3">
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
-        <span class="font-hud text-xs font-bold text-white uppercase block mb-3">HISTÓRICO DE PESO</span>
-        <div id="weight-log-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto"></div>
+        <span class="font-hud text-xs font-bold text-white uppercase block mb-3">HISTÓRICO BIOMÉTRICO</span>
+        <div id="weight-log-list" class="flex flex-col gap-1.5 max-h-72 overflow-y-auto custom-scroll"></div>
       </div>
     </div>
 
-    <!-- ABA CALENDÁRIO -->
-    <div id="tab-calendar" class="hidden flex flex-col gap-3 font-hud">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
-        <span id="calendar-month-year" class="text-sm font-bold text-white uppercase block mb-3">HISTÓRICO</span>
+    <!-- ABA 3: DIÁRIO (CALENDÁRIO INTERATIVO COMPLETO) -->
+    <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-hud">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-lg">
+        <div class="flex justify-between items-center mb-3">
+          <span id="calendar-month-year" class="text-sm font-bold text-white uppercase tracking-wider">SETEMBRO 2026</span>
+          <div class="flex gap-2 text-[9px]">
+            <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> AERÓBICO</span>
+            <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> FORÇA</span>
+          </div>
+        </div>
+
+        <!-- Cabeçalho dos Dias da Semana -->
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 mb-2">
+          <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+        </div>
+
+        <!-- Grelha dos Dias -->
         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
       </div>
+
+      <!-- Detalhes do Dia Selecionado -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex-1 shadow-lg">
+        <span class="text-xs text-amber-400 block mb-2" id="selected-date-label">REGISTO DO DIA</span>
+        <div id="selected-day-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto custom-scroll font-sans">
+          <p class="text-xs text-slate-500 text-center py-3 font-hud">Selecione um dia do calendário.</p>
+        </div>
+      </div>
     </div>
 
-    <!-- ABA CÂMERA -->
-    <div id="tab-camera" class="hidden flex flex-col gap-2">
+    <!-- ABA 4: CÂMERA IA -->
+    <div id="tab-camera" class="tab-content hidden flex flex-col gap-2">
       <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-cyan-500/40 flex items-center justify-center">
         <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
         <div class="absolute top-2 right-2 bg-slate-900/80 border border-cyan-400 px-3 py-1 rounded-xl text-center font-hud">
           <span class="text-[9px] text-slate-400 block">SENSOR</span><span class="text-xl font-bold text-cyan-400">ATIVO</span>
         </div>
       </div>
-      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-cyan-600 text-white font-hud text-xs py-3 rounded-xl">INICIAR CÂMERA</button>
+      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-cyan-600 text-white font-hud text-xs py-3 rounded-xl transition">INICIAR CÂMERA</button>
     </div>
   </main>
 
-  <!-- NAVEGAÇÃO -->
+  <!-- NAVEGAÇÃO INFERIOR -->
   <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-hud text-[10px]">
-    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center">MISSÕES</button>
-    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center">PESO</button>
-    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center">DIÁRIO</button>
-    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center">CÂMERA</button>
+    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center cursor-pointer">⚡ MISSÕES</button>
+    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center cursor-pointer">⚖️ PESO</button>
+    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center cursor-pointer">📅 DIÁRIO</button>
+    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center cursor-pointer">👁️ CÂMERA</button>
   </nav>
 
   <script>
@@ -276,7 +303,7 @@
       history: []
     };
 
-    // RESGATE AUTOMÁTICO DE PROGRESSO ANTERIOR (RANK 4)
+    // Resgate de Dados
     try {
       let bestSave = null;
       for (let i = 0; i < localStorage.length; i++) {
@@ -292,9 +319,7 @@
           } catch(e){}
         }
       }
-      if (bestSave) {
-        player = Object.assign(player, bestSave);
-      }
+      if (bestSave) player = Object.assign(player, bestSave);
     } catch (e) {}
 
     const savedAvatar = localStorage.getItem('hero_custom_avatar');
@@ -336,10 +361,10 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          canvas.width = 200; canvas.height = 200;
+          canvas.width = 240; canvas.height = 240;
           const ctx = canvas.getContext('2d');
           const minDim = Math.min(img.width, img.height);
-          ctx.drawImage(img, (img.width - minDim) / 2, (img.height - minDim) / 2, minDim, minDim, 0, 0, 200, 200);
+          ctx.drawImage(img, (img.width - minDim) / 2, (img.height - minDim) / 2, minDim, minDim, 0, 0, 240, 240);
           const compressed = canvas.toDataURL('image/jpeg', 0.85);
           player.avatarImage = compressed;
           try { localStorage.setItem('hero_custom_avatar', compressed); } catch(err){}
@@ -411,10 +436,18 @@
         const statGain = (index % 2 === 0) ? 'STR' : 'CON';
         addXP(25, statGain);
         dealBossDamage(1500, `Sparks 0${index + 1}`);
+        player.history.unshift({
+          nome: `Sparks: Sessão 0${index + 1}`,
+          detalhes: `Micro-sessão de calistenia (+1 ${statGain})`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 25
+        });
         showToast(`Sessão 0${index + 1} Concluída! (+25 XP e +1 ${statGain})`);
       } else {
         showToast(`Sessão 0${index + 1} desmarcada.`, false);
       }
+      if (player.history.length > 50) player.history.pop();
       updateUI();
     }
 
@@ -448,8 +481,11 @@
       player.history.unshift({
         nome: "RELATÓRIO MATINAL ZEPP",
         detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos`,
-        tipo: "aero", data: new Date().toISOString(), xp: bonusXp
+        tipo: "aero",
+        data: new Date().toISOString(),
+        xp: bonusXp
       });
+      if (player.history.length > 50) player.history.pop();
 
       document.getElementById('input-manual-sleep').value = '';
       document.getElementById('input-manual-steps').value = '';
@@ -462,6 +498,13 @@
       if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
         player.hydration.completed = true;
         addXP(30, 'CON');
+        player.history.unshift({
+          nome: "META DE HIDRATAÇÃO",
+          detalhes: `Meta de 3.000 ml batida com sucesso`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 30
+        });
         showToast("META DE ÁGUA ATINGIDA! (+30 XP e +1 CON)");
       } else {
         showToast(`+${ml} ml registrados!`);
@@ -481,7 +524,14 @@
       if (player.bossRaid.currentHp <= 0) {
         player.bossRaid.defeated = true;
         addXP(300, 'STR');
-        showToast("INCURSÃO VITORIOSA! O CHEFE FOI DESTRUÍDO! (+300 XP)");
+        player.history.unshift({
+          nome: "🏆 INCURSÃO SEMANAL VENCIDA",
+          detalhes: `${player.bossRaid.name} derrotado (+300 XP)`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 300
+        });
+        showToast("INCURSÃO VITORIOSA! CHEFE DESTRUÍDO! (+300 XP)");
       }
       renderBossRaid();
     }
@@ -516,6 +566,15 @@
       const xp = reps * 3;
       addXP(xp, stat);
       dealBossDamage(reps * 20, nome);
+      player.history.unshift({
+        nome: `Calistenia: ${nome}`,
+        detalhes: `${reps} repetições validadas (+1 ${stat})`,
+        tipo: 'forca',
+        data: new Date().toISOString(),
+        xp: xp
+      });
+      if (player.history.length > 50) player.history.pop();
+      updateUI();
       showToast(`+${reps} ${nome} registradas! (+${xp} XP)`);
     }
 
@@ -526,7 +585,15 @@
         player.heightCm = h; player.weight = w;
         player.weightHistory.push({ date: new Date().toISOString(), weight: w });
         addXP(20, 'END');
+        player.history.unshift({
+          nome: "PESAGEM REGISTRADA",
+          detalhes: `${w.toFixed(1)} kg • ${h} cm`,
+          tipo: "forca",
+          data: new Date().toISOString(),
+          xp: 20
+        });
         showToast(`Peso atualizado: ${w.toFixed(1)} kg (+20 XP)`);
+        updateUI();
       }
     }
 
@@ -555,8 +622,16 @@
       player.end = Math.max(10, Math.round(rmax * 4.5));
 
       addXP(50, null);
+      player.history.unshift({
+        nome: "EXAME DE APTIDÃO FÍSICA",
+        detalhes: `FOR ${player.str} • CON ${player.con} • AGI ${player.agi} • END ${player.end}`,
+        tipo: "forca",
+        data: new Date().toISOString(),
+        xp: 50
+      });
       closeExamModal();
       showToast(`EXAME CONCLUÍDO! PODER: ${calculateCombatPower()}`);
+      updateUI();
     }
 
     function exportBackupData() {
@@ -606,21 +681,132 @@
             const xpTotal = Math.max(30, Math.round(km * 110 + min * 10));
             addXP(xpTotal, km > 0 ? 'END' : 'CON');
             dealBossDamage(Math.round(km > 0 ? km * 1000 : min * 50), rawName);
+            player.history.unshift({
+              nome: rawName.toUpperCase(),
+              detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min de sessão`,
+              tipo: km > 0 ? 'aero' : 'forca',
+              data: new Date().toISOString(),
+              xp: xpTotal
+            });
             statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP)`;
             showToast(`${rawName} Concluído! (+${xpTotal} XP)`);
+            updateUI();
           }
         } catch(err) { statusMsg.textContent = "Erro na leitura do TCX."; }
       };
       reader.readAsText(file);
     });
 
+    // MÓDULO CALENDÁRIO INTERATIVO
+    let selectedCalendarDay = new Date().getDate();
+
+    function renderCalendarModule() {
+      const grid = document.getElementById('calendar-grid');
+      const monthYearLabel = document.getElementById('calendar-month-year');
+      if (!grid || !monthYearLabel) return;
+      grid.innerHTML = '';
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      monthYearLabel.textContent = `${monthNames[month]} ${year}`;
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      // Espaçadores do início do mês
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "py-2.5 text-slate-800 opacity-20";
+        grid.appendChild(emptyCell);
+      }
+
+      // Agrupa histórico por dia do mês atual
+      const eventsByDay = {};
+      (player.history || []).forEach(item => {
+        if (!item.data) return;
+        const d = new Date(item.data);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+          const dayNum = d.getDate();
+          if (!eventsByDay[dayNum]) eventsByDay[dayNum] = [];
+          eventsByDay[dayNum].push(item);
+        }
+      });
+
+      for (let day = 1; day <= totalDays; day++) {
+        const cell = document.createElement('div');
+        const dayEvents = eventsByDay[day] || [];
+        const hasEvents = dayEvents.length > 0;
+        const isSelected = day === selectedCalendarDay;
+
+        let dotColor = "bg-transparent";
+        if (hasEvents) {
+          const hasAero = dayEvents.some(e => e.tipo === 'aero');
+          const hasForca = dayEvents.some(e => e.tipo === 'forca');
+          if (hasAero && hasForca) dotColor = "bg-amber-400";
+          else if (hasAero) dotColor = "bg-emerald-400";
+          else dotColor = "bg-rose-400";
+        }
+
+        cell.className = `py-2 rounded-xl flex flex-col items-center justify-center cursor-pointer border transition ${
+          isSelected ? 'border-cyan-400 bg-cyan-950/60 text-white font-bold' : (
+            hasEvents ? 'border-slate-700 bg-slate-800/60 text-slate-200' : 'border-slate-900 bg-slate-950/30 text-slate-500'
+          )
+        } hover:border-cyan-500`;
+
+        cell.innerHTML = `
+          <span>${day}</span>
+          <span class="w-1.5 h-1.5 rounded-full ${dotColor} mt-0.5"></span>
+        `;
+
+        cell.onclick = () => {
+          selectedCalendarDay = day;
+          renderCalendarModule();
+          inspectDayLog(day, dayEvents, monthNames[month]);
+        };
+
+        grid.appendChild(cell);
+      }
+
+      inspectDayLog(selectedCalendarDay, eventsByDay[selectedCalendarDay] || [], monthNames[month]);
+    }
+
+    function inspectDayLog(day, events, monthName) {
+      const label = document.getElementById('selected-date-label');
+      const list = document.getElementById('selected-day-list');
+      if (!label || !list) return;
+
+      label.textContent = `MISSÕES DE ${day} DE ${monthName.toUpperCase()}`;
+
+      if (!events || !events.length) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-hud">Nenhuma atividade registrada neste dia.</p>`;
+        return;
+      }
+
+      list.innerHTML = events.map(e => {
+        const timeStr = e.data ? new Date(e.data).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '';
+        const isAero = e.tipo === 'aero';
+        return `
+          <div class="bg-slate-950 border ${isAero ? 'border-emerald-950' : 'border-rose-950'} p-2 rounded-xl flex items-center justify-between text-xs">
+            <div>
+              <span class="font-hud font-bold text-white block text-[11px]">${e.nome}</span>
+              <span class="text-[10px] text-slate-400">${e.detalhes} ${timeStr ? '• ' + timeStr : ''}</span>
+            </div>
+            <span class="font-hud ${isAero ? 'text-emerald-400' : 'text-rose-400'} font-bold text-xs shrink-0 ml-2">+${e.xp} XP</span>
+          </div>
+        `;
+      }).join('');
+    }
+
     function navigateToTab(tabId) {
       ['missions', 'weight', 'calendar', 'camera'].forEach(t => {
         const el = document.getElementById(`tab-${t}`);
         const btn = document.getElementById(`nav-btn-${t}`);
         if (el) el.classList.toggle('hidden', t !== tabId);
-        if (btn) btn.className = t === tabId ? "text-cyan-400 flex flex-col items-center" : "text-slate-500 flex flex-col items-center";
+        if (btn) btn.className = t === tabId ? "text-cyan-400 flex flex-col items-center cursor-pointer" : "text-slate-500 flex flex-col items-center cursor-pointer";
       });
+      if (tabId === 'calendar') renderCalendarModule();
       if (tabId === 'weight') renderWeightModule();
     }
 
@@ -628,7 +814,7 @@
       const list = document.getElementById('weight-log-list');
       if (!list) return;
       list.innerHTML = (player.weightHistory || []).slice().reverse().map(item => `
-        <div class="bg-slate-950 border border-slate-800 p-2 rounded-xl flex justify-between text-xs font-hud">
+        <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-xl flex justify-between text-xs font-hud">
           <span class="text-white font-bold">${item.weight.toFixed(1)} kg</span>
           <span class="text-slate-500 text-[10px]">${new Date(item.date).toLocaleDateString('pt-BR')}</span>
         </div>
@@ -677,7 +863,7 @@
       renderBossRaid();
       renderSparksRoutine();
 
-      localStorage.setItem('hero_player_v22', JSON.stringify(player));
+      localStorage.setItem('hero_player_v23', JSON.stringify(player));
     }
 
     updateUI();
