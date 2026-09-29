@@ -45,12 +45,12 @@
     </div>
   </div>
 
-  <!-- CABEÇALHO DO GUERREIRO -->
+  <!-- CABEÇALHO DO GUERREIRO GOMINSK -->
   <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <!-- Container do Avatar (Estilo Toriyama com Moldura de Númenor) -->
+      <!-- Retrato de Gominsk -->
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
-        <img id="avatar-img" src="" alt="Avatar" class="w-full h-full object-cover object-center hidden pointer-events-none" />
+        <img id="avatar-img" src="" alt="Avatar Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
           <span class="text-2xl mb-0.5">⚔️</span>
           <span class="text-[9px] font-epic text-amber-300 font-bold leading-tight block">RETRATO DO GUERREIRO</span>
@@ -111,24 +111,47 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL (A GRANDE AMEAÇA DE GORGOROTH) -->
-      <div class="bg-gradient-to-r from-red-950/60 via-slate-900 to-slate-950 border border-red-700/50 rounded-2xl p-3.5 shadow-xl font-epic">
-        <div class="flex justify-between items-start mb-2">
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-              <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest">O CERCO DA FORTALEZA</span>
+      <!-- CERCO SEMANAL (COM RETRATO DO INIMIGO INTEGRADO) -->
+      <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
+        
+        <!-- Cabeçalho do Inimigo com Avatar -->
+        <div class="flex items-center gap-3 mb-2.5">
+          <!-- Quadro do Inimigo com Upload Nativo ao Tocar -->
+          <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
+            <img id="boss-img" src="" alt="Troll de Gorgoroth" class="w-full h-full object-cover object-center hidden pointer-events-none" />
+            <div id="boss-placeholder" class="text-center p-1.5 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-2xl mb-0.5">👹</span>
+              <span class="text-[8px] font-epic text-red-400 font-bold leading-tight block">FOTO DO TROLL</span>
             </div>
-            <h3 id="boss-name" class="font-bold text-sm text-white tracking-wide">TROLL DE COMBATE DE GORGOROTH</h3>
+            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[8px] font-epic text-red-300 font-bold pointer-events-none text-center p-1">
+              ALTERAR
+            </div>
+            <input type="file" id="boss-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" onchange="handleBossUpload(event)" />
           </div>
-          <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold">EM COMBATE</span>
+
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                  <span class="text-[9px] font-bold text-red-400 uppercase tracking-widest block">O CERCO DA FORTALEZA</span>
+                </div>
+                <h3 id="boss-name" class="font-bold text-xs sm:text-sm text-white tracking-wide leading-tight">TROLL DE COMBATE DE GORGOROTH</h3>
+              </div>
+              <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM COMBATE</span>
+            </div>
+
+            <!-- Barra de Vida do Chefe -->
+            <div class="w-full bg-slate-950 rounded-full h-2.5 border border-red-950 overflow-hidden mt-2">
+              <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+              <span id="boss-hp-text">85.000 / 85.000 HP</span>
+              <span id="boss-hp-percent" class="text-red-400 font-bold">100%</span>
+            </div>
+          </div>
         </div>
-        <div class="w-full bg-slate-950 rounded-full h-3 border border-red-950 overflow-hidden mb-1.5">
-          <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
-        </div>
-        <div class="flex justify-between text-[10px] text-slate-400 mb-2">
-          <span id="boss-hp-text">85.000 / 85.000 HP</span><span id="boss-hp-percent" class="text-red-400 font-bold">100%</span>
-        </div>
+
         <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2">
           <span class="text-sm">🛡️</span>
           <span id="boss-story-log" class="leading-relaxed">As hostes da Sombra investem contra as muralhas. Cada marcha, vigília e golpe desferido nos treinos destrói a couraça da besta.</span>
@@ -295,7 +318,6 @@
     const todayStr = new Date().toDateString();
     const currentWeekId = getCurrentWeekId();
 
-    // HIERARQUIA DE PATENTES DÚNEDAIN / GONDOR
     const RANK_NAMES = [
       "SENTINELA DE FRONTEIRA I", "SENTINELA DE FRONTEIRA II", "SENTINELA DE FRONTEIRA III", "SENTINELA DE FRONTEIRA IV",
       "BATEDOR DE ITHILIEN I", "BATEDOR DE ITHILIEN II", "BATEDOR DE ITHILIEN III", "BATEDOR DE ITHILIEN IV",
@@ -308,7 +330,9 @@
     let player = {
       level: 1, xp: 0, maxXp: 800,
       str: 10, con: 10, agi: 10, end: 10,
-      weight: 96.0, heightCm: 175, streak: 1, avatarImage: null,
+      weight: 96.0, heightCm: 175, streak: 1,
+      avatarImage: null,
+      enemyImage: null,
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
       bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false },
@@ -342,10 +366,11 @@
     const savedAvatar = localStorage.getItem('hero_custom_avatar');
     if (savedAvatar) player.avatarImage = savedAvatar;
 
-    // Recalibra curva de XP realista (Nível * 800)
+    const savedEnemy = localStorage.getItem('hero_custom_enemy');
+    if (savedEnemy) player.enemyImage = savedEnemy;
+
     player.maxXp = Math.max(800, (player.level || 1) * 800);
 
-    // Ajusta o Chefe Semanal para 85.000 HP se estiver com o padrão antigo
     if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
       const bossHpScale = 85000 + ((player.level || 1) * 5000);
       player.bossRaid = {
@@ -374,7 +399,7 @@
       return Math.round((s * 22) + (c * 22) + (a * 26) + (e * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
     }
 
-    // Avatar com Estilo Akira Toriyama Preservado
+    // GESTÃO DO RETRATO DE GOMINSK
     function handleAvatarUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -425,7 +450,31 @@
       }
     }
 
-    // MECÂNICA DO CERCO (BOSS RAID REBALANCEADA)
+    // GESTÃO DO RETRATO DO TROLL DE GORGOROTH
+    function handleBossUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = 240; canvas.height = 240;
+          const ctx = canvas.getContext('2d');
+          const minDim = Math.min(img.width, img.height);
+          ctx.drawImage(img, (img.width - minDim) / 2, (img.height - minDim) / 2, minDim, minDim, 0, 0, 240, 240);
+          const compressed = canvas.toDataURL('image/jpeg', 0.85);
+          player.enemyImage = compressed;
+          try { localStorage.setItem('hero_custom_enemy', compressed); } catch(err){}
+          renderBossRaid();
+          showToast("A Besta de Gorgoroth foi revelada!");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // MECÂNICA E RENDERIZAÇÃO DO CERCO
     function dealBossDamage(damage, sourceName) {
       if (!player.bossRaid || player.bossRaid.defeated) return;
       player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - damage);
@@ -448,6 +497,7 @@
     function renderBossRaid() {
       const raid = player.bossRaid;
       if (!raid) return;
+
       const percent = Math.max(0, Math.round((raid.currentHp / raid.maxHp) * 100));
       document.getElementById('boss-hp-bar').style.width = `${percent}%`;
       document.getElementById('boss-hp-text').textContent = `${raid.currentHp.toLocaleString('pt-BR')} / ${raid.maxHp.toLocaleString('pt-BR')} HP`;
@@ -455,14 +505,30 @@
 
       const badge = document.getElementById('boss-status-badge');
       const log = document.getElementById('boss-story-log');
+      const bossContainer = document.getElementById('boss-avatar-container');
+      const bossImg = document.getElementById('boss-img');
+      const bossPlaceholder = document.getElementById('boss-placeholder');
+
+      const enemyImgSrc = player.enemyImage || localStorage.getItem('hero_custom_enemy');
+      if (enemyImgSrc) {
+        bossImg.src = enemyImgSrc;
+        bossImg.classList.remove('hidden');
+        if (bossPlaceholder) bossPlaceholder.classList.add('hidden');
+      } else {
+        bossImg.classList.add('hidden');
+        if (bossPlaceholder) bossPlaceholder.classList.remove('hidden');
+      }
 
       if (raid.defeated) {
         badge.textContent = "ABATIDO";
-        badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold";
+        badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         log.textContent = "A fortaleza resistiu! A besta de Mordor jaz derrotada diante da disciplina das hostes de Gominsk.";
+        bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-emerald-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group filter grayscale contrast-125 opacity-70";
       } else {
         badge.textContent = "EM COMBATE";
-        badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold";
+        badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
+        bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group";
+
         if (percent > 65) {
           log.textContent = "O Troll de Gorgoroth avança com couraça espessa. Marchas e patrulhas desgastam a sua guarda externa.";
         } else if (percent > 30) {
@@ -515,7 +581,6 @@
           xp: 25
         });
 
-        // Bônus por fechar os 4 postos do dia
         if (player.sparksRoutine.slots.every(Boolean)) {
           addXP(50, 'CON');
           dealBossDamage(1000, "Vigília Plena das Muralhas");
@@ -530,7 +595,7 @@
       updateUI();
     }
 
-    // REGISTO MATINAL DO ZEPP COM DANO REBALANCEADO
+    // REGISTO MATINAL DO ZEPP
     function handleManualZeppSubmit() {
       const sleepInput = parseInt(document.getElementById('input-manual-sleep').value) || 0;
       const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
@@ -552,7 +617,6 @@
       }
 
       if (stepsInput > 0) {
-        // 150 de dano e 10 XP por 1.000 passos (balanceado)
         const stepXp = Math.min(80, Math.round((stepsInput / 1000) * 8));
         bonusXp += stepXp;
         const stepDamage = Math.round((stepsInput / 1000) * 150);
@@ -572,7 +636,7 @@
       showToast(`Vigília Registrada com Glória! (+${bonusXp} XP)`);
     }
 
-    // FONTES DA CIDADELA (ÁGUA)
+    // FONTES DA CIDADELA
     function addWater(ml) {
       player.hydration.currentMl = Math.min(6000, player.hydration.currentMl + ml);
       if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
@@ -598,7 +662,7 @@
       showToast("Fontes reiniciadas.", false);
     }
 
-    // SISTEMA DE PROGRESSÃO DE PATENTE (CURVA CONTROLADA)
+    // PROGRESSÃO DE PATENTE
     function addXP(amount, type) {
       player.xp += amount;
       if (type === 'STR') player.str = (player.str || 10) + 1;
@@ -606,7 +670,6 @@
       if (type === 'AGI') player.agi = (player.agi || 10) + 1;
       if (type === 'END') player.end = (player.end || 10) + 1;
 
-      // Cada patente requer Nível * 800 XP
       while (player.xp >= player.maxXp && player.level < 20) {
         player.xp -= player.maxXp;
         player.level += 1;
@@ -619,7 +682,6 @@
     function handleQuickRep(nome, reps, stat) {
       const xp = reps * 2;
       addXP(xp, stat);
-      // Dano balanceado para micro-repetições
       const dmg = Math.round(reps * 8);
       dealBossDamage(dmg, nome);
       player.history.unshift({
@@ -716,7 +778,7 @@
       reader.readAsText(file);
     }
 
-    // LEITOR DE MARCHA TCX / GPX REBALANCEADO
+    // LEITOR DE MARCHA TCX / GPX
     document.getElementById('tcx-input').addEventListener('change', function(e) {
       const file = e.target.files && event.target.files[0];
       const statusMsg = document.getElementById('tcx-status-msg');
@@ -736,7 +798,6 @@
             const km = Number((meters / 1000).toFixed(2));
             const min = Math.round(totalSec / 60);
 
-            // Dano calibrado: Marcha forte de 5 km = ~3.500 dano no Boss
             const xpTotal = Math.max(30, Math.round(km * 75 + min * 6));
             const bossDamage = Math.round(km > 0 ? (km * 600 + min * 25) : (min * 70));
 
@@ -758,7 +819,7 @@
       reader.readAsText(file);
     });
 
-    // MÓDULO DO DIÁRIO DAS CRÔNICAS (CALENDÁRIO INTERATIVO)
+    // DIÁRIO DAS CRÔNICAS
     let selectedCalendarDay = new Date().getDate();
 
     function renderCalendarModule() {
@@ -922,7 +983,7 @@
       renderBossRaid();
       renderSparksRoutine();
 
-      localStorage.setItem('hero_player_v24', JSON.stringify(player));
+      localStorage.setItem('hero_player_v25', JSON.stringify(player));
     }
 
     updateUI();
