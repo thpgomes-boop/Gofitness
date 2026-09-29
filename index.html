@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Crônicas de Gominsk - Sistema Dúnedain</title>
+  
+  <!-- CONFIGURAÇÃO PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#07090e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gominsk">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Marcellus&display=swap" rel="stylesheet">
   <style>
@@ -279,7 +288,7 @@
           <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e desfira manobras balanceadas por custo:</span>
         </div>
 
-        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS COM CUSTOS DIFERENCIADOS -->
+        <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
         <div class="grid grid-cols-2 gap-1.5 mb-2 text-left">
           <!-- 1. Tiro de Ithilien (AGI - Custo Baixo 120 Ímpeto) -->
           <button type="button" onclick="executeManeuver('AGI')" class="bg-slate-950 border border-cyan-600/50 hover:border-cyan-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
@@ -659,7 +668,6 @@
       cetro_annuminas: { id: 'cetro_annuminas', slot: 'relic', rarity: 'LENDÁRIO', icon: '🪄', name: 'Cetro de Annúminas', str: 2, agi: 0, con: 6, end: 6, desc: '+6 BLINDAGEM • +6 VIGOR • +2 FORÇA', lore: 'A mais antiga relíquia dos Homens na Terra Média.' }
     };
 
-    // CONFIGURAÇÃO TÁTICA DAS 4 MANOBRAS (CUSTOS E PERFIS DIFERENCIADOS)
     const MANEUVERS_CFG = {
       AGI: { name: "Tiro de Ithilien", cost: 120, divisor: 20, critChance: 0.35, critMult: 2.0, stat: "agi", label: "DESTREZA", icon: "🏹" },
       END: { name: "Cerco de Atrito", cost: 250, divisor: 22, critChance: 0, critMult: 1.0, stat: "end", label: "VIGOR", icon: "⚔️" },
@@ -787,7 +795,6 @@
       return CAMPAIGN_CHAPTERS[idx];
     }
 
-    // REINÍCIO DA CAMPANHA
     function resetCampaignProgress() {
       const confirmFirst = confirm("Atenção, Guardião: tem a certeza de que deseja apagar todo o progresso da campanha, equipamentos e histórico?");
       if (!confirmFirst) return;
@@ -799,7 +806,6 @@
       }
     }
 
-    // SISTEMA DE ESPÓLIOS
     let pendingLootItem = null;
 
     function triggerLootDropCeremony() {
@@ -888,7 +894,6 @@
       updateUI();
     }
 
-    // MODAL DA FORJA
     let currentArsenalSlot = 'weapon';
 
     function openArsenalModal(slot) {
@@ -966,14 +971,12 @@
       });
     }
 
-    // ÍMPETO MARCIAL
     function addImpeto(amount, source) {
       player.impeto = Math.min(10000, (player.impeto || 0) + amount);
       showToast(`+${amount} ÍMPETO MARCIAL (${source})!`, true);
       updateCombatManeuversUI();
     }
 
-    // EXECUÇÃO DE MANOBRAS COM CUSTOS DIFERENCIADOS
     function executeManeuver(statType) {
       if (!player.bossRaid || player.bossRaid.defeated) {
         showToast("O Troll já foi derrotado! Reivindique os espólios.");
@@ -1074,7 +1077,6 @@
       if (dStr) dStr.textContent = `Dano est.: ${dmgStr} HP`;
     }
 
-    // RETRATOS
     function handleAvatarUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -1464,7 +1466,6 @@
       reader.readAsText(file);
     }
 
-    // LEITOR TCX / GPX
     document.getElementById('tcx-input').addEventListener('change', function(e) {
       const file = e.target.files && event.target.files[0];
       const statusMsg = document.getElementById('tcx-status-msg');
@@ -1511,7 +1512,6 @@
       reader.readAsText(file);
     });
 
-    // CÓDICE DA CAMPANHA
     let selectedCodiceCap = 1;
 
     function renderCodiceModule() {
@@ -1583,7 +1583,6 @@
       }
     }
 
-    // CALENDÁRIO
     let selectedCalendarDay = new Date().getDate();
 
     function renderCalendarModule() {
@@ -1757,6 +1756,15 @@
       updateCombatManeuversUI();
 
       localStorage.setItem('hero_player_v31', JSON.stringify(player));
+    }
+
+    // REGISTO DE SERVICE WORKER (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Vigília Offline ativada (SW registado).'))
+          .catch((err) => console.log('Falha ao registar SW:', err));
+      });
     }
 
     updateUI();
