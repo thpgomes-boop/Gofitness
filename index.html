@@ -6,96 +6,44 @@
   <title>Hero Fitness System - RPG Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-
   <style>
     body { font-family: 'Rajdhani', sans-serif; background-color: #050811; }
     .font-hud { font-family: 'Orbitron', monospace; }
     .aura-s { animation: pulseAura 2s infinite alternate; }
-    @keyframes pulseAura {
-      0% { filter: drop-shadow(0 0 8px #06b6d4); }
-      100% { filter: drop-shadow(0 0 35px #f59e0b); }
-    }
-    .custom-scroll::-webkit-scrollbar { width: 4px; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    @keyframes pulseAura { 0% { filter: drop-shadow(0 0 8px #06b6d4); } 100% { filter: drop-shadow(0 0 30px #f59e0b); } }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24 select-none">
+<body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24">
 
-  <!-- NOTIFICAÇÃO TOAST VISUAL -->
-  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-20 opacity-0 pointer-events-none">
-    NOTIFICAÇÃO
-  </div>
+  <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none">NOTIFICAÇÃO</div>
 
-  <!-- MODAL DO EXAME DE APTIDÃO FÍSICA -->
-  <div id="exam-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto custom-scroll shadow-2xl">
+  <!-- MODAL EXAME -->
+  <div id="exam-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl p-4 w-full max-w-sm font-hud text-xs">
       <div class="flex justify-between items-center mb-3">
-        <div>
-          <h2 class="font-hud font-bold text-sm text-cyan-400">EXAME DE APTIDÃO FÍSICA</h2>
-          <span class="text-[10px] text-slate-400">Calibração do Scouter de Combate</span>
-        </div>
-        <button type="button" onclick="closeExamModal()" class="text-slate-400 hover:text-white font-hud text-lg px-2">✕</button>
+        <h2 class="font-bold text-cyan-400">EXAME DE APTIDÃO FÍSICA</h2>
+        <button type="button" onclick="closeExamModal()" class="text-slate-400 text-lg px-2">✕</button>
       </div>
-
-      <p class="text-[11px] text-slate-300 mb-3 leading-relaxed">
-        Preencha com os seus recordes atuais para recalcular os 4 atributos base e o Poder de Luta.
-      </p>
-
-      <div class="flex flex-col gap-2.5 text-xs font-hud">
-        <div class="bg-slate-950 p-2.5 rounded-xl border border-rose-950/60">
-          <span class="text-rose-400 font-bold block text-[10px] mb-1">POTÊNCIA SUPERIOR (FOR)</span>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="text-[9px] text-slate-400 block">FLEXÕES MÁX.:</label>
-              <input type="number" id="exam-pushups" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-rose-400" placeholder="Ex: 35" />
-            </div>
-            <div>
-              <label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label>
-              <input type="number" id="exam-pullups" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-rose-400" placeholder="Ex: 8" />
-            </div>
-          </div>
+      <div class="flex flex-col gap-2">
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="text-[9px] text-slate-400 block">FLEXÕES MÁX:</label><input type="number" id="exam-pushups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="35" /></div>
+          <div><label class="text-[9px] text-slate-400 block">BARRAS FIXAS:</label><input type="number" id="exam-pullups" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="8" /></div>
         </div>
-
-        <div class="bg-slate-950 p-2.5 rounded-xl border border-amber-950/60">
-          <span class="text-amber-400 font-bold block text-[10px] mb-1">CORE & SUSTENTAÇÃO (CON)</span>
-          <div>
-            <label class="text-[9px] text-slate-400 block">ABDOMINAIS EM 1 MINUTO:</label>
-            <input type="number" id="exam-abs" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-amber-400" placeholder="Ex: 40" />
-          </div>
-        </div>
-
-        <div class="bg-slate-950 p-2.5 rounded-xl border border-cyan-950/60">
-          <span class="text-cyan-400 font-bold block text-[10px] mb-1">TIRO / VELOCIDADE (AGI)</span>
-          <div>
-            <label class="text-[9px] text-slate-400 block">DISTÂNCIA EM 10 MIN (KM):</label>
-            <input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-cyan-400" placeholder="Ex: 1.8" />
-          </div>
-        </div>
-
-        <div class="bg-slate-950 p-2.5 rounded-xl border border-emerald-950/60">
-          <span class="text-emerald-400 font-bold block text-[10px] mb-1">VOLUME CONTÍNUO (END)</span>
-          <div>
-            <label class="text-[9px] text-slate-400 block">MAIOR CORRIDA CONTÍNUA (KM):</label>
-            <input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs focus:outline-none focus:border-emerald-400" placeholder="Ex: 5.0" />
-          </div>
-        </div>
-
-        <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-cyan-600 to-amber-500 hover:from-cyan-500 hover:to-amber-400 text-white font-hud font-bold text-xs py-2.5 rounded-xl shadow-lg mt-1 active:scale-95 transition">
-          SALVAR EXAME & CALCULAR PODER
-        </button>
+        <div><label class="text-[9px] text-slate-400 block">ABDOMINAIS 1 MIN:</label><input type="number" id="exam-abs" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="40" /></div>
+        <div><label class="text-[9px] text-slate-400 block">TIRO 10 MIN (KM):</label><input type="number" step="0.1" id="exam-run10m" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="1.8" /></div>
+        <div><label class="text-[9px] text-slate-400 block">CORRIDA MÁX (KM):</label><input type="number" step="0.5" id="exam-runmax" class="w-full bg-slate-950 border border-slate-700 rounded p-1 text-center text-white" placeholder="5.0" /></div>
+        <button type="button" onclick="saveExamTrial()" class="w-full bg-cyan-600 hover:bg-cyan-500 font-bold py-2.5 rounded-xl text-white mt-1">CALCULAR PODER</button>
       </div>
     </div>
   </div>
 
-  <!-- CABEÇALHO DO GUERREIRO -->
-  <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg shadow-cyan-950/40 mb-3 backdrop-blur">
+  <!-- CABEÇALHO -->
+  <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3 shadow-lg mb-3">
     <div class="flex items-center gap-3">
-      <!-- Container do Avatar com Toque Direto -->
-      <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+      <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
         <img id="avatar-img" src="" alt="Avatar" class="w-full h-full object-cover object-center hidden pointer-events-none" />
-        <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center w-full h-full pointer-events-none">
-          <span class="text-2xl mb-1">📷</span>
-          <span class="text-[9px] font-hud text-cyan-400 font-bold leading-tight block">TOCAR P/ CARREGAR</span>
+        <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
+          <span class="text-2xl">📷</span><span class="text-[9px] font-hud text-cyan-400 font-bold leading-tight block">TOCAR P/ CARREGAR</span>
         </div>
         <input type="file" id="avatar-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" onchange="handleAvatarUpload(event)" />
       </div>
@@ -103,11 +51,11 @@
       <div class="flex-1">
         <div class="flex justify-between items-start">
           <div>
-            <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest uppercase block">RECRUTA E1</span>
+            <span id="rank-title" class="text-[10px] text-amber-400 font-hud tracking-widest block uppercase">RECRUTA E1</span>
             <h1 class="text-lg font-bold font-hud text-white leading-tight">THIAGO</h1>
             <div class="flex items-center gap-1.5 mt-0.5">
-              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud inline-block">IMC 31.3 • COLOSSO</span>
-              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-hud inline-block font-bold">⚡ PODER: 1.150</span>
+              <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-cyan-300 px-1.5 py-0.5 rounded font-hud">IMC 31.3 • COLOSSO</span>
+              <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-hud font-bold">⚡ PODER: 1.150</span>
             </div>
           </div>
           <div class="text-right">
@@ -116,196 +64,176 @@
           </div>
         </div>
 
-        <div class="w-full bg-slate-950 rounded-full h-3 border border-cyan-900/80 overflow-hidden mt-2 relative">
+        <div class="w-full bg-slate-950 rounded-full h-3 border border-cyan-900/80 overflow-hidden mt-2">
           <div id="xp-bar" class="bg-gradient-to-r from-cyan-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="flex justify-between text-[11px] font-hud text-slate-400 mt-1">
-          <span id="xp-text">0 / 400 XP</span>
-          <span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA</span>
+          <span id="xp-text">0 / 400 XP</span><span id="streak-text" class="text-amber-400 font-bold">🔥 1 DIA</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- CONTROLE BIOMÉTRICO (175 CM / 96 KG) -->
+  <!-- BIOMETRIA -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs font-hud gap-2">
-    <div class="flex items-center gap-1.5">
-      <span class="text-slate-400 text-[10px]">ALTURA:</span>
-      <input type="number" id="input-height" value="175" step="1" min="150" max="220" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
-      <span class="text-slate-400 text-[10px]">cm</span>
-    </div>
-    <div class="flex items-center gap-1.5">
-      <span class="text-slate-400 text-[10px]">PESO:</span>
-      <input type="number" id="input-weight" value="96.0" step="0.5" min="50" max="150" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px] focus:outline-none focus:border-cyan-400" />
-      <span class="text-slate-400 text-[10px]">kg</span>
-    </div>
-    <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white px-3 py-1 rounded text-[10px] font-bold transition cursor-pointer shadow">
-      REGISTRAR
-    </button>
+    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">ALTURA:</span><input type="number" id="input-height" value="175" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">cm</span></div>
+    <div class="flex items-center gap-1"><span class="text-slate-400 text-[10px]">PESO:</span><input type="number" id="input-weight" value="96.0" step="0.5" class="w-14 bg-slate-950 border border-cyan-500/50 rounded p-1 text-center font-bold text-white text-[11px]" /><span class="text-slate-400 text-[10px]">kg</span></div>
+    <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1 rounded text-[10px] font-bold">REGISTRAR</button>
   </section>
 
-  <!-- ATRIBUTOS TÁTICOS (FOR, CON, AGI, END) -->
+  <!-- ATRIBUTOS -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
-    <div class="flex justify-between items-center mb-2 px-1">
-      <span class="text-[10px] font-hud text-slate-400">ATRIBUTOS DE COMBATE</span>
-      <button type="button" onclick="openExamModal()" class="text-[10px] font-hud bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg transition cursor-pointer">
-        ⚙️ EXAME FÍSICO
-      </button>
+    <div class="flex justify-between items-center mb-2 px-1 font-hud text-[10px]">
+      <span class="text-slate-400">ATRIBUTOS DE COMBATE</span>
+      <button type="button" onclick="openExamModal()" class="bg-cyan-950 text-cyan-300 border border-cyan-700/60 px-2 py-0.5 rounded-lg">⚙️ EXAME FÍSICO</button>
     </div>
     <div class="grid grid-cols-4 gap-1.5 font-hud text-center">
-      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block leading-tight">FORÇA</span>
-        <span id="stat-str" class="text-base font-bold text-rose-400">10</span>
-      </div>
-      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block leading-tight">BLIND.</span>
-        <span id="stat-con" class="text-base font-bold text-amber-400">10</span>
-      </div>
-      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block leading-tight">AGIL.</span>
-        <span id="stat-agi" class="text-base font-bold text-cyan-400">10</span>
-      </div>
-      <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl">
-        <span class="text-[9px] text-slate-400 block leading-tight">FÔLEGO</span>
-        <span id="stat-end" class="text-base font-bold text-emerald-400">10</span>
-      </div>
+      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FORÇA</span><span id="stat-str" class="text-base font-bold text-rose-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">BLIND.</span><span id="stat-con" class="text-base font-bold text-amber-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">AGIL.</span><span id="stat-agi" class="text-base font-bold text-cyan-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FÔLEGO</span><span id="stat-end" class="text-base font-bold text-emerald-400">10</span></div>
     </div>
   </section>
 
-  <!-- CORPO PRINCIPAL COM ABAS -->
-  <main class="flex-1 flex flex-col">
+  <!-- PRINCIPAL -->
+  <main class="flex-1 flex flex-col gap-3">
+    <div id="tab-missions" class="flex flex-col gap-3">
 
-    <!-- ABA 1: MISSÕES -->
-    <div id="tab-missions" class="tab-content flex flex-col gap-3">
-
-      <!-- SCANNER MATINAL DO ZEPP (CALIBRADO P/ ZEpp VISÃO GERAL + ENTRADA MANUAL) -->
-      <div class="bg-gradient-to-r from-indigo-950/60 to-slate-900 border border-indigo-500/50 rounded-2xl p-3 shadow-lg relative">
+      <!-- RELATÓRIO MATINAL ZEPP -->
+      <div class="bg-gradient-to-r from-indigo-950/70 to-slate-900 border border-indigo-500/50 rounded-2xl p-3 shadow-lg font-hud">
         <div class="flex justify-between items-center mb-2">
           <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-sm">🌙</span>
-              <span class="text-xs font-hud font-bold text-indigo-300">RELATÓRIO MATINAL (ZEPP SCAN)</span>
-            </div>
-            <span class="text-[10px] text-slate-400">Envie o print matinal com sono e passos</span>
+            <div class="flex items-center gap-1.5"><span class="text-sm">🌙</span><span class="text-xs font-bold text-indigo-300">RELATÓRIO MATINAL (ZEPP)</span></div>
+            <span class="text-[10px] text-slate-400 font-sans">Insira os dados do relógio ao acordar</span>
           </div>
-          <span id="sleep-buff-badge" class="text-[9px] font-hud bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">
-            AGUARDANDO
-          </span>
+          <span id="sleep-buff-badge" class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">PENDENTE</span>
         </div>
-
-        <!-- Área de Upload do Print -->
-        <div class="border border-dashed border-indigo-500/40 bg-slate-950/60 rounded-xl p-3 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400 mb-1 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-          </svg>
-          <span id="ocr-status-msg" class="text-[11px] font-hud text-indigo-200 pointer-events-none">TOCAR P/ ENVIAR PRINT DO ZEPP</span>
-          <input type="file" id="zepp-screenshot-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" onchange="handleZeppScreenshot(event)" />
+        <div class="grid grid-cols-2 gap-2 bg-slate-950/80 p-2 rounded-xl border border-indigo-950">
+          <div><label class="text-[9px] text-slate-400 block">PONTOS DE SONO:</label><input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs" /></div>
+          <div><label class="text-[9px] text-slate-400 block">PASSOS TOTAIS:</label><input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-center font-bold text-white text-xs" /></div>
         </div>
-
-        <!-- Entrada de Ajuste Rápido / Fallback Direto -->
-        <div class="mt-2.5 pt-2 border-t border-indigo-900/60 flex items-center justify-between gap-1 text-[10px] font-hud">
-          <div class="flex items-center gap-1">
-            <span class="text-slate-400 text-[9px]">SONO:</span>
-            <input type="number" id="input-manual-sleep" placeholder="Ex: 73" class="w-14 bg-slate-950 border border-indigo-500/40 rounded p-1 text-center font-bold text-white text-[10px] focus:outline-none focus:border-indigo-400" />
-          </div>
-          <div class="flex items-center gap-1">
-            <span class="text-slate-400 text-[9px]">PASSOS:</span>
-            <input type="number" id="input-manual-steps" placeholder="Ex: 10764" class="w-16 bg-slate-950 border border-indigo-500/40 rounded p-1 text-center font-bold text-white text-[10px] focus:outline-none focus:border-indigo-400" />
-          </div>
-          <button type="button" onclick="handleManualZeppSubmit()" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-2.5 py-1 rounded text-[10px] font-bold transition cursor-pointer">
-            REGISTRAR
-          </button>
-        </div>
+        <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-2 rounded-xl text-xs font-bold transition">REGISTRAR SONO & PASSOS</button>
       </div>
 
-      <!-- HIDRATAÇÃO TÁTICA -->
+      <!-- HIDRATAÇÃO -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
-        <div class="flex justify-between items-center mb-1.5">
-          <div>
-            <span class="text-xs font-hud font-bold text-cyan-400 block">HIDRATAÇÃO TÁTICA (CORE & CON)</span>
-            <span class="text-[10px] text-slate-400">Meta diária: 3.000 ml</span>
-          </div>
-          <span id="water-current-text" class="text-xs font-hud text-cyan-300 font-bold">0 / 3.000 ml</span>
+        <div class="flex justify-between items-center mb-1.5 font-hud">
+          <div><span class="text-xs font-bold text-cyan-400 block">HIDRATAÇÃO TÁTICA (CON)</span><span class="text-[10px] text-slate-400 font-sans">Meta diária: 3.000 ml</span></div>
+          <span id="water-current-text" class="text-xs text-cyan-300 font-bold">0 / 3.000 ml</span>
         </div>
         <div class="w-full bg-slate-950 rounded-full h-2.5 border border-cyan-950 overflow-hidden mb-2">
           <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-600 to-cyan-300 h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="grid grid-cols-4 gap-1.5 font-hud text-[10px]">
-          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition cursor-pointer">
-            +250 ml
-          </button>
-          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition cursor-pointer">
-            +500 ml
-          </button>
-          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg transition cursor-pointer">
-            +1.000 ml
-          </button>
-          <button type="button" onclick="resetWater()" class="bg-slate-900 hover:bg-slate-800 active:scale-95 border border-slate-700 text-slate-400 py-1.5 rounded-lg transition cursor-pointer">
-            ZERAR
-          </button>
+          <button type="button" onclick="addWater(250)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+250 ml</button>
+          <button type="button" onclick="addWater(500)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+500 ml</button>
+          <button type="button" onclick="addWater(1000)" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 py-1.5 rounded-lg">+1.000 ml</button>
+          <button type="button" onclick="resetWater()" class="bg-slate-900 border border-slate-700 text-slate-400 py-1.5 rounded-lg">ZERAR</button>
         </div>
       </div>
 
-      <!-- INCURSÃO SEMANAL (BOSS RAID) -->
-      <div class="bg-slate-900/90 border border-rose-500/50 rounded-2xl p-3.5 shadow-xl relative overflow-hidden">
+      <!-- INCURSÃO SEMANAL -->
+      <div class="bg-slate-900/90 border border-rose-500/50 rounded-2xl p-3.5 shadow-xl font-hud">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-              <span class="text-[10px] font-hud font-bold text-rose-400 uppercase tracking-widest block">INCURSÃO SEMANAL</span>
-            </div>
-            <h3 id="boss-name" class="font-hud font-bold text-sm text-white">AUTÔMATO BLINDADO MK-I</h3>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span><span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">INCURSÃO SEMANAL</span></div>
+            <h3 id="boss-name" class="font-bold text-sm text-white">AUTÔMATO BLINDADO MK-I</h3>
           </div>
-          <span id="boss-status-badge" class="font-hud text-[9px] bg-rose-950 border border-rose-700 text-rose-300 px-2 py-0.5 rounded uppercase font-bold">
-            ATIVO
-          </span>
+          <span id="boss-status-badge" class="text-[9px] bg-rose-950 border border-rose-700 text-rose-300 px-2 py-0.5 rounded uppercase font-bold">ATIVO</span>
         </div>
-
-        <div class="w-full bg-slate-950 rounded-full h-3 border border-rose-950 overflow-hidden relative mb-1.5">
+        <div class="w-full bg-slate-950 rounded-full h-3 border border-rose-950 overflow-hidden mb-1.5">
           <div id="boss-hp-bar" class="bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-400 h-full w-full transition-all duration-500"></div>
         </div>
-        <div class="flex justify-between text-[10px] font-hud text-slate-400 mb-2">
-          <span id="boss-hp-text">50.000 / 50.000 HP</span>
-          <span id="boss-hp-percent" class="text-rose-400 font-bold">100%</span>
+        <div class="flex justify-between text-[10px] text-slate-400 mb-2">
+          <span id="boss-hp-text">50.000 / 50.000 HP</span><span id="boss-hp-percent" class="text-rose-400 font-bold">100%</span>
         </div>
-
-        <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] flex items-center gap-2">
-          <span class="text-sm">📡</span>
-          <p id="boss-story-log" class="text-slate-300 leading-tight">
-            Ameaça blindada em aproximação no setor. Cada treino registrado bombardeia a estrutura do inimigo.
-          </p>
+        <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300">
+          📡 <span id="boss-story-log">Ameaça blindada em aproximação no setor. Cada treino registrado bombardeia a estrutura do inimigo.</span>
         </div>
       </div>
 
-      <!-- PROTOCOLO SPARKS (ESTRUTURA FIXA NO HTML) -->
-      <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
+      <!-- PROTOCOLO SPARKS (4 SESSÕES GARANTIDAS) -->
+      <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg font-hud">
         <div class="flex justify-between items-center mb-2">
-          <div>
-            <span class="text-xs font-hud font-bold text-cyan-400 block">PROTOCOLO SPARKS (CALISTENIA)</span>
-            <span class="text-[10px] text-slate-400">4 micro-sessões diárias</span>
-          </div>
-          <span id="sparks-counter" class="text-[10px] font-hud bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">
-            0/4 CUMPRIDAS
-          </span>
+          <div><span class="text-xs font-bold text-cyan-400 block">PROTOCOLO SPARKS (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 micro-sessões diárias</span></div>
+          <span id="sparks-counter" class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">0/4 CUMPRIDAS</span>
         </div>
-        <div class="grid grid-cols-2 gap-2 mt-2" id="sparks-slots-container">
-          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs font-hud transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
-            <div class="text-left">
-              <span class="block font-bold text-white text-[11px]">SESSÃO 01</span>
-              <span id="sparks-status-0" class="text-[9px] text-slate-500">PENDENTE</span>
-            </div>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <button type="button" id="sparks-btn-0" onclick="toggleSparksSlot(0)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 01</span><span id="sparks-status-0" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-0" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
-
-          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs font-hud transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
-            <div class="text-left">
-              <span class="block font-bold text-white text-[11px]">SESSÃO 02</span>
-              <span id="sparks-status-1" class="text-[9px] text-slate-500">PENDENTE</span>
-            </div>
+          <button type="button" id="sparks-btn-1" onclick="toggleSparksSlot(1)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 02</span><span id="sparks-status-1" class="text-[9px] text-slate-500">PENDENTE</span></div>
             <span id="sparks-check-1" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
           </button>
+          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 03</span><span id="sparks-status-2" class="text-[9px] text-slate-500">PENDENTE</span></div>
+            <span id="sparks-check-2" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
+          </button>
+          <button type="button" id="sparks-btn-3" onclick="toggleSparksSlot(3)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
+            <div class="text-left"><span class="block font-bold text-white text-[11px]">SESSÃO 04</span><span id="sparks-status-3" class="text-[9px] text-slate-500">PENDENTE</span></div>
+            <span id="sparks-check-3" class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent">✓</span>
+          </button>
+        </div>
+      </div>
 
-          <button type="button" id="sparks-btn-2" onclick="toggleSparksSlot(2)" class="p-2.5 rounded-xl border flex items-center justify-between text-xs font-hud transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500">
-            <div class="text-left">
-              <span class="block font-bold text-white text-[11px]">SESSÃO 03</span>
-  
+      <!-- SÉRIES RÁPIDAS -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
+        <span class="text-xs font-hud text-slate-400 block mb-2">MICRO-TREINO TÁTICO RÁPIDO</span>
+        <div class="grid grid-cols-3 gap-1.5 font-hud">
+          <button type="button" onclick="handleQuickRep('Flexões', 20, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300">+20 FLEXÕES<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
+          <button type="button" onclick="handleQuickRep('Barras', 5, 'STR')" class="bg-slate-800 border border-rose-500/40 text-[10px] p-2 rounded-xl text-rose-300">+5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span></button>
+          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 border border-amber-500/40 text-[10px] p-2 rounded-xl text-amber-300">+30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span></button>
+        </div>
+      </div>
+
+      <!-- TCX / GPX -->
+      <div class="border-2 border-dashed border-cyan-500/40 bg-slate-900/50 rounded-2xl p-4 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer">
+        <input type="file" id="tcx-input" accept=".tcx,.gpx,.xml,*/*" class="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full" />
+        <p class="font-hud font-bold text-xs text-white">IMPORTAR TREINO ZEPP (.TCX OU .GPX)</p>
+        <p id="tcx-status-msg" class="text-[11px] text-slate-400 mt-0.5">Corrida, Caminhada, Pilates ou HIIT</p>
+      </div>
+
+      <!-- SALVAGUARDA -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between font-hud">
+        <div><span class="text-xs font-bold text-white block">SALVAGUARDA DE DADOS</span><span class="text-[10px] text-slate-400 font-sans">Proteja o seu progresso</span></div>
+        <div class="flex gap-2 text-[10px]">
+          <button type="button" onclick="exportBackupData()" class="bg-slate-800 text-cyan-400 border border-cyan-500/40 px-2.5 py-1.5 rounded-lg">EXPORTAR</button>
+          <label class="bg-slate-800 text-emerald-400 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center">RESTAURAR<input type="file" id="backup-input" accept=".json" class="hidden" onchange="importBackupData(event)" /></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA PESO -->
+    <div id="tab-weight" class="hidden flex flex-col gap-3">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+        <span class="font-hud text-xs font-bold text-white uppercase block mb-3">HISTÓRICO DE PESO</span>
+        <div id="weight-log-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto"></div>
+      </div>
+    </div>
+
+    <!-- ABA CALENDÁRIO -->
+    <div id="tab-calendar" class="hidden flex flex-col gap-3 font-hud">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+        <span id="calendar-month-year" class="text-sm font-bold text-white uppercase block mb-3">HISTÓRICO</span>
+        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+      </div>
+    </div>
+
+    <!-- ABA CÂMERA -->
+    <div id="tab-camera" class="hidden flex flex-col gap-2">
+      <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] border border-cyan-500/40 flex items-center justify-center">
+        <video id="webcam" class="w-full h-full object-cover" playsinline autoplay muted></video>
+        <div class="absolute top-2 right-2 bg-slate-900/80 border border-cyan-400 px-3 py-1 rounded-xl text-center font-hud">
+          <span class="text-[9px] text-slate-400 block">SENSOR</span><span class="text-xl font-bold text-cyan-400">ATIVO</span>
+        </div>
+      </div>
+      <button type="button" id="btn-toggle-cam" onclick="toggleCamera()" class="bg-cyan-600 text-white font-hud text-xs py-3 rounded-xl">INICIAR CÂMERA</button>
+    </div>
+  </main>
+
+  <!-- NAVEGAÇÃO -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-hud text-[10px]">
+    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center">⚡ MISSÕES</button>
+    <but
