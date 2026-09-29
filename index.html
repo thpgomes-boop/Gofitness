@@ -21,13 +21,13 @@
 
     @keyframes bossShake {
       0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-5px) rotate(-1deg); }
-      40% { transform: translateX(5px) rotate(1deg); }
-      60% { transform: translateX(-3px); }
-      80% { transform: translateX(3px); }
+      20% { transform: translateX(-6px) rotate(-1.5deg); }
+      40% { transform: translateX(6px) rotate(1.5deg); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
     }
     .shake-anim {
-      animation: bossShake 0.4s ease-in-out;
+      animation: bossShake 0.45s ease-in-out !important;
     }
 
     .custom-scroll::-webkit-scrollbar { width: 4px; }
@@ -39,6 +39,21 @@
   <!-- NOTIFICAÇÃO TOAST VISUAL -->
   <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-amber-200 font-epic text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none bg-slate-900 border-amber-600/70">
     PROCLAMAÇÃO
+  </div>
+
+  <!-- MODAL DO ARSENAL DE GONDOR -->
+  <div id="arsenal-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 w-full max-w-sm font-epic text-xs shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center mb-2 pb-2 border-b border-amber-950">
+        <div>
+          <h2 id="arsenal-modal-title" class="font-bold text-amber-300 text-sm">FORJA DE GONDOR</h2>
+          <span class="text-[10px] text-slate-400 font-sans">Selecione o equipamento para consagrar</span>
+        </div>
+        <button type="button" onclick="closeArsenalModal()" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
+      </div>
+      <div id="arsenal-modal-list" class="flex flex-col gap-2 overflow-y-auto custom-scroll my-2 flex-1 pr-1"></div>
+      <button type="button" onclick="closeArsenalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl text-xs font-bold border border-amber-500/30">FECHAR FORJA</button>
+    </div>
   </div>
 
   <!-- MODAL DE PROVAÇÃO MARCIAL (EXAME FÍSICO) -->
@@ -114,17 +129,59 @@
     <button type="button" onclick="handleBiometricsSubmit()" class="bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-300 px-3 py-1 rounded text-[10px] font-bold transition active:scale-95">REGISTRAR</button>
   </section>
 
-  <!-- ATRIBUTOS MARCIAIS -->
+  <!-- ATRIBUTOS MARCIAIS (COM EFICÁCIA DE EQUIPAMENTO) -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
     <div class="flex justify-between items-center mb-2 px-1 font-epic text-[10px]">
-      <span class="text-slate-400 tracking-wider">VIRTUDES DE COMBATE</span>
+      <span class="text-slate-400 tracking-wider">VIRTUDES EFETIVAS (BASE + ARSENAL)</span>
       <button type="button" onclick="openExamModal()" class="bg-amber-950/60 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-lg transition hover:bg-amber-900">⚔️ PROVAÇÃO FÍSICA</button>
     </div>
     <div class="grid grid-cols-4 gap-1.5 font-epic text-center">
-      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">FORÇA</span><span id="stat-str" class="text-base font-bold text-rose-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">BLIND.</span><span id="stat-con" class="text-base font-bold text-amber-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">DESTREZA</span><span id="stat-agi" class="text-base font-bold text-cyan-400">10</span></div>
-      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl"><span class="text-[9px] text-slate-400 block">VIGOR</span><span id="stat-end" class="text-base font-bold text-emerald-400">10</span></div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block">FORÇA</span>
+        <span id="stat-str" class="text-base font-bold text-rose-400">10</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block">BLIND.</span>
+        <span id="stat-con" class="text-base font-bold text-amber-400">10</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block">DESTREZA</span>
+        <span id="stat-agi" class="text-base font-bold text-cyan-400">10</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800/90 p-1.5 rounded-xl">
+        <span class="text-[9px] text-slate-400 block">VIGOR</span>
+        <span id="stat-end" class="text-base font-bold text-emerald-400">10</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOVO: O ARSENAL DE GONDOR (SLOTS DE EQUIPAMENTO) -->
+  <section class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3 mb-3 shadow-lg font-epic">
+    <div class="flex justify-between items-center mb-2 px-0.5">
+      <span class="text-xs font-bold text-amber-300 tracking-wider">O ARSENAL DE GONDOR</span>
+      <span class="text-[9px] text-slate-400 font-sans">Toque para forjar / alterar</span>
+    </div>
+    <div class="grid grid-cols-3 gap-2">
+      <!-- Slot Arma -->
+      <button type="button" onclick="openArsenalModal('weapon')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
+        <span class="text-[8px] text-slate-400 block mb-0.5">ARMA ATIVA</span>
+        <span id="slot-name-weapon" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Adaga Oesternesse</span>
+        <span id="slot-bonus-weapon" class="text-[9px] text-rose-400 font-sans block mt-0.5">+2 FOR • +1 DEST</span>
+      </button>
+
+      <!-- Slot Armadura -->
+      <button type="button" onclick="openArsenalModal('armor')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
+        <span class="text-[8px] text-slate-400 block mb-0.5">COURAÇA</span>
+        <span id="slot-name-armor" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Manto Batedor</span>
+        <span id="slot-bonus-armor" class="text-[9px] text-amber-400 font-sans block mt-0.5">+2 DEST • +1 BLIND</span>
+      </button>
+
+      <!-- Slot Relíquia -->
+      <button type="button" onclick="openArsenalModal('relic')" class="bg-slate-950/80 border border-amber-600/40 hover:border-amber-400 p-2 rounded-xl text-left transition cursor-pointer active:scale-95 group">
+        <span class="text-[8px] text-slate-400 block mb-0.5">RELÍQUIA</span>
+        <span id="slot-name-relic" class="text-[10px] font-bold text-amber-200 block truncate leading-tight">Estrela Dúnedain</span>
+        <span id="slot-bonus-relic" class="text-[9px] text-emerald-400 font-sans block mt-0.5">+1 em Todos</span>
+      </button>
     </div>
   </section>
 
@@ -134,10 +191,9 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL (COM GERADOR DE ÍMPETO E SELETOR DE GOLPES) -->
+      <!-- CERCO SEMANAL (COM ANIMAÇÃO DE TREMOR CORRIGIDA) -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
         <div class="flex items-center gap-3 mb-2.5">
-          <!-- Quadro do Inimigo com Animação de Golpe -->
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
             <img id="boss-img" src="" alt="Troll de Gorgoroth" class="w-full h-full object-cover object-center hidden pointer-events-none" />
             <div id="boss-placeholder" class="text-center p-1.5 flex flex-col items-center justify-center pointer-events-none">
@@ -162,7 +218,6 @@
               <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM COMBATE</span>
             </div>
 
-            <!-- Barra de Vida do Inimigo -->
             <div class="w-full bg-slate-950 rounded-full h-2.5 border border-red-950 overflow-hidden mt-2">
               <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
             </div>
@@ -173,7 +228,7 @@
           </div>
         </div>
 
-        <!-- MEDIDOR DE ÍMPETO MARCIAL ACUMULADO -->
+        <!-- MEDIDOR DE ÍMPETO MARCIAL -->
         <div class="bg-slate-950/90 border border-amber-500/40 rounded-xl p-2.5 mb-2.5 shadow-inner">
           <div class="flex justify-between items-center text-[10px] mb-1">
             <span class="text-amber-400 font-bold flex items-center gap-1">⚡ ÍMPETO MARCIAL DISPONÍVEL:</span>
@@ -182,12 +237,11 @@
           <div class="w-full bg-slate-900 rounded-full h-2 border border-amber-950 overflow-hidden">
             <div id="impeto-bar" class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-0 transition-all duration-300"></div>
           </div>
-          <span class="text-[9px] text-slate-400 font-sans block mt-1">Seus treinos acumulam Ímpeto. Descarregue golpes com a manobra tática desejada abaixo:</span>
+          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e descarregue golpes potencializados pelo seu Arsenal:</span>
         </div>
 
         <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
         <div class="grid grid-cols-2 gap-1.5 mb-2 text-left">
-          <!-- 1. Ruptura (FOR) -->
           <button type="button" onclick="executeManeuver('STR')" class="bg-slate-950 border border-rose-600/50 hover:border-rose-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-rose-300">🗡️ GOLPE DE RUPTURA</span>
@@ -196,7 +250,6 @@
             <span id="maneuver-desc-str" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
           </button>
 
-          <!-- 2. Escudo (CON) -->
           <button type="button" onclick="executeManeuver('CON')" class="bg-slate-950 border border-amber-600/50 hover:border-amber-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-amber-300">🛡️ IMPACTO DE ESCUDO</span>
@@ -205,7 +258,6 @@
             <span id="maneuver-desc-con" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Dano est.: 350 HP</span>
           </button>
 
-          <!-- 3. Disparo (AGI) -->
           <button type="button" onclick="executeManeuver('AGI')" class="bg-slate-950 border border-cyan-600/50 hover:border-cyan-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-cyan-300">🏹 TIRO DE ITHILIEN</span>
@@ -214,7 +266,6 @@
             <span id="maneuver-desc-agi" class="text-[9px] text-slate-400 font-sans block leading-tight">Gasta 250 Ímpeto • Chance Crítico</span>
           </button>
 
-          <!-- 4. Cerco de Atrito (END) -->
           <button type="button" onclick="executeManeuver('END')" class="bg-slate-950 border border-emerald-600/50 hover:border-emerald-400 p-2 rounded-xl transition cursor-pointer active:scale-95 group">
             <div class="flex justify-between items-center mb-0.5">
               <span class="font-bold text-[10px] text-emerald-300">⚔️ CERCO DE ATRITO</span>
@@ -289,7 +340,7 @@
         </div>
       </div>
 
-      <!-- SÉRIES RÁPIDAS DE COMBATE -->
+      <!-- SÉRIES RÁPIDAS -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
         <span class="text-xs font-epic text-slate-400 block mb-2 tracking-wider">MANOBRAS RÁPIDAS (GERA ÍMPETO)</span>
         <div class="grid grid-cols-3 gap-1.5 font-epic">
@@ -340,7 +391,6 @@
         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
       </div>
 
-      <!-- Detalhes do Dia Selecionado -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex-1 shadow-lg">
         <span class="text-xs text-amber-400 block mb-2" id="selected-date-label">REGISTO DO DIA</span>
         <div id="selected-day-list" class="flex flex-col gap-1.5 max-h-56 overflow-y-auto custom-scroll font-sans">
@@ -399,15 +449,43 @@
       "REI DOS HOMENS (RANK S)"
     ];
 
+    // CATÁLOGO DE EQUIPAMENTOS DO ARSENAL DE GONDOR
+    const ARSENAL_DB = {
+      // ARMAS
+      adaga_oesternesse: { id: 'adaga_oesternesse', slot: 'weapon', name: 'Adaga de Oesternesse', str: 2, agi: 1, con: 0, end: 0, desc: '+2 FORÇA • +1 DESTREZA', lore: 'Forjada em tempos antigos para os Dúnedain do Norte.' },
+      espada_guardiao: { id: 'espada_guardiao', name: 'Espada do Guardião', slot: 'weapon', str: 4, agi: 0, con: 0, end: 0, desc: '+4 FORÇA', lore: 'Aço pesado temperado nas forjas de Minas Tirith.' },
+      arco_ithilien: { id: 'arco_ithilien', name: 'Arco Longo de Ithilien', slot: 'weapon', str: 0, agi: 4, con: 0, end: 0, desc: '+4 DESTREZA', lore: 'Madeira nobre dos bosques orientais do Anduin.' },
+      lanca_osgiliath: { id: 'lanca_osgiliath', name: 'Lança de Osgiliath', slot: 'weapon', str: 2, agi: 0, con: 0, end: 2, desc: '+2 FORÇA • +2 VIGOR', lore: 'Aço de contenção nas margens devastadas do grande rio.' },
+
+      // ARMADURAS
+      manto_ithilien: { id: 'manto_ithilien', slot: 'armor', name: 'Manto dos Batedores', str: 0, agi: 2, con: 1, end: 0, desc: '+2 DESTREZA • +1 BLINDAGEM', lore: 'Tecido esverdeado que mimetiza sombras e folhagens.' },
+      armadura_torre: { id: 'armadura_torre', slot: 'armor', name: 'Couraça da Guarda da Torre', str: 1, agi: 0, con: 3, end: 0, desc: '+3 BLINDAGEM • +1 FORÇA', lore: 'Placas negras ornamentadas com a Árvore Branca de Gondor.' },
+      cota_mithril: { id: 'cota_mithril', slot: 'armor', name: 'Cota de Malha de Mithril', str: 0, agi: 0, con: 5, end: 0, desc: '+5 BLINDAGEM', lore: 'Prata verdadeira forjada pelos anões de Khazad-dûm. Impenetrável.' },
+
+      // RELÍQUIAS
+      estrela_dunedain: { id: 'estrela_dunedain', slot: 'relic', name: 'Estrela dos Dúnedain', str: 1, agi: 1, con: 1, end: 1, desc: '+1 em todas as Virtudes', lore: 'Broche de prata em formato de raio concedido aos fiéis do Norte.' },
+      frasco_galadriel: { id: 'frasco_galadriel', slot: 'relic', name: 'Luz de Eärendil', str: 0, agi: 0, con: 2, end: 2, desc: '+2 BLINDAGEM • +2 VIGOR', lore: 'Uma luz para brilhar em lugares escuros quando todas as outras falharem.' },
+      pedra_elfica: { id: 'pedra_elfica', slot: 'relic', name: 'Elessar (Pedra Élfica)', str: 0, agi: 0, con: 0, end: 4, desc: '+4 VIGOR', lore: 'Gema verde que revitaliza o ânimo mesmo nas marchas mais extenuantes.' }
+    };
+
     let player = {
       level: 1, xp: 0, maxXp: 800,
       str: 10, con: 10, agi: 10, end: 10,
       weight: 96.0, heightCm: 175, streak: 1,
-      impeto: 600, // Começa com Ímpeto para testar as manobras imediatamente
+      impeto: 600,
       avatarImage: null,
       enemyImage: null,
       battleState: { active: false, date: todayStr, multiplier: 1.5 },
-      equipment: { weapon: null, armor: null, relic: null }, // Arquitetura para a próxima etapa
+      equipment: {
+        weapon: 'adaga_oesternesse',
+        armor: 'manto_ithilien',
+        relic: 'estrela_dunedain'
+      },
+      inventory: [
+        'adaga_oesternesse', 'espada_guardiao', 'arco_ithilien', 'lanca_osgiliath',
+        'manto_ithilien', 'armadura_torre', 'cota_mithril',
+        'estrela_dunedain', 'frasco_galadriel', 'pedra_elfica'
+      ],
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
       bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false },
@@ -443,13 +521,18 @@
     if (savedEnemy) player.enemyImage = savedEnemy;
 
     player.maxXp = Math.max(800, (player.level || 1) * 800);
+    if (player.impeto === undefined || player.impeto === null) player.impeto = 600;
 
-    if (player.impeto === undefined || player.impeto === null) {
-      player.impeto = 600;
+    if (!player.equipment) {
+      player.equipment = { weapon: 'adaga_oesternesse', armor: 'manto_ithilien', relic: 'estrela_dunedain' };
+    }
+    if (!Array.isArray(player.inventory) || !player.inventory.length) {
+      player.inventory = ['adaga_oesternesse', 'manto_ithilien', 'estrela_dunedain'];
     }
 
+    // Escalonamento Orgânico do Chefe por Patente (85.000 + 6.000 por rank extra)
+    const bossHpScale = 85000 + Math.max(0, ((player.level || 1) - 1) * 6000);
     if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
-      const bossHpScale = 85000 + ((player.level || 1) * 5000);
       player.bossRaid = {
         weekId: currentWeekId,
         name: "TROLL DE COMBATE DE GORGOROTH",
@@ -473,10 +556,119 @@
       player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight || 96.0 }];
     }
 
+    // CÁLCULO DAS VIRTUDES EFETIVAS (BASE + ARSENAL)
+    function getEffectiveStats() {
+      let bStr = player.str || 10;
+      let bCon = player.con || 10;
+      let bAgi = player.agi || 10;
+      let bEnd = player.end || 10;
+
+      let eStr = 0, eCon = 0, eAgi = 0, eEnd = 0;
+
+      ['weapon', 'armor', 'relic'].forEach(slot => {
+        const itemId = player.equipment && player.equipment[slot];
+        if (itemId && ARSENAL_DB[itemId]) {
+          const it = ARSENAL_DB[itemId];
+          eStr += (it.str || 0);
+          eCon += (it.con || 0);
+          eAgi += (it.agi || 0);
+          eEnd += (it.end || 0);
+        }
+      });
+
+      return {
+        base: { str: bStr, con: bCon, agi: bAgi, end: bEnd },
+        equipBonus: { str: eStr, con: eCon, agi: eAgi, end: eEnd },
+        total: {
+          str: bStr + eStr,
+          con: bCon + eCon,
+          agi: bAgi + eAgi,
+          end: bEnd + eEnd
+        }
+      };
+    }
+
     function calculateCombatPower() {
-      const s = player.str || 10, c = player.con || 10, a = player.agi || 10, e = player.end || 10;
+      const stats = getEffectiveStats().total;
       const lvl = player.level || 1, streak = player.streak || 1;
-      return Math.round((s * 22) + (c * 22) + (a * 26) + (e * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
+      return Math.round((stats.str * 22) + (stats.con * 22) + (stats.agi * 26) + (stats.end * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
+    }
+
+    // GESTÃO DO ARSENAL E MODAL
+    let currentArsenalSlot = 'weapon';
+
+    function openArsenalModal(slot) {
+      currentArsenalSlot = slot;
+      const modal = document.getElementById('arsenal-modal');
+      const title = document.getElementById('arsenal-modal-title');
+      const list = document.getElementById('arsenal-modal-list');
+      if (!modal || !title || !list) return;
+
+      const slotLabels = { weapon: 'ARMAS DE GONDOR', armor: 'COURANÇAS & MANTOS', relic: 'RELÍQUIAS DE NÚMENOR' };
+      title.textContent = slotLabels[slot] || 'FORJA DE GONDOR';
+
+      const availableItems = (player.inventory || []).filter(id => ARSENAL_DB[id] && ARSENAL_DB[id].slot === slot);
+      const currentlyEquipped = player.equipment && player.equipment[slot];
+
+      if (!availableItems.length) {
+        list.innerHTML = '<p class="text-xs text-slate-500 text-center py-4 font-epic">Nenhum equipamento deste tipo no inventário.</p>';
+      } else {
+        list.innerHTML = availableItems.map(id => {
+          const item = ARSENAL_DB[id];
+          const isEquipped = currentlyEquipped === id;
+          return `
+            <div class="bg-slate-950 border ${isEquipped ? 'border-amber-400 bg-amber-950/40' : 'border-slate-800'} p-2.5 rounded-xl flex items-center justify-between text-xs">
+              <div class="pr-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-epic font-bold text-amber-200 text-[11px]">${item.name}</span>
+                  ${isEquipped ? '<span class="text-[8px] bg-amber-950 border border-amber-500 text-amber-300 px-1 rounded font-bold">EQUIPADO</span>' : ''}
+                </div>
+                <span class="text-[10px] text-amber-400 font-sans block mt-0.5">${item.desc}</span>
+                <span class="text-[9px] text-slate-400 font-sans block italic">${item.lore}</span>
+              </div>
+              <button type="button" onclick="toggleEquipItem('${slot}', '${id}')" class="shrink-0 ${isEquipped ? 'bg-slate-800 text-slate-400 hover:text-white border-slate-700' : 'bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold border-amber-400'} px-2.5 py-1.5 rounded-lg font-epic text-[10px] border transition cursor-pointer">
+                ${isEquipped ? 'REMOVER' : 'EQUIPAR'}
+              </button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeArsenalModal() {
+      const modal = document.getElementById('arsenal-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function toggleEquipItem(slot, itemId) {
+      if (!player.equipment) player.equipment = {};
+      if (player.equipment[slot] === itemId) {
+        player.equipment[slot] = null;
+        showToast("Equipamento desequipado.");
+      } else {
+        player.equipment[slot] = itemId;
+        showToast(`${ARSENAL_DB[itemId].name} equipado com honra!`);
+      }
+      closeArsenalModal();
+      updateUI();
+    }
+
+    function renderArsenalHUD() {
+      ['weapon', 'armor', 'relic'].forEach(slot => {
+        const itemId = player.equipment && player.equipment[slot];
+        const nameEl = document.getElementById(`slot-name-${slot}`);
+        const bonusEl = document.getElementById(`slot-bonus-${slot}`);
+        if (itemId && ARSENAL_DB[itemId]) {
+          const it = ARSENAL_DB[itemId];
+          if (nameEl) nameEl.textContent = it.name;
+          if (bonusEl) bonusEl.textContent = it.desc;
+        } else {
+          if (nameEl) nameEl.textContent = "Vazio";
+          if (bonusEl) bonusEl.textContent = "Sem bônus";
+        }
+      });
     }
 
     // GESTÃO DE ÍMPETO MARCIAL
@@ -486,7 +678,7 @@
       updateCombatManeuversUI();
     }
 
-    // EXECUÇÃO DE MANOBRAS TÁTICAS (COMBATE ATIVO)
+    // EXECUÇÃO DE MANOBRAS TÁTICAS COM ATRIBUTOS REAIS
     function executeManeuver(statType) {
       if (!player.bossRaid || player.bossRaid.defeated) {
         showToast("O Troll já foi neutralizado esta semana!");
@@ -495,12 +687,13 @@
 
       const cost = 250;
       if ((player.impeto || 0) < cost) {
-        showToast(`Ímpeto Marcial insuficiente! Você precisa de ${cost} pts. Realize treinos para acumular.`, false);
+        showToast(`Ímpeto insuficiente! Necessário ${cost} pts. Realize treinos para acumular.`, false);
         return;
       }
 
       player.impeto -= cost;
 
+      const effective = getEffectiveStats().total;
       let baseDmg = cost;
       let statVal = 10;
       let maneuverName = "";
@@ -509,21 +702,20 @@
       const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
 
       if (statType === 'STR') {
-        statVal = player.str || 10;
+        statVal = effective.str;
         maneuverName = "Golpe de Ruptura";
         baseDmg = Math.round(cost * (1 + (statVal / 25)));
       } else if (statType === 'CON') {
-        statVal = player.con || 10;
+        statVal = effective.con;
         maneuverName = "Impacto de Escudo";
         baseDmg = Math.round(cost * (1 + (statVal / 25)));
       } else if (statType === 'AGI') {
-        statVal = player.agi || 10;
+        statVal = effective.agi;
         maneuverName = "Tiro de Ithilien";
-        // Chance de Acerto Crítico (25%)
         isCrit = Math.random() < 0.25;
         baseDmg = Math.round(cost * (1 + (statVal / 22)) * (isCrit ? 1.75 : 1.0));
       } else if (statType === 'END') {
-        statVal = player.end || 10;
+        statVal = effective.end;
         maneuverName = "Cerco de Atrito";
         baseDmg = Math.round(cost * (1 + (statVal / 25)));
       }
@@ -531,14 +723,6 @@
       const finalDamage = isBattleActive ? Math.round(baseDmg * (player.battleState.multiplier || 1.5)) : baseDmg;
 
       player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - finalDamage);
-
-      // Animação de tremor no chefe
-      const bossContainer = document.getElementById('boss-avatar-container');
-      if (bossContainer) {
-        bossContainer.classList.remove('shake-anim');
-        void bossContainer.offsetWidth; // Força re-render
-        bossContainer.classList.add('shake-anim');
-      }
 
       if (player.bossRaid.currentHp <= 0) {
         player.bossRaid.defeated = true;
@@ -550,7 +734,7 @@
           data: new Date().toISOString(),
           xp: 400
         });
-        showToast(`GOLPE FATAL! ${player.bossRaid.name} FOI DERRUBADO! (+400 XP)`);
+        showToast(`GOLPE FATAL! O TROLL FOI DERRUBADO! (+400 XP)`);
       } else {
         const critText = isCrit ? " [CRÍTICO 1.75x!]" : "";
         const numenorText = isBattleActive ? " [NÚMENOR 1.5x]" : "";
@@ -558,13 +742,23 @@
         
         const log = document.getElementById('boss-story-log');
         if (log) {
-          log.textContent = `Gominsk desferiu ${maneuverName}! O golpe consumiu 250 de Ímpeto amplificado pelo atributo (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
+          log.textContent = `Gominsk desferiu ${maneuverName}! O golpe consumiu 250 de Ímpeto amplificado pela virtude equipada (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
         }
       }
 
+      // 1. Atualiza barra e estado de combate
       renderBossRaid();
       updateCombatManeuversUI();
-      localStorage.setItem('hero_player_v27', JSON.stringify(player));
+      localStorage.setItem('hero_player_v28', JSON.stringify(player));
+
+      // 2. Dispara o tremor físico na moldura do Troll DEPOIS da renderização
+      const bossContainer = document.getElementById('boss-avatar-container');
+      if (bossContainer && !player.bossRaid.defeated) {
+        bossContainer.classList.remove('shake-anim');
+        void bossContainer.offsetWidth; // Força recálculo
+        bossContainer.classList.add('shake-anim');
+        setTimeout(() => bossContainer.classList.remove('shake-anim'), 450);
+      }
     }
 
     function updateCombatManeuversUI() {
@@ -577,13 +771,14 @@
         barEl.style.width = `${pct}%`;
       }
 
+      const effective = getEffectiveStats().total;
       const isBattle = player.battleState && player.battleState.active && player.battleState.date === todayStr;
       const mult = isBattle ? (player.battleState.multiplier || 1.5) : 1.0;
 
-      const dmgStr = Math.round(250 * (1 + ((player.str || 10) / 25)) * mult);
-      const dmgCon = Math.round(250 * (1 + ((player.con || 10) / 25)) * mult);
-      const dmgAgi = Math.round(250 * (1 + ((player.agi || 10) / 22)) * mult);
-      const dmgEnd = Math.round(250 * (1 + ((player.end || 10) / 25)) * mult);
+      const dmgStr = Math.round(250 * (1 + (effective.str / 25)) * mult);
+      const dmgCon = Math.round(250 * (1 + (effective.con / 25)) * mult);
+      const dmgAgi = Math.round(250 * (1 + (effective.agi / 22)) * mult);
+      const dmgEnd = Math.round(250 * (1 + (effective.end / 25)) * mult);
 
       const dStr = document.getElementById('maneuver-desc-str');
       const dCon = document.getElementById('maneuver-desc-con');
@@ -1152,13 +1347,18 @@
     }
 
     function updateUI() {
+      const effective = getEffectiveStats();
+
       document.getElementById('player-level').textContent = player.level;
       document.getElementById('xp-bar').style.width = `${Math.min(100, (player.xp / player.maxXp) * 100)}%`;
       document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
-      document.getElementById('stat-str').textContent = player.str || 10;
-      document.getElementById('stat-con').textContent = player.con || 10;
-      document.getElementById('stat-agi').textContent = player.agi || 10;
-      document.getElementById('stat-end').textContent = player.end || 10;
+
+      // Atualiza Virtudes Efetivas no HUD (Base + Equip)
+      document.getElementById('stat-str').innerHTML = `${effective.total.str} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.str})</span>`;
+      document.getElementById('stat-con').innerHTML = `${effective.total.con} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.con})</span>`;
+      document.getElementById('stat-agi').innerHTML = `${effective.total.agi} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.agi})</span>`;
+      document.getElementById('stat-end').innerHTML = `${effective.total.end} <span class="text-[9px] text-amber-400 font-sans block leading-none">(+${effective.equipBonus.end})</span>`;
+
       document.getElementById('streak-text').textContent = `🔥 ${player.streak} ${player.streak > 1 ? 'DIAS DE GLÓRIA' : 'DIA DE GLÓRIA'}`;
       document.getElementById('input-height').value = player.heightCm;
       document.getElementById('input-weight').value = player.weight;
@@ -1176,9 +1376,10 @@
       renderToriyamaAvatar();
       renderBossRaid();
       renderSparksRoutine();
+      renderArsenalHUD();
       updateCombatManeuversUI();
 
-      localStorage.setItem('hero_player_v27', JSON.stringify(player));
+      localStorage.setItem('hero_player_v28', JSON.stringify(player));
     }
 
     updateUI();
