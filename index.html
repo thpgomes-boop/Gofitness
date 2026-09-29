@@ -39,7 +39,7 @@
       </div>
 
       <p class="text-[11px] text-slate-300 mb-3 leading-relaxed">
-        Preencha com os seus recordes atuais para recalcular os 4 atributos base e o Poder de Luta.
+        Preenche os teus recordes atuais para recalcular os 4 atributos base e o Poder de Combate.
       </p>
 
       <div class="flex flex-col gap-2.5 text-xs font-hud">
@@ -82,7 +82,7 @@
         </div>
 
         <button type="button" onclick="saveExamTrial()" class="w-full bg-gradient-to-r from-cyan-600 to-amber-500 hover:from-cyan-500 hover:to-amber-400 text-white font-hud font-bold text-xs py-2.5 rounded-xl shadow-lg mt-1 active:scale-95 transition">
-          SALVAR EXAME & CALCULAR PODER
+          GUARDAR EXAME & CALCULAR PODER
         </button>
       </div>
     </div>
@@ -91,18 +91,18 @@
   <!-- CABEÇALHO DO GUERREIRO -->
   <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg shadow-cyan-950/40 mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <!-- Container do Avatar com Upload Direto -->
-      <div id="avatar-container" onclick="document.getElementById('avatar-file-input').click()" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner cursor-pointer group">
+      <!-- Container do Avatar via Label Nativo -->
+      <label for="avatar-file-input" id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner cursor-pointer block group">
         <img id="avatar-img" src="" alt="Avatar" class="w-full h-full object-cover object-center hidden" />
-        <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center">
+        <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center w-full h-full">
           <span class="text-2xl mb-1">📷</span>
           <span class="text-[9px] font-hud text-cyan-400 font-bold leading-tight block">TOCAR P/ CARREGAR</span>
         </div>
-        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[9px] font-hud text-white font-bold">
+        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[9px] font-hud text-white font-bold pointer-events-none">
           TROCAR
         </div>
-        <input type="file" id="avatar-file-input" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)" />
-      </div>
+      </label>
+      <input type="file" id="avatar-file-input" accept="image/*" style="position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none;" onchange="handleAvatarUpload(event)" />
 
       <div class="flex-1">
         <div class="flex justify-between items-start">
@@ -144,7 +144,7 @@
       <span class="text-slate-400 text-[10px]">kg</span>
     </div>
     <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white px-3 py-1 rounded text-[10px] font-bold transition cursor-pointer shadow">
-      REGISTRAR
+      REGISTAR
     </button>
   </section>
 
@@ -182,7 +182,7 @@
     <!-- ABA 1: MISSÕES -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- NOVO: SCANNER MATINAL DO ZEPP (OCR SONO & PASSOS) -->
+      <!-- SCANNER MATINAL DO ZEPP (OCR SONO & PASSOS) -->
       <div class="bg-gradient-to-r from-indigo-950/50 to-slate-900 border border-indigo-500/50 rounded-2xl p-3 shadow-lg relative">
         <div class="flex justify-between items-center mb-2">
           <div>
@@ -190,23 +190,23 @@
               <span class="text-sm">🌙</span>
               <span class="text-xs font-hud font-bold text-indigo-300">RELATÓRIO MATINAL (ZEPP SCAN)</span>
             </div>
-            <span class="text-[10px] text-slate-400">Suba o print matinal com sono e passos</span>
+            <span class="text-[10px] text-slate-400">Carrega a captura de ecrã com sono e passos</span>
           </div>
           <span id="sleep-buff-badge" class="text-[9px] font-hud bg-indigo-950 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded">
-            AGUARDANDO PRINT
+            AGUARDANDO
           </span>
         </div>
 
-        <div class="border border-dashed border-indigo-500/40 bg-slate-950/60 rounded-xl p-3 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 transition">
-          <input type="file" id="zepp-screenshot-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full" onchange="handleZeppScreenshot(event)" />
+        <label for="zepp-screenshot-input" class="border border-dashed border-indigo-500/40 bg-slate-950/60 rounded-xl p-3 text-center relative overflow-hidden flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 transition block">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
           </svg>
-          <span id="ocr-status-msg" class="text-[11px] font-hud text-indigo-200">TOCAR P/ ENVIAR PRINT DO ZEPP</span>
-        </div>
+          <span id="ocr-status-msg" class="text-[11px] font-hud text-indigo-200">TOCAR P/ ENVIAR CAPTURA DO ZEPP</span>
+        </label>
+        <input type="file" id="zepp-screenshot-input" accept="image/*" style="position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none;" onchange="handleZeppScreenshot(event)" />
       </div>
 
-      <!-- NOVO: HIDRATAÇÃO TÁTICA -->
+      <!-- HIDRATAÇÃO TÁTICA -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-1.5">
           <div>
@@ -260,12 +260,12 @@
         <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] flex items-center gap-2">
           <span class="text-sm">📡</span>
           <p id="boss-story-log" class="text-slate-300 leading-tight">
-            Ameaça blindada em aproximação no setor. Cada treino registrado bombardeia a estrutura do inimigo.
+            Ameaça blindada em aproximação no setor. Cada treino registado bombardeia a estrutura do inimigo.
           </p>
         </div>
       </div>
 
-      <!-- PROTOCOLO SPARKS (CALISTENIA DIÁRIA) -->
+      <!-- PROTOCOLO SPARKS (CALISTENIA DIÁRIA COM 4 SESSÕES GARANTIDAS) -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-2">
           <div>
@@ -313,8 +313,4 @@
           <button type="button" onclick="handleQuickRep('Barras Fixas', 5, 'STR')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/40 text-[10px] font-hud p-2 rounded-xl text-rose-300 transition cursor-pointer">
             +5 BARRAS<br><span class="text-[8px] text-slate-400">(FOR)</span>
           </button>
-          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-amber-500/40 text-[10px] font-hud p-2 rounded-xl text-amber-300 transition cursor-pointer">
-            +30 ABDOM.<br><span class="text-[8px] text-slate-400">(CON)</span>
-          </button>
-        </div>
-  
+          <button type="button" onclick="handleQuickRep('Abdominais', 30, 'CON')" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-amber-500/40 text-[10px] font-hud p-2 rounded-xl text-amber-300 tran
