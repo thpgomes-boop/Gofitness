@@ -15,6 +15,7 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col p-3 pb-24">
 
+  <!-- NOTIFICAÇÃO TOAST -->
   <div id="toast" class="fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none">NOTIFICAÇÃO</div>
 
   <!-- MODAL EXAME -->
@@ -37,7 +38,7 @@
     </div>
   </div>
 
-  <!-- CABEÇALHO -->
+  <!-- CABEÇALHO DO GUERREIRO -->
   <header class="border border-cyan-500/40 bg-slate-900/90 rounded-2xl p-3 shadow-lg mb-3">
     <div class="flex items-center gap-3">
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-cyan-400 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
@@ -81,7 +82,7 @@
     <button type="button" onclick="handleBiometricsSubmit()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1 rounded text-[10px] font-bold">REGISTRAR</button>
   </section>
 
-  <!-- ATRIBUTOS -->
+  <!-- ATRIBUTOS TÁTICOS -->
   <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 mb-3">
     <div class="flex justify-between items-center mb-2 px-1 font-hud text-[10px]">
       <span class="text-slate-400">ATRIBUTOS DE COMBATE</span>
@@ -95,7 +96,7 @@
     </div>
   </section>
 
-  <!-- PRINCIPAL -->
+  <!-- CORPO PRINCIPAL -->
   <main class="flex-1 flex flex-col gap-3">
     <div id="tab-missions" class="flex flex-col gap-3">
 
@@ -152,7 +153,7 @@
         </div>
       </div>
 
-      <!-- PROTOCOLO SPARKS (4 SESSÕES GARANTIDAS) -->
+      <!-- PROTOCOLO SPARKS -->
       <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3 shadow-lg font-hud">
         <div class="flex justify-between items-center mb-2">
           <div><span class="text-xs font-bold text-cyan-400 block">PROTOCOLO SPARKS (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 micro-sessões diárias</span></div>
@@ -235,5 +236,451 @@
 
   <!-- NAVEGAÇÃO -->
   <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-2 flex justify-around backdrop-blur z-50 font-hud text-[10px]">
-    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center">⚡ MISSÕES</button>
-    <but
+    <button type="button" onclick="navigateToTab('missions')" id="nav-btn-missions" class="text-cyan-400 flex flex-col items-center">MISSÕES</button>
+    <button type="button" onclick="navigateToTab('weight')" id="nav-btn-weight" class="text-slate-500 flex flex-col items-center">PESO</button>
+    <button type="button" onclick="navigateToTab('calendar')" id="nav-btn-calendar" class="text-slate-500 flex flex-col items-center">DIÁRIO</button>
+    <button type="button" onclick="navigateToTab('camera')" id="nav-btn-camera" class="text-slate-500 flex flex-col items-center">CÂMERA</button>
+  </nav>
+
+  <script>
+    function showToast(msg, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.className = `fixed top-3 left-3 right-3 z-50 text-white font-hud text-xs p-3 rounded-xl shadow-2xl border text-center transition-all duration-300 transform translate-y-0 opacity-100 ${isSuccess ? 'bg-cyan-600 border-cyan-400' : 'bg-rose-600 border-rose-400'}`;
+      setTimeout(() => { toast.className = toast.className.replace('translate-y-0 opacity-100', '-translate-y-24 opacity-0'); }, 3000);
+    }
+
+    function getCurrentWeekId() {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(d.setDate(diff));
+      return `WEEK_${monday.getFullYear()}_${(monday.getMonth()+1).toString().padStart(2,'0')}_${monday.getDate().toString().padStart(2,'0')}`;
+    }
+
+    const todayStr = new Date().toDateString();
+    const currentWeekId = getCurrentWeekId();
+
+    let player = {
+      level: 1, xp: 0, maxXp: 400,
+      str: 10, con: 10, agi: 10, end: 10,
+      weight: 96.0, heightCm: 175, streak: 1, avatarImage: null,
+      hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
+      morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
+      bossRaid: { weekId: currentWeekId, name: "AUTÔMATO BLINDADO MK-I", maxHp: 50000, currentHp: 50000, defeated: false },
+      examBenchmark: { pushups: 20, pullups: 3, abs: 25, run10m: 1.5, runMax: 3.0 },
+      sparksRoutine: { date: todayStr, slots: [false, false, false, false] },
+      weightHistory: [{ date: new Date().toISOString(), weight: 96.0 }],
+      history: []
+    };
+
+    // RESGATE AUTOMÁTICO DE PROGRESSO ANTERIOR (RANK 4)
+    try {
+      let bestSave = null;
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('hero_player')) {
+          try {
+            const data = JSON.parse(localStorage.getItem(k));
+            if (data && typeof data === 'object') {
+              if (!bestSave || ((data.level || 1) * 1000 + (data.xp || 0)) > ((bestSave.level || 1) * 1000 + (bestSave.xp || 0))) {
+                bestSave = data;
+              }
+            }
+          } catch(e){}
+        }
+      }
+      if (bestSave) {
+        player = Object.assign(player, bestSave);
+      }
+    } catch (e) {}
+
+    const savedAvatar = localStorage.getItem('hero_custom_avatar');
+    if (savedAvatar) player.avatarImage = savedAvatar;
+
+    if (!player.sparksRoutine || !Array.isArray(player.sparksRoutine.slots) || player.sparksRoutine.slots.length !== 4 || player.sparksRoutine.date !== todayStr) {
+      player.sparksRoutine = { date: todayStr, slots: [false, false, false, false] };
+    }
+    if (!player.hydration || player.hydration.date !== todayStr) {
+      player.hydration = { date: todayStr, currentMl: 0, goalMl: 3000, completed: false };
+    }
+    if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId) {
+      player.bossRaid = { weekId: currentWeekId, name: "AUTÔMATO BLINDADO MK-I", maxHp: 50000, currentHp: 50000, defeated: false };
+    }
+    if (!Array.isArray(player.history)) player.history = [];
+    if (!Array.isArray(player.weightHistory) || !player.weightHistory.length) {
+      player.weightHistory = [{ date: new Date().toISOString(), weight: player.weight || 96.0 }];
+    }
+
+    const RANK_NAMES = [
+      "RECRUTA E1", "RECRUTA E2", "RECRUTA E3", "RECRUTA E4",
+      "BATEDOR D1", "BATEDOR D2", "BATEDOR D3", "BATEDOR D4",
+      "GUERREIRO C1", "GUERREIRO C2", "GUERREIRO C3", "GUERREIRO C4",
+      "COMANDANTE B1", "COMANDANTE B2", "COMANDANTE B3", "COMANDANTE B4",
+      "LENDA A1", "LENDA A2", "LENDA A3", "SUPREMO (RANK S)"
+    ];
+
+    function calculateCombatPower() {
+      const s = player.str || 10, c = player.con || 10, a = player.agi || 10, e = player.end || 10;
+      const lvl = player.level || 1, streak = player.streak || 1;
+      return Math.round((s * 20) + (c * 20) + (a * 25) + (e * 20) + (lvl * 110) + (streak * 35) + ((player.xp || 0) * 0.15));
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = 200; canvas.height = 200;
+          const ctx = canvas.getContext('2d');
+          const minDim = Math.min(img.width, img.height);
+          ctx.drawImage(img, (img.width - minDim) / 2, (img.height - minDim) / 2, minDim, minDim, 0, 0, 200, 200);
+          const compressed = canvas.toDataURL('image/jpeg', 0.85);
+          player.avatarImage = compressed;
+          try { localStorage.setItem('hero_custom_avatar', compressed); } catch(err){}
+          renderToriyamaAvatar();
+          showToast("Avatar atualizado com sucesso!");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderToriyamaAvatar() {
+      const avatarImg = document.getElementById('avatar-img');
+      const placeholder = document.getElementById('avatar-placeholder');
+      const container = document.getElementById('avatar-container');
+      if (!avatarImg || !container) return;
+
+      const lvl = Math.min(20, Math.max(1, player.level || 1));
+      const heightM = (player.heightCm || 175) / 100;
+      const imc = (player.weight || 96) / (heightM * heightM);
+
+      document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ATLÉTICO' : (imc < 30 ? 'PESADO' : 'COLOSSO')}`;
+      document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
+      document.getElementById('combat-power-badge').textContent = `⚡ PODER: ${calculateCombatPower().toLocaleString('pt-BR')}`;
+
+      container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400 aura-s' : (lvl >= 13 ? 'border-cyan-400' : 'border-slate-700')} rounded-xl overflow-hidden flex items-center justify-center shrink-0`;
+
+      const avatarToUse = player.avatarImage || localStorage.getItem('hero_custom_avatar');
+      if (avatarToUse) {
+        avatarImg.src = avatarToUse;
+        avatarImg.classList.remove('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+      } else {
+        avatarImg.classList.add('hidden');
+        if (placeholder) placeholder.classList.remove('hidden');
+      }
+    }
+
+    function renderSparksRoutine() {
+      let completedCount = 0;
+      for (let i = 0; i < 4; i++) {
+        const isDone = !!player.sparksRoutine.slots[i];
+        if (isDone) completedCount++;
+        const btn = document.getElementById(`sparks-btn-${i}`);
+        const statusText = document.getElementById(`sparks-status-${i}`);
+        const checkIcon = document.getElementById(`sparks-check-${i}`);
+        if (btn && statusText && checkIcon) {
+          if (isDone) {
+            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-emerald-950/70 border-emerald-500/60 text-emerald-300";
+            statusText.textContent = "CONCLUÍDA (+25 XP)";
+            statusText.className = "text-[9px] text-emerald-400";
+            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black bg-emerald-500 border-emerald-400 text-slate-950";
+          } else {
+            btn.className = "p-2.5 rounded-xl border flex items-center justify-between text-xs bg-slate-950/70 border-slate-800 text-slate-400 hover:border-cyan-500";
+            statusText.textContent = "PENDENTE";
+            statusText.className = "text-[9px] text-slate-500";
+            checkIcon.className = "w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] font-black border-slate-700 bg-slate-900 text-transparent";
+          }
+        }
+      }
+      const counterEl = document.getElementById('sparks-counter');
+      if (counterEl) counterEl.textContent = `${completedCount}/4 CUMPRIDAS`;
+    }
+
+    function toggleSparksSlot(index) {
+      player.sparksRoutine.slots[index] = !player.sparksRoutine.slots[index];
+      const isDone = player.sparksRoutine.slots[index];
+      if (isDone) {
+        const statGain = (index % 2 === 0) ? 'STR' : 'CON';
+        addXP(25, statGain);
+        dealBossDamage(1500, `Sparks 0${index + 1}`);
+        showToast(`Sessão 0${index + 1} Concluída! (+25 XP e +1 ${statGain})`);
+      } else {
+        showToast(`Sessão 0${index + 1} desmarcada.`, false);
+      }
+      updateUI();
+    }
+
+    function handleManualZeppSubmit() {
+      const sleepInput = parseInt(document.getElementById('input-manual-sleep').value) || 0;
+      const stepsInput = parseInt(document.getElementById('input-manual-steps').value) || 0;
+
+      if (sleepInput <= 0 && stepsInput <= 0) {
+        showToast("Insira ao menos a pontuação de sono ou os passos.", false);
+        return;
+      }
+
+      player.morningReport = { date: todayStr, sleepScore: sleepInput, steps: stepsInput, completed: true };
+
+      let bonusXp = 0;
+      if (sleepInput >= 70) {
+        bonusXp += 50;
+        dealBossDamage(1500, "Descanso Pleno");
+      } else if (sleepInput > 0) {
+        bonusXp += 25;
+        dealBossDamage(800, "Descanso Regular");
+      }
+
+      if (stepsInput > 0) {
+        const stepXp = Math.min(100, Math.round((stepsInput / 1000) * 10));
+        bonusXp += stepXp;
+        dealBossDamage(Math.round((stepsInput / 1000) * 500), "Patrulha de Passos");
+      }
+
+      addXP(bonusXp, 'END');
+      player.history.unshift({
+        nome: "RELATÓRIO MATINAL ZEPP",
+        detalhes: `Sono: ${sleepInput} pts • ${stepsInput.toLocaleString('pt-BR')} passos`,
+        tipo: "aero", data: new Date().toISOString(), xp: bonusXp
+      });
+
+      document.getElementById('input-manual-sleep').value = '';
+      document.getElementById('input-manual-steps').value = '';
+      updateUI();
+      showToast(`Relatório Registrado! (+${bonusXp} XP)`);
+    }
+
+    function addWater(ml) {
+      player.hydration.currentMl = Math.min(6000, player.hydration.currentMl + ml);
+      if (player.hydration.currentMl >= player.hydration.goalMl && !player.hydration.completed) {
+        player.hydration.completed = true;
+        addXP(30, 'CON');
+        showToast("META DE ÁGUA ATINGIDA! (+30 XP e +1 CON)");
+      } else {
+        showToast(`+${ml} ml registrados!`);
+      }
+      updateUI();
+    }
+
+    function resetWater() {
+      player.hydration.currentMl = 0; player.hydration.completed = false;
+      updateUI();
+      showToast("Contador de água zerado.", false);
+    }
+
+    function dealBossDamage(damage, sourceName) {
+      if (!player.bossRaid || player.bossRaid.defeated) return;
+      player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - damage);
+      if (player.bossRaid.currentHp <= 0) {
+        player.bossRaid.defeated = true;
+        addXP(300, 'STR');
+        showToast("INCURSÃO VITORIOSA! O CHEFE FOI DESTRUÍDO! (+300 XP)");
+      }
+      renderBossRaid();
+    }
+
+    function renderBossRaid() {
+      const raid = player.bossRaid;
+      if (!raid) return;
+      const percent = Math.max(0, Math.round((raid.currentHp / raid.maxHp) * 100));
+      document.getElementById('boss-hp-bar').style.width = `${percent}%`;
+      document.getElementById('boss-hp-text').textContent = `${raid.currentHp.toLocaleString('pt-BR')} / ${raid.maxHp.toLocaleString('pt-BR')} HP`;
+      document.getElementById('boss-hp-percent').textContent = `${percent}%`;
+      document.getElementById('boss-status-badge').textContent = raid.defeated ? "NEUTRALIZADO" : "ATIVO";
+    }
+
+    function addXP(amount, type) {
+      player.xp += amount;
+      if (type === 'STR') player.str = (player.str || 10) + 1;
+      if (type === 'CON') player.con = (player.con || 10) + 1;
+      if (type === 'AGI') player.agi = (player.agi || 10) + 1;
+      if (type === 'END') player.end = (player.end || 10) + 1;
+
+      while (player.xp >= player.maxXp && player.level < 20) {
+        player.xp -= player.maxXp;
+        player.level += 1;
+        player.maxXp = Math.round(player.maxXp * 1.25);
+        showToast(`SUBIU DE NÍVEL! NOVO RANK: ${RANK_NAMES[player.level - 1]}`);
+      }
+      updateUI();
+    }
+
+    function handleQuickRep(nome, reps, stat) {
+      const xp = reps * 3;
+      addXP(xp, stat);
+      dealBossDamage(reps * 20, nome);
+      showToast(`+${reps} ${nome} registradas! (+${xp} XP)`);
+    }
+
+    function handleBiometricsSubmit() {
+      const h = parseFloat(document.getElementById('input-height').value);
+      const w = parseFloat(document.getElementById('input-weight').value);
+      if (h >= 150 && h <= 220 && w >= 50 && w <= 150) {
+        player.heightCm = h; player.weight = w;
+        player.weightHistory.push({ date: new Date().toISOString(), weight: w });
+        addXP(20, 'END');
+        showToast(`Peso atualizado: ${w.toFixed(1)} kg (+20 XP)`);
+      }
+    }
+
+    function openExamModal() {
+      const b = player.examBenchmark;
+      document.getElementById('exam-pushups').value = b.pushups;
+      document.getElementById('exam-pullups').value = b.pullups;
+      document.getElementById('exam-abs').value = b.abs;
+      document.getElementById('exam-run10m').value = b.run10m;
+      document.getElementById('exam-runmax').value = b.runMax;
+      document.getElementById('exam-modal').classList.remove('hidden');
+    }
+    function closeExamModal() { document.getElementById('exam-modal').classList.add('hidden'); }
+
+    function saveExamTrial() {
+      const p = parseInt(document.getElementById('exam-pushups').value) || 0;
+      const b = parseInt(document.getElementById('exam-pullups').value) || 0;
+      const abs = parseInt(document.getElementById('exam-abs').value) || 0;
+      const r10 = parseFloat(document.getElementById('exam-run10m').value) || 1.0;
+      const rmax = parseFloat(document.getElementById('exam-runmax').value) || 1.0;
+
+      player.examBenchmark = { pushups: p, pullups: b, abs: abs, run10m: r10, runMax: rmax };
+      player.str = Math.max(10, Math.round(p * 0.8 + (b * 3.5)));
+      player.con = Math.max(10, Math.round(abs * 0.7));
+      player.agi = Math.max(10, Math.round(r10 * 18));
+      player.end = Math.max(10, Math.round(rmax * 4.5));
+
+      addXP(50, null);
+      closeExamModal();
+      showToast(`EXAME CONCLUÍDO! PODER: ${calculateCombatPower()}`);
+    }
+
+    function exportBackupData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(player, null, 2));
+      const a = document.createElement('a'); a.href = dataStr;
+      a.download = `hero_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click(); a.remove();
+      showToast("Backup gerado e baixado!");
+    }
+
+    function importBackupData(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && typeof imported.level === 'number') {
+            player = Object.assign(player, imported);
+            updateUI();
+            showToast("Dados Restaurados com Sucesso!");
+          }
+        } catch(err) { showToast("Arquivo inválido.", false); }
+      };
+      reader.readAsText(file);
+    }
+
+    document.getElementById('tcx-input').addEventListener('change', function(e) {
+      const file = e.target.files && event.target.files[0];
+      const statusMsg = document.getElementById('tcx-status-msg');
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const xml = new DOMParser().parseFromString(evt.target.result, "text/xml");
+          const laps = xml.getElementsByTagName("Lap");
+          if (laps && laps.length > 0) {
+            const lap = laps[0];
+            const notesElem = xml.getElementsByTagName("Notes")[0];
+            const rawName = (notesElem && notesElem.textContent.trim()) || "Treino Zepp";
+            const meters = Number(lap.getElementsByTagName("DistanceMeters")[0]?.textContent || 0);
+            const totalSec = Number(lap.getElementsByTagName("TotalTimeSeconds")[0]?.textContent || 0);
+            const km = Number((meters / 1000).toFixed(2));
+            const min = Math.round(totalSec / 60);
+
+            const xpTotal = Math.max(30, Math.round(km * 110 + min * 10));
+            addXP(xpTotal, km > 0 ? 'END' : 'CON');
+            dealBossDamage(Math.round(km > 0 ? km * 1000 : min * 50), rawName);
+            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP)`;
+            showToast(`${rawName} Concluído! (+${xpTotal} XP)`);
+          }
+        } catch(err) { statusMsg.textContent = "Erro na leitura do TCX."; }
+      };
+      reader.readAsText(file);
+    });
+
+    function navigateToTab(tabId) {
+      ['missions', 'weight', 'calendar', 'camera'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`nav-btn-${t}`);
+        if (el) el.classList.toggle('hidden', t !== tabId);
+        if (btn) btn.className = t === tabId ? "text-cyan-400 flex flex-col items-center" : "text-slate-500 flex flex-col items-center";
+      });
+      if (tabId === 'weight') renderWeightModule();
+    }
+
+    function renderWeightModule() {
+      const list = document.getElementById('weight-log-list');
+      if (!list) return;
+      list.innerHTML = (player.weightHistory || []).slice().reverse().map(item => `
+        <div class="bg-slate-950 border border-slate-800 p-2 rounded-xl flex justify-between text-xs font-hud">
+          <span class="text-white font-bold">${item.weight.toFixed(1)} kg</span>
+          <span class="text-slate-500 text-[10px]">${new Date(item.date).toLocaleDateString('pt-BR')}</span>
+        </div>
+      `).join('');
+    }
+
+    let camRunning = false;
+    function toggleCamera() {
+      const btn = document.getElementById('btn-toggle-cam');
+      if (!camRunning) {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+          .then(stream => {
+            document.getElementById('webcam').srcObject = stream;
+            camRunning = true; btn.textContent = "DESLIGAR CÂMERA";
+          }).catch(() => showToast("Permissão de câmera necessária.", false));
+      } else {
+        const v = document.getElementById('webcam');
+        if (v.srcObject) v.srcObject.getTracks().forEach(t => t.stop());
+        camRunning = false; btn.textContent = "INICIAR CÂMERA";
+      }
+    }
+
+    function updateUI() {
+      document.getElementById('player-level').textContent = player.level;
+      document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+      document.getElementById('xp-text').textContent = `${player.xp} / ${player.maxXp} XP`;
+      document.getElementById('stat-str').textContent = player.str || 10;
+      document.getElementById('stat-con').textContent = player.con || 10;
+      document.getElementById('stat-agi').textContent = player.agi || 10;
+      document.getElementById('stat-end').textContent = player.end || 10;
+      document.getElementById('streak-text').textContent = `🔥 ${player.streak} DIAS`;
+      document.getElementById('input-height').value = player.heightCm;
+      document.getElementById('input-weight').value = player.weight;
+
+      const waterPct = Math.min(100, Math.round((player.hydration.currentMl / player.hydration.goalMl) * 100));
+      document.getElementById('water-current-text').textContent = `${player.hydration.currentMl.toLocaleString('pt-BR')} / 3.000 ml`;
+      document.getElementById('water-progress-bar').style.width = `${waterPct}%`;
+
+      const sleepBadge = document.getElementById('sleep-buff-badge');
+      if (player.morningReport && player.morningReport.completed) {
+        sleepBadge.textContent = `SONO: ${player.morningReport.sleepScore} PTS`;
+        sleepBadge.className = "text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded font-bold";
+      }
+
+      renderToriyamaAvatar();
+      renderBossRaid();
+      renderSparksRoutine();
+
+      localStorage.setItem('hero_player_v22', JSON.stringify(player));
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
