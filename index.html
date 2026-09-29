@@ -228,7 +228,7 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL COM BANNER DE ESPÓLIOS DE VITÓRIA -->
+      <!-- CERCO SEMANAL (COM PERGAMINHO NARRATIVO REATIVO) -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
         <div class="flex items-center gap-3 mb-2.5">
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
@@ -248,7 +248,7 @@
               <div>
                 <div class="flex items-center gap-1.5">
                   <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                  <span class="text-[9px] font-bold text-red-400 uppercase tracking-widest block">O CERCO DA FORTALEZA</span>
+                  <span id="campaign-chapter-label" class="text-[9px] font-bold text-amber-400 uppercase tracking-widest block">CAPÍTULO I: OS VAUS DE ANDUIN</span>
                 </div>
                 <h3 id="boss-name" class="font-bold text-xs sm:text-sm text-white tracking-wide leading-tight">TROLL DE COMBATE DE GORGOROTH</h3>
               </div>
@@ -281,7 +281,7 @@
           <div class="w-full bg-slate-900 rounded-full h-2 border border-amber-950 overflow-hidden">
             <div id="impeto-bar" class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-0 transition-all duration-300"></div>
           </div>
-          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e descarregue golpes potencializados pelo seu Arsenal:</span>
+          <span class="text-[9px] text-slate-400 font-sans block mt-1">Acumule Ímpeto com treinos físicos e descarregue manobras contra as hostes:</span>
         </div>
 
         <!-- PAINEL DAS 4 MANOBRAS TÁTICAS -->
@@ -319,9 +319,13 @@
           </button>
         </div>
 
-        <div class="bg-slate-950/80 border border-slate-800 p-2 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2">
-          <span class="text-sm">🛡️</span>
-          <span id="boss-story-log" class="leading-relaxed">As hostes da Sombra investem contra as muralhas. Descarregue seu Ímpeto Marcial para ferir a besta.</span>
+        <!-- PERGAMINHO NARRATIVO DO CAPÍTULO ATUAL -->
+        <div class="bg-slate-950/80 border border-amber-600/30 p-2.5 rounded-xl text-[11px] font-sans text-slate-300 flex items-start gap-2 shadow-inner">
+          <span class="text-base text-amber-400">📜</span>
+          <div class="flex-1">
+            <span id="boss-story-stage" class="text-[9px] font-epic text-amber-400 font-bold block uppercase mb-0.5">ORDEM DE MARCHA:</span>
+            <span id="boss-story-log" class="leading-relaxed block">As águas do Anduin descem escuras. Pegadas pesadas foram avistadas nos vaus. Gominsk prepara suas armas para interceptar a vanguarda da Sombra.</span>
+          </div>
         </div>
       </div>
 
@@ -419,8 +423,28 @@
       </div>
     </div>
 
-    <!-- ABA 3: DIÁRIO DA CAMPANHA (CALENDÁRIO INTERATIVO) -->
+    <!-- ABA 3: DIÁRIO DA CAMPANHA (CALENDÁRIO & CÓDICE DE CAMPANHA) -->
     <div id="tab-calendar" class="tab-content hidden flex flex-col gap-3 font-epic">
+      
+      <!-- CÓDICE DE NÚMENOR (LIVRO DA CAMPANHA DE 20 CAPÍTULOS) -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-amber-950/40 border border-amber-500/40 rounded-2xl p-3.5 shadow-lg">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <span class="text-xs font-bold text-amber-300 block tracking-widest">O CÓDICE DA CAMPANHA</span>
+            <span class="text-[9px] text-slate-400 font-sans">A crônica épica das 20 semanas de Gominsk</span>
+          </div>
+          <span id="codice-progress-badge" class="text-[9px] bg-amber-950 border border-amber-600/70 text-amber-300 px-2 py-0.5 rounded font-bold">CAP. 1 / 20</span>
+        </div>
+
+        <div id="codice-chapters-carousel" class="flex gap-2 overflow-x-auto custom-scroll pb-2 mb-2"></div>
+
+        <div id="codice-reader-view" class="bg-slate-950/90 border border-amber-600/30 p-3 rounded-xl text-left shadow-inner">
+          <span id="codice-chapter-title" class="font-bold text-amber-200 text-xs block mb-1">CAPÍTULO I: OS VAUS DE ANDUIN</span>
+          <p id="codice-chapter-body" class="text-[11px] text-slate-300 font-sans leading-relaxed">Carregando crônicas...</p>
+        </div>
+      </div>
+
+      <!-- CALENDÁRIO DA VIGÍLIA -->
       <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-lg">
         <div class="flex justify-between items-center mb-3">
           <span id="calendar-month-year" class="text-sm font-bold text-amber-300 uppercase tracking-widest">SETEMBRO 2026</span>
@@ -493,9 +517,132 @@
       "REI DOS HOMENS (RANK S)"
     ];
 
+    // O CÓDICE DA CAMPANHA (20 CAPÍTULOS DE ARDA)
+    const CAMPAIGN_CHAPTERS = [
+      {
+        cap: 1, title: "A Sombra sobre os Vaus de Anduin", act: "Ato I: As Sentinelas",
+        stage1: "As águas do Anduin descem escuras nesta estação. Pegadas pesadas de uma besta de Mordor foram vistas nas margens. Gominsk prepara suas armas para conter a vanguarda.",
+        stage2: "A besta investe com fúria contra a linha de estacas! Os golpes contínuos da guarda começam a estilhaçar a armadura rústica do monstro.",
+        stage3: "O Troll cai nas pedras do rio com estrondo ecoando pelas colinas. Os vaus foram preservados pela disciplina de ferro dos Dúnedain!"
+      },
+      {
+        cap: 2, title: "O Rastreio nos Pântanos Mortos", act: "Ato I: As Sentinelas",
+        stage1: "Luzes espectrais tremulam nas névoas da charneca. Batedores orcs vasculham as ruínas à procura de rotas para violar as linhas de Gondor.",
+        stage2: "Gominsk cerca as patrulhas entre os juncos cinzentos. As lâminas curtas brilham no nevoeiro desarticulando a ofensiva.",
+        stage3: "A charneca silencia. As hostes da Sombra recuam em desordem perante a implacável vigília das fronteiras."
+      },
+      {
+        cap: 3, title: "A Vanguarda de Morannon", act: "Ato I: As Sentinelas",
+        stage1: "Portões de ferro rangem ao longe. Bandos de Uruk-hai com escudos largos marcham em formação fechada.",
+        stage2: "O impacto do combate abala as fileiras. A constância das manobras de Gominsk quebra a ponta da cunha inimiga.",
+        stage3: "A formação orc despedaça-se. Estandartes negros ardem abandonados na planície rochosa."
+      },
+      {
+        cap: 4, title: "A Queda do Posto Avançado", act: "Ato I: As Sentinelas",
+        stage1: "Uma torre de vigia antiga é sitiada por feras armadas de malhos. A guarnição precisa resistir até o alvorecer.",
+        stage2: "Flechadas e investidas de escudo rechaçam os invasores das escadarias de pedra.",
+        stage3: "O cerco é rompido! O alvorecer revela as encostas limpas. A patente de Sentinela está plenamente consagrada."
+      },
+      {
+        cap: 5, title: "As Trilhas Ocultas de Ithilien", act: "Ato I: As Sentinelas",
+        stage1: "Entre samambaias e carvalhos antigos, Gominsk lidera a marcha furtiva nas terras verdes sob o olhar de Mordor.",
+        stage2: "Guerra de emboscada. Disparos rápidos desmantelam caravanas de suprimentos que abasteciam os acampamentos negros.",
+        stage3: "Ithilien respira aliviada. O inimigo teme agora cada sussurro das folhas nas árvores."
+      },
+      {
+        cap: 6, title: "A Emboscada na Floresta Cinzenta", act: "Ato II: Ithilien",
+        stage1: "Regimentos de Haradrim com cimitarras recurvadas avançam pelas estradas do Sul.",
+        stage2: "A marcha rápida fecha o cerco. As manobras de arco e adaga impõem pesadas baixas aos homens do deserto.",
+        stage3: "As linhas do Sul dispersam-se pelos desfiladeiros. O caminho da floresta permanece sob domínio dos Dúnedain."
+      },
+      {
+        cap: 7, title: "O Refúgio de Henneth Annûn", act: "Ato II: Ithilien",
+        stage1: "Atrás da cortina de água da Janela do Sol Poente, a companhia reúne forças e repara suas cotas de malha.",
+        stage2: "Inimigos descobrem as ravinas de acesso! Uma batalha encarniçada trava-se nas rochas molhadas da cachoeira.",
+        stage3: "O santuário secreto foi protegido. As águas limpas levam os vestígios da contenda."
+      },
+      {
+        cap: 8, title: "A Passagem Proibida de Morgul", act: "Ato II: Ithilien",
+        stage1: "Um fedor adocicado de podridão sobe do Vale Fantasma. Criaturas com armaduras pontiagudas rondam a encosta.",
+        stage2: "O Sangue de Númenor pulsa firme contra o terror que emana das muralhas de Minas Morgul.",
+        stage3: "A vanguarda corrompida foi expulsa de volta às gargantas escuras. O posto de Batedor está concluído!"
+      },
+      {
+        cap: 9, title: "O Estandarte dos Dúnedain", act: "Ato III: O Cerco",
+        stage1: "O chamado às armas ecoa pelas colinas. Gominsk desfralda a flâmula prateada da linhagem real.",
+        stage2: "Hostes combinadas de orcs e trolls tentam sufocar a resistência no vale aberto.",
+        stage3: "O estandarte não caiu! A moral dos guerreiros de Gondor renova-se ao redor da liderança de Gominsk."
+      },
+      {
+        cap: 10, title: "A Batalha dos Vaus de Osgiliath", act: "Ato III: O Cerco",
+        stage1: "Pontes destruídas e barcaças negras cruzando o grande rio sob chuva de flechas incendiárias.",
+        stage2: "Combate cerrado corpo a corpo entre as ruínas das praças ancestrais de pedra.",
+        stage3: "A travessia do inimigo foi contida com bravura inabalável. O rio permanece como fosso protetor."
+      },
+      {
+        cap: 11, title: "As Muralhas do Rammas Echor", act: "Ato III: O Cerco",
+        stage1: "A muralha exterior que cerca os campos de Pelennor é bombardeada por catapultas colossais.",
+        stage2: "Gominsk lidera a contraofensiva nas brechas da alvenaria com golpes implacáveis de montante.",
+        stage3: "As fendas foram seladas com aço e disciplina. O tempo ganho permite preparar a Cidadela."
+      },
+      {
+        cap: 12, title: "O Fogo nos Campos de Pelennor", act: "Ato III: O Cerco",
+        stage1: "Mares de lanças negras inundam a planície verdejante. A fumaça esconde as estrelas e o sol.",
+        stage2: "Resistência heroica contra o avanço das feras de guerra couraçadas.",
+        stage3: "As linhas de vanguarda foram sustentadas. Gominsk é aclamado entre os Patrulheiros de elite!"
+      },
+      {
+        cap: 13, title: "O Portão da Cidade Branca", act: "Ato IV: A Cidadela",
+        stage1: "Grond e os aríetes negros aproximam-se dos grandes portões de ferro forjado de Minas Tirith.",
+        stage2: "Chamas e fúria sob os arcos monumentais. Cada repetição marcial é uma barreira contra o colapso.",
+        stage3: "Os portões resistem! A primeira muralha permanece intransponível para a desesperança."
+      },
+      {
+        cap: 14, title: "O Cerco dos Sete Círculos", act: "Ato IV: A Cidadela",
+        stage1: "As ruas íngremes da cidade transformam-se em fortalezas escalonadas. O inimigo tenta penetrar pelos níveis inferiores.",
+        stage2: "Defesa implacável em cada degrau e sacada. O ferro de Gondor ceifa a vanguarda profana.",
+        stage3: "Os círculos superiores continuam intocados. A ordem militar de Gominsk reina na cidade."
+      },
+      {
+        cap: 15, title: "A Vigília no Pátio da Fonte", act: "Ato IV: A Cidadela",
+        stage1: "O vento gelado do Leste sopra sobre a Árvore ressequida. Sombras aladas circulam as nuvens.",
+        stage2: "A luz de Eärendil e a lâmina desembainhada dissipam o pavor lançado pelos espectros do céu.",
+        stage3: "A Besta Alada recua grasnando para a escuridão. O silêncio solene volta a reinar na Fonte."
+      },
+      {
+        cap: 16, title: "O Resplendor de Ecthelion", act: "Ato IV: A Cidadela",
+        stage1: "No topo da Torre Branca, o sol da manhã rompe a névoa escura como uma lança dourada.",
+        stage2: "As trompas de Gondor soam em uníssono. A guarnição desce em contra-ataque devastador.",
+        stage3: "Pelennor está limpa! A patente de Capitão da Guarda é consagrada para todo o sempre."
+      },
+      {
+        cap: 17, title: "A Marcha dos Capitães do Oeste", act: "Ato V: O Fim da Sombra",
+        stage1: "O exército de homens livres marcha para o Leste. O objetivo não é vencer pela força, mas dar tempo ao Destino.",
+        stage2: "Travessias extenuantes por terras áridas e cinzentas onde a própria água tem gosto de veneno.",
+        stage3: "As hostes alcançam as encostas desoladas diante dos picos de cinza de Mordor."
+      },
+      {
+        cap: 18, title: "A Desolação diante do Portão Negro", act: "Ato V: O Fim da Sombra",
+        stage1: "As duas colinas de escória cercadas pelas hostes intermináveis saídas de Cirith Gorgor.",
+        stage2: "Círculos cerrados de lanças e escudos. Gominsk empunha a espada no olho do furacão.",
+        stage3: "A linha não se curva nem vacila diante da magnitude da Sombra."
+      },
+      {
+        cap: 19, title: "A Última Batalha no Morannon", act: "Ato V: O Fim da Sombra",
+        stage1: "O chão estremece! As montanhas rugem enquanto a Vontade de Barad-dûr estica os dedos sobre a terra.",
+        stage2: "O Sangue de Númenor queima com o brilho de cem reis. Cada golpe parte o ferro negro ao meio.",
+        stage3: "A Torre treme e rui em fumaça! A escuridão dissipa-se diante da luz eterna do Oeste!"
+      },
+      {
+        cap: 20, title: "O Renascer da Árvore Branca", act: "Ato V: O Retorno do Rei",
+        stage1: "A Primavera volta à Terra Média. Brotos brancos e perfumados despontam na madeira secular do Pátio.",
+        stage2: "A coroação diante de todos os povos livres. Gominsk é consagrado guardião supremo da paz dos homens.",
+        stage3: "A jornada está completa. De simples Sentinela ao trono dos Dúnedain: o Rei dos Homens governa com virtude!"
+      }
+    ];
+
     // CATÁLOGO EXPANDIDO DE ITENS COM RARIDADE
     const ARSENAL_DB = {
-      // ARMAS
       adaga_oesternesse: { id: 'adaga_oesternesse', slot: 'weapon', rarity: 'DÚNEDAIN', icon: '🗡️', name: 'Adaga de Oesternesse', str: 2, agi: 1, con: 0, end: 0, desc: '+2 FORÇA • +1 DESTREZA', lore: 'Forjada em tempos antigos para os Dúnedain do Norte.' },
       espada_guardiao: { id: 'espada_guardiao', slot: 'weapon', rarity: 'MILITAR', icon: '⚔️', name: 'Espada do Guardião', str: 4, agi: 0, con: 0, end: 0, desc: '+4 FORÇA', lore: 'Aço pesado temperado nas forjas de Minas Tirith.' },
       arco_ithilien: { id: 'arco_ithilien', slot: 'weapon', rarity: 'DÚNEDAIN', icon: '🏹', name: 'Arco Longo de Ithilien', str: 0, agi: 4, con: 0, end: 0, desc: '+4 DESTREZA', lore: 'Madeira nobre dos bosques orientais do Anduin.' },
@@ -504,14 +651,12 @@
       arco_galadhrim: { id: 'arco_galadhrim', slot: 'weapon', rarity: 'ÉPICO', icon: '🏹', name: 'Arco dos Galadhrim', str: 1, agi: 6, con: 0, end: 2, desc: '+6 DESTREZA • +2 VIGOR • +1 FORÇA', lore: 'Trançado em ouro élfico e fios de Mallorn imortais.' },
       anduril: { id: 'anduril', slot: 'weapon', rarity: 'LENDÁRIO', icon: '✨', name: 'Andúril, Chama do Oeste', str: 8, agi: 4, con: 2, end: 3, desc: '+8 FORÇA • +4 DESTREZA • +3 VIGOR', lore: 'A espada refeita. A luz do sol e da lua reluzem em seu fio.' },
 
-      // ARMADURAS
       manto_ithilien: { id: 'manto_ithilien', slot: 'armor', rarity: 'DÚNEDAIN', icon: '🧥', name: 'Manto dos Batedores', str: 0, agi: 2, con: 1, end: 0, desc: '+2 DESTREZA • +1 BLINDAGEM', lore: 'Tecido esverdeado que mimetiza sombras e folhagens.' },
       armadura_torre: { id: 'armadura_torre', slot: 'armor', rarity: 'MILITAR', icon: '🛡️', name: 'Couraça da Guarda da Torre', str: 1, agi: 0, con: 3, end: 0, desc: '+3 BLINDAGEM • +1 FORÇA', lore: 'Placas negras ornamentadas com a Árvore Branca de Gondor.' },
       cota_mithril: { id: 'cota_mithril', slot: 'armor', rarity: 'ÉPICO', icon: '⛓️', name: 'Cota de Malha de Mithril', str: 0, agi: 1, con: 6, end: 1, desc: '+6 BLINDAGEM • +1 DESTREZA', lore: 'Prata verdadeira forjada pelos anões de Khazad-dûm. Impenetrável.' },
       manto_lorien: { id: 'manto_lorien', slot: 'armor', rarity: 'ÉPICO', icon: '🍃', name: 'Manto Élfico de Lórien', str: 0, agi: 5, con: 3, end: 2, desc: '+5 DESTREZA • +3 BLINDAGEM • +2 VIGOR', lore: 'Feito pela própria Senhora Galadriel. Torna o portador imperceptível.' },
       armadura_numenor: { id: 'armadura_numenor', slot: 'armor', rarity: 'LENDÁRIO', icon: '👑', name: 'Arnês Real de Númenor', str: 3, agi: 2, con: 8, end: 4, desc: '+8 BLINDAGEM • +4 VIGOR • +3 FORÇA', lore: 'Forjada em Westernesse antes da queda das montanhas.' },
 
-      // RELÍQUIAS
       estrela_dunedain: { id: 'estrela_dunedain', slot: 'relic', rarity: 'DÚNEDAIN', icon: '⭐', name: 'Estrela dos Dúnedain', str: 1, agi: 1, con: 1, end: 1, desc: '+1 em todas as Virtudes', lore: 'Broche de prata em formato de raio concedido aos chefes do Norte.' },
       frasco_galadriel: { id: 'frasco_galadriel', slot: 'relic', rarity: 'ÉPICO', icon: '🧪', name: 'Luz de Eärendil', str: 0, agi: 0, con: 3, end: 4, desc: '+4 VIGOR • +3 BLINDAGEM', lore: 'Uma luz para brilhar em lugares escuros quando todas as outras falharem.' },
       pedra_elfica: { id: 'pedra_elfica', slot: 'relic', rarity: 'DÚNEDAIN', icon: '💎', name: 'Elessar (Pedra Élfica)', str: 0, agi: 0, con: 0, end: 5, desc: '+5 VIGOR', lore: 'Gema verde que revitaliza o ânimo mesmo nas marchas mais extenuantes.' },
@@ -645,7 +790,13 @@
       return Math.round((stats.str * 22) + (stats.con * 22) + (stats.agi * 26) + (stats.end * 22) + (lvl * 140) + (streak * 45) + ((player.xp || 0) * 0.1));
     }
 
-    // SISTEMA DE ESPÓLIOS DE GUERRA (LOOT SYSTEM)
+    // NARRATIVA: OBTÉM O CAPÍTULO ATUAL DE ACORDO COM O RANK
+    function getCurrentChapter() {
+      const idx = Math.min(19, Math.max(0, (player.level || 1) - 1));
+      return CAMPAIGN_CHAPTERS[idx];
+    }
+
+    // SISTEMA DE ESPÓLIOS DE GUERRA
     let pendingLootItem = null;
 
     function triggerLootDropCeremony() {
@@ -655,11 +806,9 @@
         return;
       }
 
-      // Sorteio de item do catálogo que o jogador ainda não possui
       const unownedIds = Object.keys(ARSENAL_DB).filter(id => !player.inventory.includes(id));
 
       if (unownedIds.length > 0) {
-        // Ponderação: 50% Dúnedain/Militar, 35% Épico, 15% Lendário
         const roll = Math.random();
         let targetRarity = 'ÉPICO';
         if (roll < 0.40) targetRarity = 'DÚNEDAIN';
@@ -671,7 +820,6 @@
         const selectedId = pool[Math.floor(Math.random() * pool.length)];
         pendingLootItem = ARSENAL_DB[selectedId];
       } else {
-        // Se já possuir todos os itens, ganha um Lingote de Mithril (Bônus permanente de Bravura)
         pendingLootItem = {
           id: 'lingote_mithril_' + Date.now(),
           slot: 'special',
@@ -683,7 +831,6 @@
         };
       }
 
-      // Preenche o Modal de Saque
       const modal = document.getElementById('loot-modal');
       document.getElementById('loot-item-icon').textContent = pendingLootItem.icon || '⚔️';
       document.getElementById('loot-item-rarity').textContent = pendingLootItem.rarity || 'RELÍQUIA';
@@ -696,7 +843,6 @@
 
     function claimAndEquipLoot() {
       if (!pendingLootItem) return;
-
       if (pendingLootItem.slot !== 'special') {
         if (!player.inventory.includes(pendingLootItem.id)) {
           player.inventory.push(pendingLootItem.id);
@@ -706,13 +852,11 @@
       } else {
         addImpeto(500, "Mithril");
       }
-
       finalizeLootClaim();
     }
 
     function claimAndStoreLoot() {
       if (!pendingLootItem) return;
-
       if (pendingLootItem.slot !== 'special') {
         if (!player.inventory.includes(pendingLootItem.id)) {
           player.inventory.push(pendingLootItem.id);
@@ -721,7 +865,6 @@
       } else {
         addImpeto(500, "Mithril");
       }
-
       finalizeLootClaim();
     }
 
@@ -742,7 +885,7 @@
       updateUI();
     }
 
-    // MODAL DA FORJA / ARSENAL
+    // MODAL DA FORJA
     let currentArsenalSlot = 'weapon';
 
     function openArsenalModal(slot) {
@@ -820,14 +963,14 @@
       });
     }
 
-    // GESTÃO DE ÍMPETO MARCIAL
+    // ÍMPETO MARCIAL
     function addImpeto(amount, source) {
       player.impeto = Math.min(10000, (player.impeto || 0) + amount);
       showToast(`+${amount} ÍMPETO MARCIAL (${source})!`, true);
       updateCombatManeuversUI();
     }
 
-    // MANOBRAS TÁTICAS COM IMPACTO CORRIGIDO
+    // MANOBRAS TÁTICAS
     function executeManeuver(statType) {
       if (!player.bossRaid || player.bossRaid.defeated) {
         showToast("O Troll já foi derrotado! Reivindique os espólios.");
@@ -888,18 +1031,12 @@
         const critText = isCrit ? " [CRÍTICO 1.75x!]" : "";
         const numenorText = isBattleActive ? " [NÚMENOR 1.5x]" : "";
         showToast(`💥 ${maneuverName.toUpperCase()}: -${finalDamage.toLocaleString('pt-BR')} HP${critText}${numenorText}!`);
-        
-        const log = document.getElementById('boss-story-log');
-        if (log) {
-          log.textContent = `Gominsk desferiu ${maneuverName}! O golpe consumiu 250 de Ímpeto amplificado pela virtude equipada (${statVal}) desferindo ${finalDamage.toLocaleString('pt-BR')} de dano na couraça!`;
-        }
       }
 
       renderBossRaid();
       updateCombatManeuversUI();
-      localStorage.setItem('hero_player_v29', JSON.stringify(player));
+      localStorage.setItem('hero_player_v30', JSON.stringify(player));
 
-      // Tremor físico na tela acionado estritamente após a renderização
       const bossContainer = document.getElementById('boss-avatar-container');
       if (bossContainer && !player.bossRaid.defeated) {
         bossContainer.classList.remove('shake-anim');
@@ -1021,6 +1158,7 @@
       reader.readAsDataURL(file);
     }
 
+    // RENDERIZAÇÃO DO CERCO & NARRATIVA REATIVA
     function renderBossRaid() {
       const raid = player.bossRaid;
       if (!raid) return;
@@ -1035,6 +1173,12 @@
       const bossImg = document.getElementById('boss-img');
       const bossPlaceholder = document.getElementById('boss-placeholder');
       const lootClaimContainer = document.getElementById('loot-claim-container');
+      const chapterLabel = document.getElementById('campaign-chapter-label');
+      const storyStage = document.getElementById('boss-story-stage');
+      const storyLog = document.getElementById('boss-story-log');
+
+      const chapter = getCurrentChapter();
+      if (chapterLabel) chapterLabel.textContent = `CAPÍTULO ${chapter.cap}: ${chapter.title.toUpperCase()}`;
 
       const enemyImgSrc = player.enemyImage || localStorage.getItem('hero_custom_enemy');
       if (enemyImgSrc) {
@@ -1051,6 +1195,9 @@
         badge.className = "text-[9px] bg-emerald-950 border border-emerald-600 text-emerald-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-emerald-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group filter grayscale contrast-125 opacity-70";
         
+        if (storyStage) storyStage.textContent = "O TRIUNFO DA LINHAGEM:";
+        if (storyLog) storyLog.textContent = chapter.stage3;
+
         if (lootClaimContainer) {
           lootClaimContainer.classList.toggle('hidden', !!raid.lootClaimed);
         }
@@ -1059,6 +1206,14 @@
         badge.className = "text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1";
         bossContainer.className = "relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group";
         if (lootClaimContainer) lootClaimContainer.classList.add('hidden');
+
+        if (percent > 50) {
+          if (storyStage) storyStage.textContent = "ORDEM DE MARCHA:";
+          if (storyLog) storyLog.textContent = chapter.stage1;
+        } else {
+          if (storyStage) storyStage.textContent = "O PONTO DE VIRAGEM:";
+          if (storyLog) storyLog.textContent = chapter.stage2;
+        }
       }
     }
 
@@ -1362,6 +1517,78 @@
       reader.readAsText(file);
     });
 
+    // MÓDULO DO CÓDICE DA CAMPANHA (LEITOR DE CAPÍTULOS)
+    let selectedCodiceCap = 1;
+
+    function renderCodiceModule() {
+      const carousel = document.getElementById('codice-chapters-carousel');
+      const badge = document.getElementById('codice-progress-badge');
+      if (!carousel) return;
+
+      const playerCap = Math.min(20, Math.max(1, player.level || 1));
+      if (badge) badge.textContent = `CAP. ${playerCap} / 20`;
+
+      carousel.innerHTML = CAMPAIGN_CHAPTERS.map(ch => {
+        const isUnlocked = ch.cap <= playerCap;
+        const isSelected = ch.cap === selectedCodiceCap;
+        return `
+          <button type="button" onclick="selectCodiceChapter(${ch.cap})" class="shrink-0 p-2 rounded-xl border text-center transition cursor-pointer font-epic min-w-[90px] ${
+            !isUnlocked ? 'border-slate-800 bg-slate-950/40 text-slate-600 opacity-60' : (
+              isSelected ? 'border-amber-400 bg-amber-950/70 text-amber-200 font-bold shadow-md' : 'border-slate-700 bg-slate-900/60 text-slate-300 hover:border-amber-500/50'
+            )
+          }">
+            <span class="text-[8px] block ${isUnlocked ? 'text-amber-400' : 'text-slate-600'}">${isUnlocked ? 'CAP. 0' + ch.cap : 'BLOQUEADO'}</span>
+            <span class="text-[10px] block truncate max-w-[85px]">${isUnlocked ? ch.title.split(' ')[0] : '???'}</span>
+          </button>
+        `;
+      }).join('');
+
+      showCodiceReader(selectedCodiceCap);
+    }
+
+    function selectCodiceChapter(capNum) {
+      const playerCap = Math.min(20, Math.max(1, player.level || 1));
+      if (capNum > playerCap) {
+        showToast(`Capítulo selado! Alcance a Patente correspondente para ler.`, false);
+        return;
+      }
+      selectedCodiceCap = capNum;
+      renderCodiceModule();
+    }
+
+    function showCodiceReader(capNum) {
+      const titleEl = document.getElementById('codice-chapter-title');
+      const bodyEl = document.getElementById('codice-chapter-body');
+      if (!titleEl || !bodyEl) return;
+
+      const ch = CAMPAIGN_CHAPTERS[capNum - 1];
+      const playerCap = Math.min(20, Math.max(1, player.level || 1));
+      const isCurrent = capNum === playerCap;
+      const isPast = capNum < playerCap;
+
+      titleEl.textContent = `CAPÍTULO ${ch.cap}: ${ch.title.toUpperCase()} (${ch.act.toUpperCase()})`;
+
+      if (isPast) {
+        bodyEl.innerHTML = `
+          <p class="mb-2 italic text-slate-400">${ch.stage1}</p>
+          <p class="mb-2 text-slate-300">${ch.stage2}</p>
+          <p class="text-amber-300 font-bold">${ch.stage3}</p>
+        `;
+      } else {
+        const hpPercent = player.bossRaid ? Math.round((player.bossRaid.currentHp / player.bossRaid.maxHp) * 100) : 100;
+        let narrativeText = `<p class="mb-2 italic text-slate-300">${ch.stage1}</p>`;
+        if (hpPercent <= 50) {
+          narrativeText += `<p class="mb-2 text-amber-200">${ch.stage2}</p>`;
+        }
+        if (player.bossRaid && player.bossRaid.defeated) {
+          narrativeText += `<p class="text-emerald-300 font-bold">${ch.stage3}</p>`;
+        } else {
+          narrativeText += `<p class="text-[10px] text-slate-500 font-sans mt-2">⚔️ Desfira mais manobras no Cerco para revelar o desenrolar desta crônica.</p>`;
+        }
+        bodyEl.innerHTML = narrativeText;
+      }
+    }
+
     // CALENDÁRIO
     let selectedCalendarDay = new Date().getDate();
 
@@ -1469,7 +1696,10 @@
         if (el) el.classList.toggle('hidden', t !== tabId);
         if (btn) btn.className = t === tabId ? "text-amber-400 flex flex-col items-center cursor-pointer" : "text-slate-500 flex flex-col items-center cursor-pointer";
       });
-      if (tabId === 'calendar') renderCalendarModule();
+      if (tabId === 'calendar') {
+        renderCodiceModule();
+        renderCalendarModule();
+      }
       if (tabId === 'weight') renderWeightModule();
     }
 
@@ -1533,7 +1763,7 @@
       renderArsenalHUD();
       updateCombatManeuversUI();
 
-      localStorage.setItem('hero_player_v29', JSON.stringify(player));
+      localStorage.setItem('hero_player_v30', JSON.stringify(player));
     }
 
     updateUI();
