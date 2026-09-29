@@ -9,8 +9,17 @@
   <style>
     body { font-family: 'Marcellus', serif; background-color: #07090e; }
     .font-epic { font-family: 'Cinzel', serif; }
-    .aura-s { animation: pulseAura 2.5s infinite alternate; }
-    @keyframes pulseAura { 0% { filter: drop-shadow(0 0 8px #d4af37); } 100% { filter: drop-shadow(0 0 28px #f59e0b); } }
+    
+    /* AURA ANCESTRAL DO SANGUE DE NÚMENOR */
+    @keyframes numenorAura {
+      0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4), inset 0 0 8px rgba(212, 175, 55, 0.3); border-color: #d4af37; }
+      50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.8), inset 0 0 15px rgba(245, 158, 11, 0.5); border-color: #fbbf24; }
+      100% { box-shadow: 0 0 35px rgba(217, 119, 6, 0.95), inset 0 0 22px rgba(217, 119, 6, 0.7); border-color: #f59e0b; }
+    }
+    .aura-numenor {
+      animation: numenorAura 1.8s infinite alternate ease-in-out !important;
+    }
+
     .custom-scroll::-webkit-scrollbar { width: 4px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #242c3d; border-radius: 4px; }
   </style>
@@ -48,7 +57,7 @@
   <!-- CABEÇALHO DO GUERREIRO GOMINSK -->
   <header class="border border-amber-500/30 bg-slate-900/90 rounded-2xl p-3.5 shadow-lg mb-3 backdrop-blur">
     <div class="flex items-center gap-3">
-      <!-- Retrato de Gominsk -->
+      <!-- Retrato de Gominsk com Aura Dinâmica de Batalha -->
       <div id="avatar-container" class="relative w-24 h-24 bg-slate-950 border-2 border-amber-500/60 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
         <img id="avatar-img" src="" alt="Avatar Gominsk" class="w-full h-full object-cover object-center hidden pointer-events-none" />
         <div id="avatar-placeholder" class="text-center p-2 flex flex-col items-center justify-center pointer-events-none">
@@ -63,9 +72,14 @@
           <div>
             <span id="rank-title" class="text-[10px] text-amber-400 font-epic tracking-widest block uppercase font-bold">SENTINELA DE FRONTEIRA I</span>
             <h1 class="text-lg font-bold font-epic text-white tracking-wider leading-tight">GOMINSK</h1>
-            <div class="flex items-center gap-1.5 mt-0.5">
+            
+            <!-- Badges e Estado de Batalha -->
+            <div class="flex flex-wrap items-center gap-1.5 mt-0.5">
               <span id="imc-badge" class="text-[9px] bg-slate-800 border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-epic">IMC 31.3 • COLOSSO</span>
               <span id="combat-power-badge" class="text-[9px] bg-amber-950/80 border border-amber-600/70 text-amber-300 px-1.5 py-0.5 rounded font-epic font-bold">⚡ BRAVURA: 1.150</span>
+              <span id="battle-state-badge" class="text-[9px] bg-amber-500/20 border border-amber-400 text-amber-300 px-1.5 py-0.5 rounded font-epic font-black hidden animate-pulse">
+                🔥 SANGUE DE NÚMENOR (1.5x DANO)
+              </span>
             </div>
           </div>
           <div class="text-right">
@@ -111,12 +125,10 @@
     <!-- ABA 1: MISSÕES E BATALHAS -->
     <div id="tab-missions" class="tab-content flex flex-col gap-3">
 
-      <!-- CERCO SEMANAL (COM RETRATO DO INIMIGO INTEGRADO) -->
+      <!-- CERCO SEMANAL (COM RETRATO DO INIMIGO) -->
       <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-950 border border-red-700/60 rounded-2xl p-3.5 shadow-xl font-epic">
-        
-        <!-- Cabeçalho do Inimigo com Avatar -->
         <div class="flex items-center gap-3 mb-2.5">
-          <!-- Quadro do Inimigo com Upload Nativo ao Tocar -->
+          <!-- Quadro do Inimigo com Upload ao Tocar -->
           <div id="boss-avatar-container" class="relative w-20 h-20 bg-slate-950 border-2 border-red-600/70 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg cursor-pointer group">
             <img id="boss-img" src="" alt="Troll de Gorgoroth" class="w-full h-full object-cover object-center hidden pointer-events-none" />
             <div id="boss-placeholder" class="text-center p-1.5 flex flex-col items-center justify-center pointer-events-none">
@@ -141,7 +153,6 @@
               <span id="boss-status-badge" class="text-[9px] bg-red-950 border border-red-700 text-red-300 px-2 py-0.5 rounded uppercase font-bold shrink-0 ml-1">EM COMBATE</span>
             </div>
 
-            <!-- Barra de Vida do Chefe -->
             <div class="w-full bg-slate-950 rounded-full h-2.5 border border-red-950 overflow-hidden mt-2">
               <div id="boss-hp-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-emerald-500 h-full w-full transition-all duration-500"></div>
             </div>
@@ -174,7 +185,7 @@
         <button type="button" onclick="handleManualZeppSubmit()" class="w-full mt-2 bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600/50 active:scale-95 text-indigo-200 py-2 rounded-xl text-xs font-bold transition">CONSAGRAR VIGÍLIA & PASSOS</button>
       </div>
 
-      <!-- FONTES DA CIDADELA (HIDRATAÇÃO TÁTICA) -->
+      <!-- FONTES DA CIDADELA (HIDRATAÇÃO) -->
       <div class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3 shadow-lg">
         <div class="flex justify-between items-center mb-1.5 font-epic">
           <div><span class="text-xs font-bold text-cyan-300 block">FONTES DA CIDADELA (BLINDAGEM)</span><span class="text-[10px] text-slate-400 font-sans">Quota diária de águas puras: 3.000 ml</span></div>
@@ -194,7 +205,7 @@
       <!-- VIGÍLIA DOS GUARDIÕES (CALISTENIA / SPARKS) -->
       <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3 shadow-lg font-epic">
         <div class="flex justify-between items-center mb-2">
-          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">4 postos de treino diários</span></div>
+          <div><span class="text-xs font-bold text-amber-300 block">VIGÍLIA DOS GUARDIÕES (CALISTENIA)</span><span class="text-[10px] text-slate-400 font-sans">Desperte o Sangue de Númenor cumprindo 4/4 postos</span></div>
           <span id="sparks-counter" class="text-[10px] bg-amber-950/80 text-amber-300 px-2 py-0.5 rounded border border-amber-800/70">0/4 CUMPRIDOS</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mt-2">
@@ -333,6 +344,7 @@
       weight: 96.0, heightCm: 175, streak: 1,
       avatarImage: null,
       enemyImage: null,
+      battleState: { active: false, date: todayStr, multiplier: 1.5 },
       hydration: { date: todayStr, currentMl: 0, goalMl: 3000, completed: false },
       morningReport: { date: todayStr, sleepHours: 0, sleepScore: 0, steps: 0, completed: false },
       bossRaid: { weekId: currentWeekId, name: "TROLL DE COMBATE DE GORGOROTH", maxHp: 85000, currentHp: 85000, defeated: false },
@@ -358,9 +370,7 @@
           } catch(e){}
         }
       }
-      if (bestSave) {
-        player = Object.assign(player, bestSave);
-      }
+      if (bestSave) player = Object.assign(player, bestSave);
     } catch (e) {}
 
     const savedAvatar = localStorage.getItem('hero_custom_avatar');
@@ -371,6 +381,7 @@
 
     player.maxXp = Math.max(800, (player.level || 1) * 800);
 
+    // Ajusta o Chefe Semanal para 85.000 HP se estiver com o padrão antigo
     if (!player.bossRaid || player.bossRaid.weekId !== currentWeekId || player.bossRaid.maxHp < 80000) {
       const bossHpScale = 85000 + ((player.level || 1) * 5000);
       player.bossRaid = {
@@ -382,6 +393,9 @@
       };
     }
 
+    if (!player.battleState || player.battleState.date !== todayStr) {
+      player.battleState = { active: false, date: todayStr, multiplier: 1.5 };
+    }
     if (!player.sparksRoutine || !Array.isArray(player.sparksRoutine.slots) || player.sparksRoutine.slots.length !== 4 || player.sparksRoutine.date !== todayStr) {
       player.sparksRoutine = { date: todayStr, slots: [false, false, false, false] };
     }
@@ -427,17 +441,28 @@
       const avatarImg = document.getElementById('avatar-img');
       const placeholder = document.getElementById('avatar-placeholder');
       const container = document.getElementById('avatar-container');
+      const battleBadge = document.getElementById('battle-state-badge');
       if (!avatarImg || !container) return;
 
       const lvl = Math.min(20, Math.max(1, player.level || 1));
       const heightM = (player.heightCm || 175) / 100;
       const imc = (player.weight || 96) / (heightM * heightM);
+      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
 
       document.getElementById('imc-badge').textContent = `IMC ${imc.toFixed(1)} • ${imc < 25 ? 'ESGUIO' : (imc < 30 ? 'ATLÉTICO' : 'COLOSSO')}`;
       document.getElementById('rank-title').textContent = RANK_NAMES[lvl - 1];
       document.getElementById('combat-power-badge').textContent = `⚡ BRAVURA: ${calculateCombatPower().toLocaleString('pt-BR')}`;
 
-      container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400 aura-s' : (lvl >= 13 ? 'border-amber-400' : 'border-amber-600/60')} rounded-xl overflow-hidden flex items-center justify-center shrink-0`;
+      if (battleBadge) {
+        battleBadge.classList.toggle('hidden', !isBattleActive);
+      }
+
+      // Moldura normal ou Aura de Batalha de Númenor
+      if (isBattleActive) {
+        container.className = "relative w-24 h-24 bg-slate-950 border-2 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-2xl aura-numenor";
+      } else {
+        container.className = `relative w-24 h-24 bg-slate-950 border-2 ${lvl === 20 ? 'border-amber-400' : (lvl >= 13 ? 'border-amber-400' : 'border-amber-600/60')} rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-inner`;
+      }
 
       const avatarToUse = player.avatarImage || localStorage.getItem('hero_custom_avatar');
       if (avatarToUse) {
@@ -450,7 +475,7 @@
       }
     }
 
-    // GESTÃO DO RETRATO DO TROLL DE GORGOROTH
+    // RETRATO DO TROLL DE GORGOROTH
     function handleBossUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -474,10 +499,14 @@
       reader.readAsDataURL(file);
     }
 
-    // MECÂNICA E RENDERIZAÇÃO DO CERCO
-    function dealBossDamage(damage, sourceName) {
+    // DANO DO CERCO COM MULTIPLICADOR DO ESTADO DE BATALHA
+    function dealBossDamage(baseDamage, sourceName) {
       if (!player.bossRaid || player.bossRaid.defeated) return;
-      player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - damage);
+
+      const isBattleActive = player.battleState && player.battleState.active && player.battleState.date === todayStr;
+      const actualDamage = isBattleActive ? Math.round(baseDamage * (player.battleState.multiplier || 1.5)) : baseDamage;
+
+      player.bossRaid.currentHp = Math.max(0, player.bossRaid.currentHp - actualDamage);
 
       if (player.bossRaid.currentHp <= 0) {
         player.bossRaid.defeated = true;
@@ -490,6 +519,12 @@
           xp: 400
         });
         showToast("A BESTA CAIU! VITÓRIA NAS MURALHAS! (+400 XP)");
+      } else {
+        if (isBattleActive) {
+          showToast(`⚔️ GOLPE DE NÚMENOR: -${actualDamage.toLocaleString('pt-BR')} HP (${sourceName})!`);
+        } else {
+          showToast(`-${actualDamage.toLocaleString('pt-BR')} Dano no Chefe (${sourceName})!`);
+        }
       }
       renderBossRaid();
     }
@@ -539,6 +574,17 @@
       }
     }
 
+    // ATIVAÇÃO DO ESTADO DE BATALHA (SANGUE DE NÚMENOR)
+    function checkBattleStateActivation() {
+      const sparksDone = player.sparksRoutine && player.sparksRoutine.slots.every(Boolean);
+
+      if (sparksDone && (!player.battleState.active || player.battleState.date !== todayStr)) {
+        player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
+        showToast("🔥 O SANGUE DE NÚMENOR DESPERTOU! 1.5x DANO NO CERCO!", true);
+        renderToriyamaAvatar();
+      }
+    }
+
     // VIGÍLIA DOS GUARDIÕES (CALISTENIA SPARKS)
     function renderSparksRoutine() {
       let completedCount = 0;
@@ -581,10 +627,11 @@
           xp: 25
         });
 
+        // Verificação de fechamento do dia (desperta o Sangue de Númenor)
         if (player.sparksRoutine.slots.every(Boolean)) {
           addXP(50, 'CON');
           dealBossDamage(1000, "Vigília Plena das Muralhas");
-          showToast("VIGÍLIA COMPLETA 4/4! BÔNUS DE +50 XP");
+          checkBattleStateActivation();
         } else {
           showToast(`Posto 0${index + 1} Consagrado! (+25 XP e +1 ${statGain})`);
         }
@@ -799,10 +846,16 @@
             const min = Math.round(totalSec / 60);
 
             const xpTotal = Math.max(30, Math.round(km * 75 + min * 6));
-            const bossDamage = Math.round(km > 0 ? (km * 600 + min * 25) : (min * 70));
+            const baseDamage = Math.round(km > 0 ? (km * 600 + min * 25) : (min * 70));
+
+            // Marchas pesadas (> 4 km) ativam o Sangue de Númenor
+            if (km >= 4.0) {
+              player.battleState = { active: true, date: todayStr, multiplier: 1.5 };
+              showToast("🔥 MARCHA HERÓICA! O SANGUE DE NÚMENOR DESPERTOU!");
+            }
 
             addXP(xpTotal, km > 0 ? 'END' : 'CON');
-            dealBossDamage(bossDamage, rawName);
+            dealBossDamage(baseDamage, rawName);
             player.history.unshift({
               nome: rawName.toUpperCase(),
               detalhes: `${km > 0 ? km + ' km • ' : ''}${min} min de marcha armada`,
@@ -810,8 +863,7 @@
               data: new Date().toISOString(),
               xp: xpTotal
             });
-            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP e -${bossDamage.toLocaleString('pt-BR')} HP no Boss)`;
-            showToast(`${rawName} Concluído com Glória!`);
+            statusMsg.textContent = `✅ ${rawName} (+${xpTotal} XP registrado)`;
             updateUI();
           }
         } catch(err) { statusMsg.textContent = "Erro na leitura do papiro TCX."; }
@@ -819,7 +871,7 @@
       reader.readAsText(file);
     });
 
-    // DIÁRIO DAS CRÔNICAS
+    // DIÁRIO DAS CRÔNICAS (CALENDÁRIO)
     let selectedCalendarDay = new Date().getDate();
 
     function renderCalendarModule() {
@@ -983,7 +1035,7 @@
       renderBossRaid();
       renderSparksRoutine();
 
-      localStorage.setItem('hero_player_v25', JSON.stringify(player));
+      localStorage.setItem('hero_player_v26', JSON.stringify(player));
     }
 
     updateUI();
